@@ -1,0 +1,44 @@
+<form class="flexcol {{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{item.name}}" placeholder="Name">
+            </h1>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        <label>Description </label>
+        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
+        <div class="attributeValues">
+            <label>Skill
+            <input name="system.skill" type="text" value="{{systemData.skill}}" placeholder="Skill">
+            </label><label>Melee
+                <input name="system.melee" type="number" value="{{systemData.melee}}" placeholder="Melee">
+            </label><label>Hip
+                <input name="system.hip" type="number" value="{{systemData.hip}}" placeholder="Hip">
+            </label><label>Ready
+                <input name="system.ready" type="number" value="{{systemData.ready}}" placeholder="Ready">
+            </label><label>Aim
+                <input name="system.aim" type="number" value="{{systemData.aim}}" placeholder="Aim">
+            </label>
+            <label>Clip Size
+                <input name="system.clip_size" type="number" value="{{systemData.clip_size}}" placeholder="Clip Size">
+            </label><label>Base Damage
+            <input name="system.base_damage" type="text" value="{{systemData.base_damage}}" placeholder="Base Damage">
+            </label><label>X Damage
+                <input name="system.x_damage" type="text" value="{{systemData.x_damage}}" placeholder="X Damage">
+            </label><label>Element
+                <input name="system.element" type="text" value="{{systemData.element}}" placeholder="Element">
+            </label><label>Range
+                <input name="system.range" type="number" value="{{systemData.range}}" placeholder="Range">
+            </label><label>Price
+                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
+            </label>
+        </div>
+    </section>
+</form>
+

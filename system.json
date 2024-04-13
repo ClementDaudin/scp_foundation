@@ -1,0 +1,23 @@
+{
+  "id": "scp_foundation",
+  "title" : "SCP Foundation",
+  "description" : "Mode de jeu SCP pour La Bonne Gachette",
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "author": "Clément Daudin",
+  "scripts": [],
+  "esmodules": ["module/scp_foundation.js"],
+  "styles": "css/scp_foundation.css",
+  "packs": [],
+  "languages": [],
+  "gridDistance": 1.5,
+  "gridUnits": "m",
+  "primaryTokenAttribute": "",
+  "secondaryTokenAttribute": "",
+  "url": "",
+  "manifest": "",
+  "download": ""
+}

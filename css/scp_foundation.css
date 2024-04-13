@@ -1,0 +1,394 @@
+
+.sheet-rolltemplate-scp{
+
+}
+.sheet {
+    min-height: 300px;
+    height: 400px;
+    min-width: 1000px;
+    width: 1000px    ;
+}
+.level-2, .sheet-level-2 {
+    --backColor: #42ef24;
+    --selectColor: var(--backColor);
+    --selectShadow: none;
+}
+.level-3, .sheet-level-3 {
+    --backColor: #ef6024;
+    --selectColor: var(--backColor);
+    --selectShadow: none;
+}
+.sheet-body select, .sheet-body textarea, .sheet-body input, .sheet-body .uneditable-input, .sheet-body label, .sheet-body button, .sheet-rolltemplate-scp select, .sheet-rolltemplate-scp textarea, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
+    all: unset;
+}
+.sheet-rolltemplate-scp {
+    --grid-gap: 1rem;
+    --half-gap: calc(var(--grid-gap) / 2);
+    --tiny-gap: calc(var(--half-gap) / 2);
+    position: relative;
+    gap: var(--grid-gap);
+    --revealTime: 500ms;
+    --delayTime: 200ms;
+    --inputSwap: opacity var(--revealTime) ease var(--delayTime);
+    --focusTrans: all 500ms ease var(--delayTime);
+    --borderColor: black;
+    --fontColor: black;
+    --backColor: #636363;
+    --selectColor: var(--backColor);
+    --selectShadow: none;
+}
+.sheet-rolltemplate-scp .sheet-body {
+    --selectedRadio: grey;
+    --fillTrackRadioHeight: 2rem;
+    --fillTrackRadioWidth: 1rem;
+    --fillTrackSpanWidth: 1rem;
+    --fillTrackSpanHeight: 0.5rem;
+    --fillItemFlex: 0 0 auto;
+    --track-gap: var(--tiny-gap);
+}
+
+form {
+    height: 100%;
+}
+.editor, .editor-content {
+    height: 70%;
+}
+
+.sheet-header {
+    flex: 0 0 100px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+
+    .profile-img {
+        flex: 0 0 100px;
+        height: 100px;
+        margin-right: 10px;
+    }
+
+    .header-fields {
+        flex: 1;
+        height: 100px;
+    }
+
+    h1.charname {
+        height: 50px;
+        padding: 0px;
+        margin: 5px 0;
+        border-bottom: 0;
+        input {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+    }
+}
+
+#summary{
+    position: sticky;
+    top: 0px;
+    z-index: 110;
+    grid-area: summary;
+    background-color: var(--backColor);
+    border-radius: 10px 10px 0 0;
+    border-width: 2px 5px;
+    border-style: solid;
+    border-color: black;
+    filter: drop-shadow(0px -10px white);
+    padding: 5px;
+    display: grid;
+    grid-template-columns: 1fr [strength-start fate-start] auto [strength-end fate-end health-start charisma-start] auto [health-end charisma-end perception-start intelligence-start] auto [perception-end intelligence-end dexterity-start willpower-start] auto [dexterity-end willpower-end];
+    grid-template-rows: [strength-start health-start perception-start dexterity-start] 1rem [fate-start charisma-start intelligence-start willpower-start] 1rem [strength-end health-end perception-end dexterity-end] 1rem [fate-end charisma-end intelligence-end willpower-end];
+    grid-template-areas:
+        "character_name . . . ."
+        "character_name . . . ."
+        "alias . . . .";
+}
+#summary .character_name{
+    grid-area: character_name;
+}
+#summary .alias{
+    grid-area: alias;
+}
+#summary .h4, #summary .h5{
+    line-height: 0;
+    place-self: center;
+}
+.h4{
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: block;
+}
+
+#summary > .ability-summary {
+    align-self: center;
+    display: grid;
+    grid-template-columns: 2.5rem repeat(3, 1rem auto);
+}
+
+#summary > .strength {
+    grid-area: strength;
+}#summary > .health {
+     grid-area: health;
+ }#summary > .perception {
+      grid-area: perception;
+  }#summary > .dexterity {
+       grid-area: dexterity;
+   }#summary > .fate {
+        grid-area: fate;
+    }#summary > .charisma {
+         grid-area: charisma;
+     }#summary > .intelligence {
+          grid-area: intelligence;
+      }#summary > .willpower {
+           grid-area: willpower;
+       }
+#summary > .ability-summary > .die-num {
+    justify-self: end;
+}
+
+#summary > .ability-summary > .perks {
+    margin: 0 0.5rem 0.5rem;
+}
+
+#attributes {
+    float: left; /* Utilisez float pour positionner la colonne à gauche */
+    --fillTrackRadioHeight: 2.5rem;
+    --track-gap: 0;
+    --fillItemFlex: 1 1 0;
+}
+
+#attributes > .ability_score {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4rem 13rem;
+    grid-template-rows: repeat(4, auto);
+    grid-template-areas:
+        "header header "
+        "d8 ."
+        "d10 ."
+        "d12 .";
+    place-self: center;
+    margin-bottom: var(--grid-gap);
+    border: 1px solid black;
+}
+
+#attributes > .ability_score .attribute {
+    grid-area: header;
+    text-align: center;
+}
+#attributes > .ability_score h5 , #attributes > .ability_score .attribute, #attributes > .ability_score h5 {
+    border: 1px solid black;
+    line-height: var(--fillTrackRadioHeight);
+    text-align: center;
+    background-color: white;
+    margin: 0;
+}
+.fillTrack {
+    position: relative;
+    display: inline-flex;
+    gap: var(--track-gap);
+    align-items: center;
+}
+
+.fillTrack .separated-label:checked ~ .separated-label, .fillTrack .separated-span:checked ~ .separated-label {
+    order: 3;
+    background-color: white;
+}
+
+.fillTrack .separated-label, .fillTrack .separated-span {
+    appearance: none;
+    border: 1px solid black;
+    background-color: var(--selectedRadio);
+    order: 1;
+    border-radius: 0;
+    flex: var(--fillItemFlex);
+    box-sizing: content-box;
+}
+.fillTrack .separated-label {
+    width: var(--fillTrackRadioWidth);
+    height: var(--fillTrackRadioHeight);
+}
+.fillTrack .separated-label {
+    cursor: pointer;
+}
+input[type="radio"] {
+    position: relative;
+    margin: 0;
+}
+
+.roll-label {
+    cursor: pointer;
+    --beforeColor: grey;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    place-items: center start;
+    place-content: center;
+}
+#attributes > .available-dice {
+    grid-column: 1/-1;
+}
+
+#attributes:not(.active-section) > .available-dice {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--half-gap);
+    margin-bottom: var(--grid-gap);
+    z-index: 100;
+}
+#attributes:not(.active-section) > .available-dice, .sticky-sub {
+    top: 70.5px;
+    position: sticky;
+    z-index: 100;
+}
+
+#attributes:not(.active-section) > .available-dice h4 {
+    grid-column: 1/-1;
+}
+
+.sheet-body h4:not(input){
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.sheet-rolltemplate-scp button {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#attributes > .available-dice > button[type=action] {
+    box-shadow: inset 0 0 5px black;
+    color: black;
+    border-radius: 5px;
+    padding: 3px 5px;
+    display: flex;
+    justify-content: center;
+    transition: var(--focusTrans);
+}
+
+.main{
+    display: grid;
+}
+.main .player_data{
+    display:inline-block;
+}
+.main .charactere_stats{
+    display: inline-block;
+}
+.main .charactere_data{
+    display: inline-block;
+}
+.main .boxData{
+    display: inline-block;
+}
+
+.main .boxed{
+    width:200px;
+    height:60px;
+    margin: 5px;
+    text-align: center;
+}
+.main h5, .main .h5, .main button[type=roll].h5, .main button[type=action].h5, .main h4, .main .h4, .main button[type=roll].h4, .main button[type=action].h4, .main h3, .main .h3, .main button[type=roll].h3, .main button[type=action].h3, .main .input-label.large > input, .main .h2, .main button[type=roll].h2, .main button[type=action].h2, #security_level > .head .security_level > input, .main h1, .main .h1, .main button[type=roll].h1, .main button[type=action].h1{
+    text-transform: capitalize;
+    font-weight: bold;
+    line-height: normal;
+    display: block;
+    white-space: nowrap;
+}
+.main .boxed.thick-right, .sheet-rolltemplate-scp .boxed.thick-right {
+    border-right-width: 5px;
+}
+.main .boxed.thick-bottom, .sheet-rolltemplate-scp .boxed.thick-bottom {
+    border-bottom-width: 5px;
+}
+.main .boxed, .sheet-rolltemplate-scp .boxed {
+    border: 1px solid black;
+}
+.main .input-label:not(:is(.stacked, .right)), .sheet-rolltemplate-scp .input-label:not(:is(.stacked, .right)) {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "left right";
+}
+.main .input-label, .sheet-rolltemplate-scp .input-label {
+    display: inline-grid;
+    grid-gap: var(--half-gap);
+    place-items: center stretch;
+}
+
+.sheet-body :is(span, label){
+    line-height: normal;
+    text-transform: capitalize;
+}
+.main input.number, .sheet-rolltemplate-scp input.number {
+    -moz-appearance: textfield !important;
+    text-align: center;
+}
+
+.main .input-label > *, .sheet-rolltemplate-scp .input-label > * {
+    margin: 0;
+}
+
+.main .input-label:not(:is(.stacked, .right)) > span, .sheet-rolltemplate-scp .input-label:not(:is(.stacked, .right)) > span {
+    grid-area: left;
+}
+
+.main h4, .main h5, .main h6 {
+    line-height: 18px;
+}
+
+.main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+    text-rendering: optimizelegibility;
+}
+
+.market{
+    vertical-align: top;
+}
+input.h5 {
+    width: 110px;
+}
+
+.reverence{
+    display: inline-block;
+}
+
+#reverence {
+    display: inline-grid;
+    grid-template-columns: auto;
+    grid-template-rows: 2rem 2rem 1fr;
+    grid-row-gap: var(--half-gap);
+    grid-template-areas:
+        "header"
+        "."
+        "help";
+    background-color: teal;
+    background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, teal, white, teal);
+    border: 2px solid black;
+}
+
+.stats{
+    display: inline-block;
+}
+.exertion{
+    display: inline-block;
+}
+#exertion {
+    display: inline-grid;
+    grid-template-rows: 2rem 1rem 0.25rem 1fr;
+    grid-row-gap: 5px;
+    grid-template-areas:
+        "header"
+        "."
+        "."
+        "help";
+    border: 2px solid black;
+    background-color: teal;
+    background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, #ca6866, white, #ca6866);
+    --fillTrackRadioHeight: 1rem;
+}

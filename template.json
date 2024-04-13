@@ -1,0 +1,126 @@
+{
+  "Actor": {
+    "types": ["character"],
+    "htmlFields": ["biography"],
+    "character": {
+      "player":  "Clément",
+      "name": "Edward Arington",
+      "alias": "Nest",
+      "gender": "Male",
+      "weight": 55,
+      "height": "1m74",
+      "age": 24,
+      "hair": "blond",
+      "eyes": "marron",
+      "appearance": "Attractive",
+      "body_type": "Thin",
+      "reasoning": "scientific",
+      "equipement": [],
+      "experience":0,
+      "attributes": {
+        "strenght": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "health": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "perception": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "dexterity": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "fate": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "charisma": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "intelligence": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "willpower": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        }
+      },
+      "hp": {
+        "value": 10,
+        "max": 10
+      },
+      "perks": {
+        "categorie1": {
+          "fight": {
+            "perso": 0,
+            "mod": 0,
+            "total": 0,
+            "type": "Str"
+          }
+        },
+        "categorie2": {
+          "hide": {
+            "perso": 0,
+            "mod": 0,
+            "total": 0,
+            "type": "Int"
+          }
+        },"categorie3": {
+          "resist_distress": {
+            "perso": 0,
+            "mod": 0,
+            "total": 0,
+            "type": "Chr"
+          }
+        }
+      }
+    },
+    "test": {}
+  },
+  "Item": {
+    "types": ["arme", "attachment", "rent", "other"],
+    "htmlFields": ["description"],
+    "arme": {
+      "description": "",
+      "skill": "Handgun",
+      "recoil": "0",
+      "melee": "-",
+      "hip": "+1",
+      "ready": "+2",
+      "aim": "+3",
+      "clip_size": "10",
+      "base_damage": "0",
+      "x_damage": "0",
+      "element": "none",
+      "range": "2*",
+      "price": "$200"
+    },
+    "attachment": {
+      "description": "attachment :",
+      "price": "$50"
+    },
+    "rent": {
+      "description": "attachment :",
+      "rent": "$50/day",
+      "price": "$800"
+    },
+    "other": {
+      "description": "",
+      "price": "$50"
+    }
+  }
+}

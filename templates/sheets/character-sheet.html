@@ -1,0 +1,482 @@
+<form class="flexcol {{cssClass}} sheet-rolltemplate-scp" autocomplete="off">
+    <header class="sheet-header">
+        <div class="header-fields">
+            <div id="summary" class="level-3"><span class="character_name h4 " name="attr_character_name" title="@{character_name}">Edward Arrington</span><span class="alias h5" name="attr_alias" title="@{alias}">Nest</span>
+                <div class="ability-summary strength">
+                    <h4 data-i18n="str" class="perks">STR</h4><span class="die-num" name="attr_strength_d8" title="@{strength_d8}">2</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_strength_d10" title="@{strength_d10}">0</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_strength_d12" title="@{strength_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary health">
+                    <h4 data-i18n="hth" class="perks">HTH</h4><span class="die-num" name="attr_health_d8" title="@{health_d8}">2</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_health_d10" title="@{health_d10}">1</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_health_d12" title="@{health_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary perception">
+                    <h4 data-i18n="per" class="perks">PER</h4><span class="die-num" name="attr_perception_d8" title="@{perception_d8}">2</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_perception_d10" title="@{perception_d10}">1</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_perception_d12" title="@{perception_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary dexterity">
+                    <h4 data-i18n="dex" class="perks">DEX</h4><span class="die-num" name="attr_dexterity_d8" title="@{dexterity_d8}">3</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_dexterity_d10" title="@{dexterity_d10}">1</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_dexterity_d12" title="@{dexterity_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary fate">
+                    <h4 data-i18n="fte" class="perks">FTE</h4><span class="die-num" name="attr_fate_d8" title="@{fate_d8}">3</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_fate_d10" title="@{fate_d10}">0</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_fate_d12" title="@{fate_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary charisma">
+                    <h4 data-i18n="chr" class="perks">CHR</h4><span class="die-num" name="attr_charisma_d8" title="@{charisma_d8}">1</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_charisma_d10" title="@{charisma_d10}">0</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_charisma_d12" title="@{charisma_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary intelligence">
+                    <h4 data-i18n="int" class="perks">INT</h4><span class="die-num" name="attr_intelligence_d8" title="@{intelligence_d8}">6</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_intelligence_d10" title="@{intelligence_d10}">2</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_intelligence_d12" title="@{intelligence_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+                <div class="ability-summary willpower">
+                    <h4 data-i18n="wil" class="perks">WIL</h4><span class="die-num" name="attr_willpower_d8" title="@{willpower_d8}">3</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_willpower_d10" title="@{willpower_d10}">1</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_willpower_d12" title="@{willpower_d12}">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        <section class="" id="attributes">
+            <div class="available-dice">
+                <h4 data-i18n="available dice">available dice</h4>
+                <input name="attr_available_d8" type="hidden" value="0" title="@{available_d8}">
+                <input name="attr_purchased_d8" type="hidden" value="22" title="@{purchased_d8}">
+                <input name="attr_total_d8" type="hidden" value="22" title="@{total_d8}">
+                <button class="die-purchase" name="act_purchase_d8" data-i18n-title="alt-click to refund dice" data-i18n-vars="%{purchase_d8}" type="action" title="%{purchase_d8} | alt-click to refund dice"><span name="attr_available_d8" data-i18n-title="alt-click to refund dice" data-i18n-vars="@{available_d8}" title="@{available_d8} | alt-click to refund dice">0</span><span class="die-size" data-i18n="d8">d8s</span>
+                </button>
+                <input name="attr_available_d10" type="hidden" value="0" title="@{available_d10}">
+                <input name="attr_purchased_d10" type="hidden" value="6" title="@{purchased_d10}">
+                <input name="attr_total_d10" type="hidden" value="6" title="@{total_d10}">
+                <button class="die-purchase" name="act_purchase_d10" data-i18n-title="alt-click to refund dice" data-i18n-vars="%{purchase_d10}" type="action" title="%{purchase_d10} | alt-click to refund dice"><span name="attr_available_d10" data-i18n-title="alt-click to refund dice" data-i18n-vars="@{available_d10}" title="@{available_d10} | alt-click to refund dice">0</span><span class="die-size" data-i18n="d10">d10s</span>
+                </button>
+                <input name="attr_available_d12" type="hidden" value="0" title="@{available_d12}">
+                <input name="attr_purchased_d12" type="hidden" value="0" title="@{purchased_d12}">
+                <input name="attr_total_d12" type="hidden" value="0" title="@{total_d12}">
+                <button class="die-purchase" name="act_purchase_d12" data-i18n-title="alt-click to refund dice" data-i18n-vars="%{purchase_d12}" type="action" title="%{purchase_d12} | alt-click to refund dice"><span name="attr_available_d12" data-i18n-title="alt-click to refund dice" data-i18n-vars="@{available_d12}" title="@{available_d12} | alt-click to refund dice">0</span><span class="die-size" data-i18n="d12">d12s</span>
+                </button>
+            </div>
+            <div class="strength ability_score">
+                <label class="strength attribute roll-label" title="%{strength}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="strength" name="act_strength" type="action" title="%{strength}">strength</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_strength_d8" type="hidden" value="2" title="@{strength_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_strength_d8" type="radio" value="0" data-i18n-title="0 strength d8" checked="" title="clear all strength d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_strength_d8" type="radio" value="1" data-i18n-title="1 strength d8" title="1 strength d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_strength_d8" type="radio" value="2" data-i18n-title="2 strength d8" title="2 strength d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_strength_d8" type="radio" value="3" data-i18n-title="3 strength d8" title="3 strength d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_strength_d8" type="radio" value="4" data-i18n-title="4 strength d8" title="4 strength d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_strength_d8" type="radio" value="5" data-i18n-title="5 strength d8" title="5 strength d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_strength_d8" type="radio" value="6" data-i18n-title="6 strength d8" title="6 strength d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_strength_d8" type="radio" value="7" data-i18n-title="7 strength d8" title="7 strength d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_strength_d8" type="radio" value="8" data-i18n-title="8 strength d8" title="8 strength d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_strength_d8" type="radio" value="9" data-i18n-title="9 strength d8" title="9 strength d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_strength_d8" type="radio" value="10" data-i18n-title="10 strength d8" title="10 strength d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_strength_d8" type="radio" value="11" data-i18n-title="11 strength d8" title="11 strength d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_strength_d8" type="radio" value="12" data-i18n-title="12 strength d8" title="12 strength d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_strength_d10" type="hidden" value="0" title="@{strength_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_strength_d10" type="radio" value="0" data-i18n-title="0 strength d10" checked="" title="clear all strength d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_strength_d10" type="radio" value="1" data-i18n-title="1 strength d10" title="1 strength d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_strength_d10" type="radio" value="2" data-i18n-title="2 strength d10" title="2 strength d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_strength_d10" type="radio" value="3" data-i18n-title="3 strength d10" title="3 strength d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_strength_d10" type="radio" value="4" data-i18n-title="4 strength d10" title="4 strength d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_strength_d10" type="radio" value="5" data-i18n-title="5 strength d10" title="5 strength d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_strength_d10" type="radio" value="6" data-i18n-title="6 strength d10" title="6 strength d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_strength_d12" type="hidden" value="0" title="@{strength_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_strength_d12" type="radio" value="0" data-i18n-title="0 strength d12" checked="" title="clear all strength d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_strength_d12" type="radio" value="1" data-i18n-title="1 strength d12" title="1 strength d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_strength_d12" type="radio" value="2" data-i18n-title="2 strength d12" title="2 strength d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_strength_d12" type="radio" value="3" data-i18n-title="3 strength d12" title="3 strength d12s">
+                </div>
+            </div>
+            <div class="health ability_score">
+                <label class="health attribute roll-label" title="%{health}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="health" name="act_health" type="action" title="%{health}">health</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_health_d8" type="hidden" value="2" title="@{health_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_health_d8" type="radio" value="0" data-i18n-title="0 health d8" checked="" title="clear all health d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_health_d8" type="radio" value="1" data-i18n-title="1 health d8" title="1 health d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_health_d8" type="radio" value="2" data-i18n-title="2 health d8" title="2 health d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_health_d8" type="radio" value="3" data-i18n-title="3 health d8" title="3 health d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_health_d8" type="radio" value="4" data-i18n-title="4 health d8" title="4 health d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_health_d8" type="radio" value="5" data-i18n-title="5 health d8" title="5 health d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_health_d8" type="radio" value="6" data-i18n-title="6 health d8" title="6 health d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_health_d8" type="radio" value="7" data-i18n-title="7 health d8" title="7 health d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_health_d8" type="radio" value="8" data-i18n-title="8 health d8" title="8 health d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_health_d8" type="radio" value="9" data-i18n-title="9 health d8" title="9 health d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_health_d8" type="radio" value="10" data-i18n-title="10 health d8" title="10 health d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_health_d8" type="radio" value="11" data-i18n-title="11 health d8" title="11 health d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_health_d8" type="radio" value="12" data-i18n-title="12 health d8" title="12 health d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_health_d10" type="hidden" value="1" title="@{health_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_health_d10" type="radio" value="0" data-i18n-title="0 health d10" checked="" title="clear all health d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_health_d10" type="radio" value="1" data-i18n-title="1 health d10" title="1 health d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_health_d10" type="radio" value="2" data-i18n-title="2 health d10" title="2 health d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_health_d10" type="radio" value="3" data-i18n-title="3 health d10" title="3 health d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_health_d10" type="radio" value="4" data-i18n-title="4 health d10" title="4 health d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_health_d10" type="radio" value="5" data-i18n-title="5 health d10" title="5 health d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_health_d10" type="radio" value="6" data-i18n-title="6 health d10" title="6 health d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_health_d12" type="hidden" value="0" title="@{health_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_health_d12" type="radio" value="0" data-i18n-title="0 health d12" checked="" title="clear all health d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_health_d12" type="radio" value="1" data-i18n-title="1 health d12" title="1 health d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_health_d12" type="radio" value="2" data-i18n-title="2 health d12" title="2 health d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_health_d12" type="radio" value="3" data-i18n-title="3 health d12" title="3 health d12s">
+                </div>
+            </div>
+            <div class="perception ability_score">
+                <label class="perception attribute roll-label" title="%{perception}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="perception" name="act_perception" type="action" title="%{perception}">perception</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_perception_d8" type="hidden" value="2" title="@{perception_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_perception_d8" type="radio" value="0" data-i18n-title="0 perception d8" checked="" title="clear all perception d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_perception_d8" type="radio" value="1" data-i18n-title="1 perception d8" title="1 perception d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_perception_d8" type="radio" value="2" data-i18n-title="2 perception d8" title="2 perception d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_perception_d8" type="radio" value="3" data-i18n-title="3 perception d8" title="3 perception d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_perception_d8" type="radio" value="4" data-i18n-title="4 perception d8" title="4 perception d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_perception_d8" type="radio" value="5" data-i18n-title="5 perception d8" title="5 perception d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_perception_d8" type="radio" value="6" data-i18n-title="6 perception d8" title="6 perception d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_perception_d8" type="radio" value="7" data-i18n-title="7 perception d8" title="7 perception d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_perception_d8" type="radio" value="8" data-i18n-title="8 perception d8" title="8 perception d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_perception_d8" type="radio" value="9" data-i18n-title="9 perception d8" title="9 perception d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_perception_d8" type="radio" value="10" data-i18n-title="10 perception d8" title="10 perception d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_perception_d8" type="radio" value="11" data-i18n-title="11 perception d8" title="11 perception d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_perception_d8" type="radio" value="12" data-i18n-title="12 perception d8" title="12 perception d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_perception_d10" type="hidden" value="1" title="@{perception_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_perception_d10" type="radio" value="0" data-i18n-title="0 perception d10" checked="" title="clear all perception d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_perception_d10" type="radio" value="1" data-i18n-title="1 perception d10" title="1 perception d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_perception_d10" type="radio" value="2" data-i18n-title="2 perception d10" title="2 perception d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_perception_d10" type="radio" value="3" data-i18n-title="3 perception d10" title="3 perception d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_perception_d10" type="radio" value="4" data-i18n-title="4 perception d10" title="4 perception d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_perception_d10" type="radio" value="5" data-i18n-title="5 perception d10" title="5 perception d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_perception_d10" type="radio" value="6" data-i18n-title="6 perception d10" title="6 perception d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_perception_d12" type="hidden" value="0" title="@{perception_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_perception_d12" type="radio" value="0" data-i18n-title="0 perception d12" checked="" title="clear all perception d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_perception_d12" type="radio" value="1" data-i18n-title="1 perception d12" title="1 perception d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_perception_d12" type="radio" value="2" data-i18n-title="2 perception d12" title="2 perception d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_perception_d12" type="radio" value="3" data-i18n-title="3 perception d12" title="3 perception d12s">
+                </div>
+            </div>
+            <div class="dexterity ability_score">
+                <label class="dexterity attribute roll-label" title="%{dexterity}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="dexterity" name="act_dexterity" type="action" title="%{dexterity}">dexterity</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_dexterity_d8" type="hidden" value="3" title="@{dexterity_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_dexterity_d8" type="radio" value="0" data-i18n-title="0 dexterity d8" checked="" title="clear all dexterity d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="1" data-i18n-title="1 dexterity d8" title="1 dexterity d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="2" data-i18n-title="2 dexterity d8" title="2 dexterity d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="3" data-i18n-title="3 dexterity d8" title="3 dexterity d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="4" data-i18n-title="4 dexterity d8" title="4 dexterity d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="5" data-i18n-title="5 dexterity d8" title="5 dexterity d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="6" data-i18n-title="6 dexterity d8" title="6 dexterity d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="7" data-i18n-title="7 dexterity d8" title="7 dexterity d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="8" data-i18n-title="8 dexterity d8" title="8 dexterity d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="9" data-i18n-title="9 dexterity d8" title="9 dexterity d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="10" data-i18n-title="10 dexterity d8" title="10 dexterity d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="11" data-i18n-title="11 dexterity d8" title="11 dexterity d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_dexterity_d8" type="radio" value="12" data-i18n-title="12 dexterity d8" title="12 dexterity d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_dexterity_d10" type="hidden" value="1" title="@{dexterity_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_dexterity_d10" type="radio" value="0" data-i18n-title="0 dexterity d10" checked="" title="clear all dexterity d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_dexterity_d10" type="radio" value="1" data-i18n-title="1 dexterity d10" title="1 dexterity d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_dexterity_d10" type="radio" value="2" data-i18n-title="2 dexterity d10" title="2 dexterity d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_dexterity_d10" type="radio" value="3" data-i18n-title="3 dexterity d10" title="3 dexterity d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_dexterity_d10" type="radio" value="4" data-i18n-title="4 dexterity d10" title="4 dexterity d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_dexterity_d10" type="radio" value="5" data-i18n-title="5 dexterity d10" title="5 dexterity d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_dexterity_d10" type="radio" value="6" data-i18n-title="6 dexterity d10" title="6 dexterity d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_dexterity_d12" type="hidden" value="0" title="@{dexterity_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_dexterity_d12" type="radio" value="0" data-i18n-title="0 dexterity d12" checked="" title="clear all dexterity d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_dexterity_d12" type="radio" value="1" data-i18n-title="1 dexterity d12" title="1 dexterity d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_dexterity_d12" type="radio" value="2" data-i18n-title="2 dexterity d12" title="2 dexterity d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_dexterity_d12" type="radio" value="3" data-i18n-title="3 dexterity d12" title="3 dexterity d12s">
+                </div>
+            </div>
+            <div class="fate ability_score">
+                <label class="fate attribute roll-label" title="%{fate}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="fate" name="act_fate" type="action" title="%{fate}">fate</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_fate_d8" type="hidden" value="3" title="@{fate_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_fate_d8" type="radio" value="0" data-i18n-title="0 fate d8" checked="" title="clear all fate d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_fate_d8" type="radio" value="1" data-i18n-title="1 fate d8" title="1 fate d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_fate_d8" type="radio" value="2" data-i18n-title="2 fate d8" title="2 fate d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_fate_d8" type="radio" value="3" data-i18n-title="3 fate d8" title="3 fate d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_fate_d8" type="radio" value="4" data-i18n-title="4 fate d8" title="4 fate d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_fate_d8" type="radio" value="5" data-i18n-title="5 fate d8" title="5 fate d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_fate_d8" type="radio" value="6" data-i18n-title="6 fate d8" title="6 fate d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_fate_d8" type="radio" value="7" data-i18n-title="7 fate d8" title="7 fate d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_fate_d8" type="radio" value="8" data-i18n-title="8 fate d8" title="8 fate d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_fate_d8" type="radio" value="9" data-i18n-title="9 fate d8" title="9 fate d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_fate_d8" type="radio" value="10" data-i18n-title="10 fate d8" title="10 fate d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_fate_d8" type="radio" value="11" data-i18n-title="11 fate d8" title="11 fate d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_fate_d8" type="radio" value="12" data-i18n-title="12 fate d8" title="12 fate d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_fate_d10" type="hidden" value="0" title="@{fate_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_fate_d10" type="radio" value="0" data-i18n-title="0 fate d10" checked="" title="clear all fate d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_fate_d10" type="radio" value="1" data-i18n-title="1 fate d10" title="1 fate d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_fate_d10" type="radio" value="2" data-i18n-title="2 fate d10" title="2 fate d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_fate_d10" type="radio" value="3" data-i18n-title="3 fate d10" title="3 fate d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_fate_d10" type="radio" value="4" data-i18n-title="4 fate d10" title="4 fate d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_fate_d10" type="radio" value="5" data-i18n-title="5 fate d10" title="5 fate d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_fate_d10" type="radio" value="6" data-i18n-title="6 fate d10" title="6 fate d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_fate_d12" type="hidden" value="0" title="@{fate_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_fate_d12" type="radio" value="0" data-i18n-title="0 fate d12" checked="" title="clear all fate d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_fate_d12" type="radio" value="1" data-i18n-title="1 fate d12" title="1 fate d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_fate_d12" type="radio" value="2" data-i18n-title="2 fate d12" title="2 fate d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_fate_d12" type="radio" value="3" data-i18n-title="3 fate d12" title="3 fate d12s">
+                </div>
+            </div>
+            <div class="charisma ability_score">
+                <label class="charisma attribute roll-label" title="%{charisma}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="charisma" name="act_charisma" type="action" title="%{charisma}">charisma</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_charisma_d8" type="hidden" value="1" title="@{charisma_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_charisma_d8" type="radio" value="0" data-i18n-title="0 charisma d8" checked="" title="clear all charisma d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_charisma_d8" type="radio" value="1" data-i18n-title="1 charisma d8" title="1 charisma d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_charisma_d8" type="radio" value="2" data-i18n-title="2 charisma d8" title="2 charisma d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_charisma_d8" type="radio" value="3" data-i18n-title="3 charisma d8" title="3 charisma d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_charisma_d8" type="radio" value="4" data-i18n-title="4 charisma d8" title="4 charisma d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_charisma_d8" type="radio" value="5" data-i18n-title="5 charisma d8" title="5 charisma d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_charisma_d8" type="radio" value="6" data-i18n-title="6 charisma d8" title="6 charisma d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_charisma_d8" type="radio" value="7" data-i18n-title="7 charisma d8" title="7 charisma d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_charisma_d8" type="radio" value="8" data-i18n-title="8 charisma d8" title="8 charisma d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_charisma_d8" type="radio" value="9" data-i18n-title="9 charisma d8" title="9 charisma d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_charisma_d8" type="radio" value="10" data-i18n-title="10 charisma d8" title="10 charisma d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_charisma_d8" type="radio" value="11" data-i18n-title="11 charisma d8" title="11 charisma d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_charisma_d8" type="radio" value="12" data-i18n-title="12 charisma d8" title="12 charisma d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_charisma_d10" type="hidden" value="0" title="@{charisma_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_charisma_d10" type="radio" value="0" data-i18n-title="0 charisma d10" checked="" title="clear all charisma d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_charisma_d10" type="radio" value="1" data-i18n-title="1 charisma d10" title="1 charisma d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_charisma_d10" type="radio" value="2" data-i18n-title="2 charisma d10" title="2 charisma d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_charisma_d10" type="radio" value="3" data-i18n-title="3 charisma d10" title="3 charisma d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_charisma_d10" type="radio" value="4" data-i18n-title="4 charisma d10" title="4 charisma d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_charisma_d10" type="radio" value="5" data-i18n-title="5 charisma d10" title="5 charisma d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_charisma_d10" type="radio" value="6" data-i18n-title="6 charisma d10" title="6 charisma d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_charisma_d12" type="hidden" value="0" title="@{charisma_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_charisma_d12" type="radio" value="0" data-i18n-title="0 charisma d12" checked="" title="clear all charisma d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_charisma_d12" type="radio" value="1" data-i18n-title="1 charisma d12" title="1 charisma d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_charisma_d12" type="radio" value="2" data-i18n-title="2 charisma d12" title="2 charisma d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_charisma_d12" type="radio" value="3" data-i18n-title="3 charisma d12" title="3 charisma d12s">
+                </div>
+            </div>
+            <div class="intelligence ability_score">
+                <label class="intelligence attribute roll-label" title="%{intelligence}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="intelligence" name="act_intelligence" type="action" title="%{intelligence}">intelligence</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_intelligence_d8" type="hidden" value="6" title="@{intelligence_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_intelligence_d8" type="radio" value="0" data-i18n-title="0 intelligence d8" checked="" title="clear all intelligence d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="1" data-i18n-title="1 intelligence d8" title="1 intelligence d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="2" data-i18n-title="2 intelligence d8" title="2 intelligence d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="3" data-i18n-title="3 intelligence d8" title="3 intelligence d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="4" data-i18n-title="4 intelligence d8" title="4 intelligence d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="5" data-i18n-title="5 intelligence d8" title="5 intelligence d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="6" data-i18n-title="6 intelligence d8" title="6 intelligence d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="7" data-i18n-title="7 intelligence d8" title="7 intelligence d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="8" data-i18n-title="8 intelligence d8" title="8 intelligence d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="9" data-i18n-title="9 intelligence d8" title="9 intelligence d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="10" data-i18n-title="10 intelligence d8" title="10 intelligence d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="11" data-i18n-title="11 intelligence d8" title="11 intelligence d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_intelligence_d8" type="radio" value="12" data-i18n-title="12 intelligence d8" title="12 intelligence d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_intelligence_d10" type="hidden" value="2" title="@{intelligence_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_intelligence_d10" type="radio" value="0" data-i18n-title="0 intelligence d10" checked="" title="clear all intelligence d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_intelligence_d10" type="radio" value="1" data-i18n-title="1 intelligence d10" title="1 intelligence d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_intelligence_d10" type="radio" value="2" data-i18n-title="2 intelligence d10" title="2 intelligence d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_intelligence_d10" type="radio" value="3" data-i18n-title="3 intelligence d10" title="3 intelligence d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_intelligence_d10" type="radio" value="4" data-i18n-title="4 intelligence d10" title="4 intelligence d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_intelligence_d10" type="radio" value="5" data-i18n-title="5 intelligence d10" title="5 intelligence d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_intelligence_d10" type="radio" value="6" data-i18n-title="6 intelligence d10" title="6 intelligence d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_intelligence_d12" type="hidden" value="0" title="@{intelligence_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_intelligence_d12" type="radio" value="0" data-i18n-title="0 intelligence d12" checked="" title="clear all intelligence d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_intelligence_d12" type="radio" value="1" data-i18n-title="1 intelligence d12" title="1 intelligence d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_intelligence_d12" type="radio" value="2" data-i18n-title="2 intelligence d12" title="2 intelligence d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_intelligence_d12" type="radio" value="3" data-i18n-title="3 intelligence d12" title="3 intelligence d12s">
+                </div>
+            </div>
+            <div class="willpower ability_score">
+                <label class="willpower attribute roll-label" title="%{willpower}">
+                    <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                    </div>
+                    <button class="h3 roller" data-i18n="willpower" name="act_willpower" type="action" title="%{willpower}">willpower</button>
+                </label>
+                <h5 data-i18n="d8">d8s</h5>
+                <div class="fillTrack">
+                    <input name="attr_willpower_d8" type="hidden" value="3" title="@{willpower_d8}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_willpower_d8" type="radio" value="0" data-i18n-title="0 willpower d8" checked="" title="clear all willpower d8s">
+                    <input class="fill-1 fill-label separated-label" name="attr_willpower_d8" type="radio" value="1" data-i18n-title="1 willpower d8" title="1 willpower d8">
+                    <input class="fill-2 fill-label separated-label" name="attr_willpower_d8" type="radio" value="2" data-i18n-title="2 willpower d8" title="2 willpower d8s">
+                    <input class="fill-3 fill-label separated-label" name="attr_willpower_d8" type="radio" value="3" data-i18n-title="3 willpower d8" title="3 willpower d8s">
+                    <input class="fill-4 fill-label separated-label" name="attr_willpower_d8" type="radio" value="4" data-i18n-title="4 willpower d8" title="4 willpower d8s">
+                    <input class="fill-5 fill-label separated-label" name="attr_willpower_d8" type="radio" value="5" data-i18n-title="5 willpower d8" title="5 willpower d8s">
+                    <input class="fill-6 fill-label separated-label" name="attr_willpower_d8" type="radio" value="6" data-i18n-title="6 willpower d8" title="6 willpower d8s">
+                    <input class="fill-7 fill-label separated-label" name="attr_willpower_d8" type="radio" value="7" data-i18n-title="7 willpower d8" title="7 willpower d8s">
+                    <input class="fill-8 fill-label separated-label" name="attr_willpower_d8" type="radio" value="8" data-i18n-title="8 willpower d8" title="8 willpower d8s">
+                    <input class="fill-9 fill-label separated-label" name="attr_willpower_d8" type="radio" value="9" data-i18n-title="9 willpower d8" title="9 willpower d8s">
+                    <input class="fill-10 fill-label separated-label" name="attr_willpower_d8" type="radio" value="10" data-i18n-title="10 willpower d8" title="10 willpower d8s">
+                    <input class="fill-11 fill-label separated-label" name="attr_willpower_d8" type="radio" value="11" data-i18n-title="11 willpower d8" title="11 willpower d8s">
+                    <input class="fill-12 fill-label separated-label" name="attr_willpower_d8" type="radio" value="12" data-i18n-title="12 willpower d8" title="12 willpower d8s">
+                </div>
+                <h5 data-i18n="d10">d10s</h5>
+                <div class="fillTrack">
+                    <input name="attr_willpower_d10" type="hidden" value="1" title="@{willpower_d10}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_willpower_d10" type="radio" value="0" data-i18n-title="0 willpower d10" checked="" title="clear all willpower d10s">
+                    <input class="fill-1 fill-label separated-label" name="attr_willpower_d10" type="radio" value="1" data-i18n-title="1 willpower d10" title="1 willpower d10">
+                    <input class="fill-2 fill-label separated-label" name="attr_willpower_d10" type="radio" value="2" data-i18n-title="2 willpower d10" title="2 willpower d10s">
+                    <input class="fill-3 fill-label separated-label" name="attr_willpower_d10" type="radio" value="3" data-i18n-title="3 willpower d10" title="3 willpower d10s">
+                    <input class="fill-4 fill-label separated-label" name="attr_willpower_d10" type="radio" value="4" data-i18n-title="4 willpower d10" title="4 willpower d10s">
+                    <input class="fill-5 fill-label separated-label" name="attr_willpower_d10" type="radio" value="5" data-i18n-title="5 willpower d10" title="5 willpower d10s">
+                    <input class="fill-6 fill-label separated-label" name="attr_willpower_d10" type="radio" value="6" data-i18n-title="6 willpower d10" title="6 willpower d10s">
+                </div>
+                <h5 data-i18n="d12">d12s</h5>
+                <div class="fillTrack">
+                    <input name="attr_willpower_d12" type="hidden" value="0" title="@{willpower_d12}">
+                    <input class="fill-0 fill-label separated-label clearer" name="attr_willpower_d12" type="radio" value="0" data-i18n-title="0 willpower d12" checked="" title="clear all willpower d12s">
+                    <input class="fill-1 fill-label separated-label" name="attr_willpower_d12" type="radio" value="1" data-i18n-title="1 willpower d12" title="1 willpower d12">
+                    <input class="fill-2 fill-label separated-label" name="attr_willpower_d12" type="radio" value="2" data-i18n-title="2 willpower d12" title="2 willpower d12s">
+                    <input class="fill-3 fill-label separated-label" name="attr_willpower_d12" type="radio" value="3" data-i18n-title="3 willpower d12" title="3 willpower d12s">
+                </div>
+            </div>
+        </section>
+        <section class="main">
+            <div class="player_data ">
+                <div class="Experience boxData">
+                    <label class="input-label thick-right thick-bottom boxed" id="experience">
+                        <input class="number h5" name="attr_experience" type="text" title="@{experience}"><span class="h5" data-i18n="experience">experience</span>
+                    </label>
+                </div>
+                <div class="market boxData">
+                    <div class="boxed" id="purchase_guide">
+                        <h5 data-i18n="100 exp cost">100 exp = +1d8s</h5>
+                        <h5 data-i18n="200 exp cost">200 exp = +1d10s</h5>
+                        <h5 data-i18n="500 exp cost">500 exp = +1d12s</h5>
+                    </div>
+                </div>
+                <div class="player_name boxData">
+                    <label class="input-label thick-left thick-bottom boxed" id="player_name">
+                        <input class="h5" name="attr_player_name" type="text" title="@{player_name}"><span class="h5" data-i18n="player name">player name</span>
+                    </label>
+                </div>
+            </div>
+            <div class="charactere_stats">
+                <div class="reverence">
+                    <section class="active-section sticky-sub" id="reverence">
+                        <h4 data-i18n="reverence">reverence</h4>
+                        <div class="fillTrack">
+                            <input name="attr_reverence" type="hidden" value="4" title="@{reverence}">
+                            <input class="fill-0 fill-label separated-label clearer" name="attr_reverence" type="radio" value="0" data-i18n-title="0 reverence" checked="" title="clear all reverence">
+                            <input class="fill-1 fill-label separated-label" name="attr_reverence" type="radio" value="1" data-i18n-title="1 reverence" title="1 reverence">
+                            <input class="fill-2 fill-label separated-label" name="attr_reverence" type="radio" value="2" data-i18n-title="2 reverence" title="2 reverence">
+                            <input class="fill-3 fill-label separated-label" name="attr_reverence" type="radio" value="3" data-i18n-title="3 reverence" title="3 reverence">
+                            <input class="fill-4 fill-label separated-label" name="attr_reverence" type="radio" value="4" data-i18n-title="4 reverence" title="4 reverence">
+                            <input class="fill-5 fill-label separated-label" name="attr_reverence" type="radio" value="5" data-i18n-title="5 reverence" title="5 reverence">
+                            <input class="fill-6 fill-label separated-label" name="attr_reverence" type="radio" value="6" data-i18n-title="6 reverence" title="6 reverence">
+                            <input class="fill-7 fill-label separated-label" name="attr_reverence" type="radio" value="7" data-i18n-title="7 reverence" title="7 reverence">
+                        </div><span class="help" data-i18n="reverence help">spend 2 to reroll an attribute check spend 4 to draw a drama card spend sl+3 to gain +1 merit point spend 6 for +7 max hp</span>
+                    </section>
+                </div>
+                <div class="stats"></div>
+                <div class="exertion">
+                    <section class="active-section sticky-sub" id="exertion">
+                        <h4 class="header" data-i18n="exertion">exertion</h4>
+                        <div class="fillTrack">
+                            <input name="attr_exertion" type="hidden" value="0" title="@{exertion}">
+                            <input class="fill-0 fill-label separated-label clearer" name="attr_exertion" type="radio" value="0" data-i18n-title="0 exertion" checked="" title="clear all exertion">
+                            <input class="fill-1 fill-label separated-label" name="attr_exertion" type="radio" value="1" data-i18n-title="1 exertion" title="1 exertion">
+                            <input class="fill-2 fill-label separated-label" name="attr_exertion" type="radio" value="2" data-i18n-title="2 exertion" title="2 exertion">
+                            <input class="fill-3 fill-label separated-label" name="attr_exertion" type="radio" value="3" data-i18n-title="3 exertion" title="3 exertion">
+                            <input class="fill-4 fill-label separated-label" name="attr_exertion" type="radio" value="4" data-i18n-title="4 exertion" title="4 exertion">
+                            <input class="fill-5 fill-label separated-label" name="attr_exertion" type="radio" value="5" data-i18n-title="5 exertion" title="5 exertion">
+                            <input class="fill-6 fill-label separated-label" name="attr_exertion" type="radio" value="6" data-i18n-title="6 exertion" title="6 exertion">
+                            <input class="fill-7 fill-label separated-label" name="attr_exertion" type="radio" value="7" data-i18n-title="7 exertion" title="7 exertion">
+                        </div>
+                        <div class="fillTrack">
+                            <input name="attr_exertion_max" type="hidden" value="2" title="@{exertion|max}">
+                            <input class="fill-1 hidden" name="attr_exertion_max" type="radio" value="1" title="@{exertion|max}"><span class="fill-1 fill-label separated-span" data-i18n-title="1 exertion max" title="[1 exertion max]"></span>
+                            <input class="fill-2 hidden" name="attr_exertion_max" type="radio" value="2" title="@{exertion|max}"><span class="fill-2 fill-label separated-span" data-i18n-title="2 exertion max" title="[2 exertion max]"></span>
+                            <input class="fill-3 hidden" name="attr_exertion_max" type="radio" value="3" title="@{exertion|max}"><span class="fill-3 fill-label separated-span" data-i18n-title="3 exertion max" title="[3 exertion max]"></span>
+                            <input class="fill-4 hidden" name="attr_exertion_max" type="radio" value="4" title="@{exertion|max}"><span class="fill-4 fill-label separated-span" data-i18n-title="4 exertion max" title="[4 exertion max]"></span>
+                            <input class="fill-5 hidden" name="attr_exertion_max" type="radio" value="5" title="@{exertion|max}"><span class="fill-5 fill-label separated-span" data-i18n-title="5 exertion max" title="[5 exertion max]"></span>
+                            <input class="fill-6 hidden" name="attr_exertion_max" type="radio" value="6" title="@{exertion|max}"><span class="fill-6 fill-label separated-span" data-i18n-title="6 exertion max" title="[6 exertion max]"></span>
+                            <input class="fill-7 hidden" name="attr_exertion_max" type="radio" value="7" title="@{exertion|max}"><span class="fill-7 fill-label separated-span" data-i18n-title="7 exertion max" title="[7 exertion max]"></span>
+                        </div><span class="help" data-i18n="exertion help">spend to add +1 and 1d12 to any strength, dexterity, health, or willpower roll.</span>
+                    </section>
+                </div>
+            </div>
+            <div class="charactere_data">
+                <div class="character_name"></div>
+                <div class="alias"></div>
+                <div class="gender"></div>
+                <div class="weigth"></div>
+                <div class="height"></div>
+                <div class="age"></div>
+                <div class="hair"></div>
+                <div class="eyes"></div>
+                <div class="appearance"></div>
+                <div class="body_type"></div>
+                <div class="reasoning"></div>
+
+            </div>
+        </section>
+
+    </section>
+</form>
+

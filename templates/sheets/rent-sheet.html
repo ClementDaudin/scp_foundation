@@ -1,0 +1,25 @@
+<form class="flexcol {{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" widht="128"/>
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{item.name}}" placeholder="Name">
+            </h1>
+        </div>
+    </header>
+
+    <section class="sheet-body">
+        <label>Description </label>
+        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
+        <div class="attributeValues">
+            <label>Rent
+                <input name="system.rent" type="text" value="{{systemData.rent}}" placeholder="Rent">
+            </label>
+            <label>Price
+                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
+            </label>
+        </div>
+    </section>
+
+</form>
+

@@ -1,19 +1,16 @@
-
-.sheet-rolltemplate-scp{
-
-}
 .sheet {
     min-height: 300px;
     height: 400px;
     min-width: 1000px;
     width: 1000px    ;
+    overflow: scroll;
 }
-.level-2, .sheet-level-2 {
+.level-2 {
     --backColor: #42ef24;
     --selectColor: var(--backColor);
     --selectShadow: none;
 }
-.level-3, .sheet-level-3 {
+.level-3 {
     --backColor: #ef6024;
     --selectColor: var(--backColor);
     --selectShadow: none;
@@ -131,19 +128,26 @@ form {
 
 #summary > .strength {
     grid-area: strength;
-}#summary > .health {
+}
+#summary > .health {
      grid-area: health;
- }#summary > .perception {
+ }
+#summary > .perception {
       grid-area: perception;
-  }#summary > .dexterity {
+  }
+#summary > .dexterity {
        grid-area: dexterity;
-   }#summary > .fate {
+   }
+#summary > .fate {
         grid-area: fate;
-    }#summary > .charisma {
+    }
+#summary > .charisma {
          grid-area: charisma;
-     }#summary > .intelligence {
+     }
+#summary > .intelligence {
           grid-area: intelligence;
-      }#summary > .willpower {
+      }
+#summary > .willpower {
            grid-area: willpower;
        }
 #summary > .ability-summary > .die-num {
@@ -156,15 +160,15 @@ form {
 
 #attributes {
     float: left; /* Utilisez float pour positionner la colonne à gauche */
-    --fillTrackRadioHeight: 2.5rem;
     --track-gap: 0;
     --fillItemFlex: 1 1 0;
+    margin-right: 10px;
 }
 
 #attributes > .ability_score {
     position: relative;
     display: grid;
-    grid-template-columns: 4rem 13rem;
+    grid-template-columns: 3rem 10rem;
     grid-template-rows: repeat(4, auto);
     grid-template-areas:
         "header header "
@@ -274,13 +278,13 @@ input[type="radio"] {
     display: grid;
 }
 .main .player_data{
-    display:inline-block;
+    display:flex;
+    justify-content: space-between;
 }
+
 .main .charactere_stats{
-    display: inline-block;
-}
-.main .charactere_data{
-    display: inline-block;
+    display:flex;
+    justify-content: space-between;
 }
 .main .boxData{
     display: inline-block;
@@ -354,12 +358,9 @@ input.h5 {
     width: 110px;
 }
 
-.reverence{
-    display: inline-block;
-}
-
 #reverence {
     display: inline-grid;
+    width: 11rem;
     grid-template-columns: auto;
     grid-template-rows: 2rem 2rem 1fr;
     grid-row-gap: var(--half-gap);
@@ -375,11 +376,66 @@ input.h5 {
 .stats{
     display: inline-block;
 }
+
+#reverence .help {
+    background-color: grey;
+}
+
+.main .help {
+    grid-area: help;
+    white-space: pre-wrap;
+    font-size: 0.5rem;
+}
+
+.main #defenses {
+    grid-area: defenses;
+}
+#defenses {
+    display: grid;
+    grid: repeat(2, auto)/repeat(3, 1fr);
+    grid-template-areas:
+        "hp hp_max damage_reduction";
+    align-items: start;
+}
+
+.main .input-label.stacked, .sheet-rolltemplate-scp .input-label.stacked {
+    grid-template-columns: auto;
+    grid-template-areas:
+        "over"
+        "under";
+}
+#defenses .hp {
+    grid-area: hp;
+}
+
+.main .charactere_character {
+    display: flex;
+}
+
+.underlined, .sheet-rolltemplate-scp .underlined {
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid black;
+    transition: var(--focusTrans);
+}
+
+.fillTrack .separated-label:checked, #main .fillTrack .separated-span:checked {
+    display: none;
+}
+#reverence > .fillTrack {
+    place-self: center;
+}
+
+.main .fillTrack .separated-span {
+    width: var(--fillTrackSpanWidth);
+    height: var(--fillTrackSpanHeight);
+}
+
 .exertion{
     display: inline-block;
 }
 #exertion {
     display: inline-grid;
+    width: 11rem;
     grid-template-rows: 2rem 1rem 0.25rem 1fr;
     grid-row-gap: 5px;
     grid-template-areas:
@@ -391,4 +447,32 @@ input.h5 {
     background-color: teal;
     background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, #ca6866, white, #ca6866);
     --fillTrackRadioHeight: 1rem;
+}
+
+#exertion .help {
+    background-color: grey;
+}
+#exertion > .fillTrack {
+    place-self: center;
+}
+.exertionMax > .unused{
+    background-color: white;
+}
+
+.character_row_first, .character_row_other{
+    display: flex;
+    justify-content: space-between;
+}
+
+.character_row_first label, .character_row_other label{
+    width: 100%;
+}
+
+.character_row_first div{
+    width: 49%;
+}
+
+
+.character_row_other > div{
+    width: 32%;
 }

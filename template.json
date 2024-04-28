@@ -17,8 +17,18 @@
       "reasoning": "scientific",
       "equipement": [],
       "experience":0,
+      "exertion": {
+        "max": 1,
+        "actual": 1
+      },
+      "reverence": 0,
       "attributes": {
-        "strenght": {
+        "stock": {
+          "d8": 1,
+          "d10": 0,
+          "d12": 0
+        },
+        "strength": {
           "d8": 1,
           "d10": 0,
           "d12": 0
@@ -63,6 +73,10 @@
         "value": 10,
         "max": 10
       },
+      "damage_reduction": 0,
+      "reaction_defense": 0,
+      "move_speed": 0,
+      "cognitive_resistence": 0,
       "perks": {
         "categorie1": {
           "fight": {
@@ -88,8 +102,7 @@
           }
         }
       }
-    },
-    "test": {}
+    }
   },
   "Item": {
     "types": ["arme", "attachment", "rent", "other"],

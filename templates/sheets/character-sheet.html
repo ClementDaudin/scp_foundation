@@ -1,7 +1,7 @@
 <form class="flexcol {{cssClass}} sheet-rolltemplate-scp" autocomplete="off">
     <header class="sheet-header">
         <div class="header-fields">
-            <div id="summary" class="level-3"><span class="character_name h4 " name="attr_character_name" title="@{character_name}">{{actor.name}}</span><span class="alias h5" name="attr_alias" title="@{alias}">{{systemData.alias}}</span>
+            <div id="summary" class="level-{{systemData.security_level}}"><span class="character_name h4 " name="attr_character_name" title="@{character_name}">{{actor.name}}</span><span class="alias h5" name="attr_alias" title="@{alias}">{{systemData.alias}}</span>
                 <div class="ability-summary strength">
                     <h4 data-i18n="str" class="perks">STR</h4><span class="die-num" name="attr_strength_d8" title="@{strength_d8}">{{systemData.attributes.strength.d8}}</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_strength_d10" title="@{strength_d10}">{{systemData.attributes.strength.d10}}</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_strength_d12" title="@{strength_d12}">{{systemData.attributes.strength.d12}}</span><span class="die-size" data-i18n="d12">d12s</span>
                 </div>
@@ -31,10 +31,10 @@
     </header>
 
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
+    <section class="sheet-body level-{{systemData.security_level}}">
         <section class="" id="attributes">
             <div class="available-dice">
-                <h4 data-i18n="available dice">available dice</h4>
+                <h4 data-i18n="available dice">Dés Disponibles</h4>
                 <input name="attr_available_d8" type="hidden" value="0" title="@{available_d8}">
                 <input name="attr_purchased_d8" type="hidden" value="22" title="@{purchased_d8}">
                 <input name="attr_total_d8" type="hidden" value="22" title="@{total_d8}">
@@ -55,7 +55,7 @@
                 <label class="strength attribute roll-label" title="%{strength}">
                     <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                     </div>
-                    <button class="h3 roller" data-i18n="strength" name="act_strength" type="action" title="%{strength}">strength</button>
+                    <button class="h3 roller" data-i18n="strength" name="act_strength" type="action" title="%{strength}">force</button>
                 </label>
                 <h5 data-i18n="d8">d8s</h5>
                 <div class="fillTrack d8">
@@ -98,7 +98,7 @@
                 <label class="health attribute roll-label" title="%{health}">
                     <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                     </div>
-                    <button class="h3 roller" data-i18n="health" name="act_health" type="action" title="%{health}">health</button>
+                    <button class="h3 roller" data-i18n="health" name="act_health" type="action" title="%{health}">santé</button>
                 </label>
                 <h5 data-i18n="d8">d8s</h5>
                 <div class="fillTrack d8">
@@ -184,7 +184,7 @@
                 <label class="dexterity attribute roll-label" title="%{dexterity}">
                     <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                     </div>
-                    <button class="h3 roller" data-i18n="dexterity" name="act_dexterity" type="action" title="%{dexterity}">dexterity</button>
+                    <button class="h3 roller" data-i18n="dexterity" name="act_dexterity" type="action" title="%{dexterity}">dexterité</button>
                 </label>
                 <h5 data-i18n="d8">d8s</h5>
                 <div class="fillTrack">
@@ -227,7 +227,7 @@
                 <label class="fate attribute roll-label" title="%{fate}">
                     <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                     </div>
-                    <button class="h3 roller" data-i18n="fate" name="act_fate" type="action" title="%{fate}">fate</button>
+                    <button class="h3 roller" data-i18n="fate" name="act_fate" type="action" title="%{fate}">Destin</button>
                 </label>
                 <h5 data-i18n="d8">d8s</h5>
                 <div class="fillTrack d8">
@@ -270,7 +270,7 @@
                 <label class="charisma attribute roll-label" title="%{charisma}">
                     <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                     </div>
-                    <button class="h3 roller" data-i18n="charisma" name="act_charisma" type="action" title="%{charisma}">charisma</button>
+                    <button class="h3 roller" data-i18n="charisma" name="act_charisma" type="action" title="%{charisma}">charisme</button>
                 </label>
                 <h5 data-i18n="d8">d8s</h5>
                 <div class="fillTrack d8">
@@ -356,7 +356,7 @@
                 <label class="willpower attribute roll-label" title="%{willpower}">
                     <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                     </div>
-                    <button class="h3 roller" data-i18n="willpower" name="act_willpower" type="action" title="%{willpower}">willpower</button>
+                    <button class="h3 roller" data-i18n="willpower" name="act_willpower" type="action" title="%{willpower}">Volonté</button>
                 </label>
                 <h5 data-i18n="d8">d8s</h5>
                 <div class="fillTrack d8">
@@ -412,7 +412,7 @@
                 </div>
                 <div class="player_name boxData">
                     <label class="input-label thick-left thick-bottom boxed" id="player_name">
-                        <input class="h5" name="attr_player_name" type="text" title="@{player_name}" value="{{systemData.player}}"><span class="h5" data-i18n="player name">player name</span>
+                        <input class="h5" name="attr_player_name" type="text" title="@{player_name}" value="{{systemData.player}}"><span class="h5" data-i18n="player name">Nom du joueur</span>
                     </label>
                 </div>
             </div>
@@ -439,19 +439,19 @@
                             <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}" title="@{hp}"><span data-i18n="hp">hp</span>
                         </label>
                         <label class="input-label hp_max stacked">
-                            <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}" title="@{hp|max}"><span data-i18n="max hp">max hp</span>
+                            <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}" title="@{hp|max}"><span data-i18n="max hp">hp max</span>
                         </label>
                         <label class="input-label damage_reduction stacked">
-                            <input class="number h5 underlined" name="system.damage_reduction" type="text" value="{{systemData.damage_reduction}}" title="@{damage_reduction}"><span data-i18n="damage reduction">damage reduction</span>
+                            <input class="number h5 underlined" name="system.damage_reduction" type="text" value="{{systemData.damage_reduction}}" title="@{damage_reduction}"><span data-i18n="damage reduction">reduction de dégât</span>
                         </label>
                         <label class="input-label reaction_defense stacked">
-                            <input class="number h5 underlined" name="system.reaction_defense" type="text" readonly="" value="{{systemData.reaction_defense}}" title="@{reaction_defense}"><span data-i18n="reaction defense">reaction defense</span>
+                            <input class="number h5 underlined" name="system.reaction_defense" type="text" readonly="" value="{{systemData.reaction_defense}}" title="@{reaction_defense}"><span data-i18n="reaction defense">réaction de défense</span>
                         </label>
                         <label class="input-label move_speed stacked">
-                            <input class="number h5 underlined" name="system.move_speed" type="text" readonly="" value="{{systemData.move_speed}}" title="@{move_speed}"><span data-i18n="move speed">move speed</span>
+                            <input class="number h5 underlined" name="system.move_speed" type="text" readonly="" value="{{systemData.move_speed}}" title="@{move_speed}"><span data-i18n="move speed">vitesse de déplacement</span>
                         </label>
                         <label class="input-label cognitive_resistance stacked">
-                            <input class="number h5 underlined" name="system.cognitive_resistance" type="text" readonly="" value="{{systemData.cognitive_resistance}}" title="@{cognitive_resistance}"><span data-i18n="cognitive resistance">cognitive resistance</span>
+                            <input class="number h5 underlined" name="system.cognitive_resistance" type="text" readonly="" value="{{systemData.cognitive_resistance}}" title="@{cognitive_resistance}"><span data-i18n="cognitive resistance">résistance cognitive</span>
                         </label>
                     </section>
                 </div>
@@ -460,14 +460,14 @@
                         <h4 class="header" data-i18n="exertion">exertion</h4>
                         <div class="fillTrack">
                             <input name="attr_exertion" type="hidden" value="0" title="@{exertion}">
-                            <input class="fill-0 fill-label separated-label clearer exertion" name="attr_exertion" type="radio" value="0" data-i18n-title="0 exertion" checked="" title="clear all exertion">
-                            <input class="fill-1 fill-label separated-label exertion" name="attr_exertion" type="radio" value="1" data-i18n-title="1 exertion" title="1 exertion">
-                            <input class="fill-2 fill-label separated-label exertion" name="attr_exertion" type="radio" value="2" data-i18n-title="2 exertion" title="2 exertion">
-                            <input class="fill-3 fill-label separated-label exertion" name="attr_exertion" type="radio" value="3" data-i18n-title="3 exertion" title="3 exertion">
-                            <input class="fill-4 fill-label separated-label exertion" name="attr_exertion" type="radio" value="4" data-i18n-title="4 exertion" title="4 exertion">
-                            <input class="fill-5 fill-label separated-label exertion" name="attr_exertion" type="radio" value="5" data-i18n-title="5 exertion" title="5 exertion">
-                            <input class="fill-6 fill-label separated-label exertion" name="attr_exertion" type="radio" value="6" data-i18n-title="6 exertion" title="6 exertion">
-                            <input class="fill-7 fill-label separated-label exertion" name="attr_exertion" type="radio" value="7" data-i18n-title="7 exertion" title="7 exertion">
+                            <input class="fill-0 fill-label separated-label clearer exertionTile" name="attr_exertion" type="radio" value="0" data-i18n-title="0 exertion" checked="" title="clear all exertion">
+                            <input class="fill-1 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="1" data-i18n-title="1 exertion" title="1 exertion">
+                            <input class="fill-2 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="2" data-i18n-title="2 exertion" title="2 exertion">
+                            <input class="fill-3 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="3" data-i18n-title="3 exertion" title="3 exertion">
+                            <input class="fill-4 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="4" data-i18n-title="4 exertion" title="4 exertion">
+                            <input class="fill-5 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="5" data-i18n-title="5 exertion" title="5 exertion">
+                            <input class="fill-6 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="6" data-i18n-title="6 exertion" title="6 exertion">
+                            <input class="fill-7 fill-label separated-label exertionTile" name="attr_exertion" type="radio" value="7" data-i18n-title="7 exertion" title="7 exertion">
                         </div>
                         <div class="fillTrack">
                             <input name="attr_exertion_max" type="hidden" value="2" title="@{exertion|max}">
@@ -486,7 +486,7 @@
                 <div class="character_row_first">
                     <div class="character_name">
                         <label class="input-label underline-label over stacked character_name">
-                            <span class="h5" data-i18n="character name">character name</span>
+                            <span class="h5" data-i18n="character name">Nom de personnage</span>
                             <input class="underlined" name="name" type="text" title="@{character_name}" value="{{actor.name}}" placeholder="Name">
                         </label>
                     </div>
@@ -500,37 +500,150 @@
                 <div class="character_row_other">
                     <div class="gender">
                         <label class="input-label gender">
-                            <span class="h5" data-i18n="gender">gender</span>
+                            <span class="h5" data-i18n="gender">Genre</span>
                             <input class="underlined" name="system.gender" type="text" title="@{gender}" value="{{systemData.gender}}" placeholder="Gender">
                         </label>
                     </div>
                     <div class="weight">
                         <label class="input-label weight">
-                            <span class="h5" data-i18n="weight">weigth</span>
+                            <span class="h5" data-i18n="weight">Poids</span>
                             <input class="underlined" name="system.weight" type="text" title="@{weight}" value="{{systemData.weight}}">
                         </label>
                     </div>
                     <div class="height">
                         <label class="input-label height">
-                            <span class="h5" data-i18n="height">height</span>
+                            <span class="h5" data-i18n="height">Taille</span>
                             <input class="underlined" name="system.height" type="text" title="@{height}" value="{{systemData.height}}">
 
                         </label>
                     </div>
                 </div>
                 <div class="character_row_other">
-                    <div class="age"></div>
-                    <div class="hair"></div>
-                    <div class="eyes"></div>
+                    <div class="age">
+                        <label class="input-label age">
+                            <span class="h5" data-i18n="age">Âge</span>
+                            <input class="underlined" name="system.age" type="text" title="@{age}" value="{{systemData.age}}" placeholder="âge">
+                        </label>
+                    </div>
+                    <div class="hair">
+                        <label class="input-label hair">
+                            <span class="h5" data-i18n="hair">Cheveux</span>
+                            <input class="underlined" name="system.hair" type="text" title="@{hair}" value="{{systemData.hair}}" placeholder="Cheveux">
+                        </label>
+                    </div>
+                    <div class="eyes">
+                        <label class="input-label eyes">
+                            <span class="h5" data-i18n="eyes">Yeux</span>
+                            <input class="underlined" name="system.eyes" type="text" title="@{eyes}" value="{{systemData.eyes}}" placeholder="Yeux">
+                        </label>
+                    </div>
                 </div>
 
                 <div class="character_row_other">
-                    <div class="appearance"></div>
-                    <div class="body_type"></div>
-                    <div class="reasoning"></div>
+                    <div class="appearance">
+                        <label class="input-label appearance">
+                            <select name="system.appearance" title="@{appearance}" id="appearance">
+                                <option value="beau" data-i18n="beau">beau</option>
+                                <option value="attractif" data-i18n="attractif">attractif</option>
+                                <option value="moyenne" data-i18n="moyenne" >moyenne</option>
+                                <option value="étrange" data-i18n="étrange">étrange</option>
+                                <option value="effrayant" data-i18n="effrayant">effrayant</option>
+                            </select><span class="h5" data-i18n="appearance">apparance</span>
+                        </label>
+                    </div>
+                    <div class="body_type">
+                        <label class="input-label body_type">
+                            <select name="system.body_type" title="@{body_type}" id="body_type">
+                                <option value="petit" data-i18n="petit">petit</option>
+                                <option value="mince" data-i18n="mince">mince</option>
+                                <option value="moyenne" data-i18n="moyenne">moyenne</option>
+                                <option value="lourd" data-i18n="lourd">lourd</option>
+                                <option value="animal" data-i18n="animal">animal</option>
+                            </select><span class="h5" data-i18n="body type">Type de corp</span>
+                        </label>
+                    </div>
+                    <div class="reasoning">
+                        <label class="input-label reasoning">
+                            <select name="system.reasoning" title="@{reasoning}" id="reasoning">
+                                <option value="naive" data-i18n="naive">naif</option>
+                                <option value="skeptical" data-i18n="skeptical">sceptique</option>
+                                <option value="scientific" data-i18n="scientific" selected="">scientifique</option>
+                                <option value="open-minded" data-i18n="open-minded">ouvert d'esprit</option>
+                                <option value="nuts" data-i18n="nuts">fou</option>
+                            </select>
+                            <span class="h5" data-i18n="reasoning">raisonnement</span>
+                        </label>
+                    </div>
                 </div>
+                <div class="character_row_personnel">
+                    <div class="personnel_class">
+                        <h5>Classe du Personnel</h5>
+                        <div class="personnel_button">
+                            <label>
+                                <input type="radio" name="button" value="A">
+                                <span class="personnel-label personnel-a" >A</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="button" value="B">
+                                <span class="personnel-label personnel-b">B</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="button" value="C">
+                                <span class="personnel-label personnel-c">C</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="button" value="D">
+                                <span class="personnel-label personnel-d">D</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="button" value="E">
+                                <span class="personnel-label personnel-e">E</span>
+                            </label>
+                        </div>
+                    </div>
 
-
+                    <div class="credit">
+                        <label class="input-label thick-left thick-bottom thick-right thick-top boxed" id="credits">
+                            <input class="number number" name="attr_credits" type="text" title="@{credits}"><span data-i18n="credits">credits</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="character_row_personnel">
+                    <div id="security_level">
+                        <div class="head">
+                            <h1 class="header" data-i18n="scp">scp</h1>
+                            <h5 class="sub-header" data-i18n="secure contain protect">secure. contain. protect.</h5>
+                            <div class="transparent-logo"></div>
+                            <label class="input-label stacked over security_level">
+                                <input class="number ratio1-1 boxed thick-left thick-bottom thick-right thick-top" name="system.security_level" type="text" id="security-input" title="@{security_level}" value="{{systemData.security_level}}"><span class="h5" data-i18n="security level">security level</span>
+                            </label>
+                        </div>
+                        <div class="qr-code"></div>
+                        <div class="merit">
+                            <h5 data-i18n="merit count">merit count</h5>
+                            <div class="fillTrack">
+                                <input name="attr_merit" type="hidden" value="2" title="@{merit}">
+                                <input class="fill-0 fill-label separated-label clearer" name="attr_merit" type="radio" value="0" data-i18n-title="0 merit" checked="" title="clear all merit">
+                                <input class="fill-1 fill-label separated-label" name="attr_merit" type="radio" value="1" data-i18n-title="1 merit" title="1 merit">
+                                <input class="fill-2 fill-label separated-label" name="attr_merit" type="radio" value="2" data-i18n-title="2 merit" title="2 merit">
+                                <input class="fill-3 fill-label separated-label" name="attr_merit" type="radio" value="3" data-i18n-title="3 merit" title="3 merit">
+                                <input class="fill-4 fill-label separated-label" name="attr_merit" type="radio" value="4" data-i18n-title="4 merit" title="4 merit">
+                                <input class="fill-5 fill-label separated-label" name="attr_merit" type="radio" value="5" data-i18n-title="5 merit" title="5 merit">
+                                <input class="fill-6 fill-label separated-label" name="attr_merit" type="radio" value="6" data-i18n-title="6 merit" title="6 merit">
+                                <input class="fill-7 fill-label separated-label" name="attr_merit" type="radio" value="7" data-i18n-title="7 merit" title="7 merit">
+                                <input class="fill-8 fill-label separated-label" name="attr_merit" type="radio" value="8" data-i18n-title="8 merit" title="8 merit">
+                                <input class="fill-9 fill-label separated-label" name="attr_merit" type="radio" value="9" data-i18n-title="9 merit" title="9 merit">
+                                <input class="fill-10 fill-label separated-label" name="attr_merit" type="radio" value="10" data-i18n-title="10 merit" title="10 merit">
+                            </div>
+                        </div>
+                        <div class="id">
+                            <div class="black-logo">
+                                <div class="black-diamond"></div>
+                                <div class="logo"></div>
+                            </div><span name="attr_operative_id" title="@{operative_id}">-N9lEsYpatOkyDUHqOUJ</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

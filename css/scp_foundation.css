@@ -5,8 +5,13 @@
     width: 1000px    ;
     overflow: scroll;
 }
-.level-2 {
-    --backColor: #42ef24;
+.level-1 {
+    --backColor: #6abd47;
+    --selectColor: var(--backColor);
+    --selectShadow: none;
+}
+.level-2{
+    --backColor: #4f72b7;
     --selectColor: var(--backColor);
     --selectShadow: none;
 }
@@ -14,6 +19,21 @@
     --backColor: #ef6024;
     --selectColor: var(--backColor);
     --selectShadow: none;
+}
+.level-4 {
+    --backColor: #ed2025;
+    --selectColor: var(--backColor);
+    --selectShadow: none;
+}
+.level-5 {
+    --backColor: #7d52a1;
+    --selectColor: var(--backColor);
+    --selectShadow: none;
+}
+.level-6 {
+    --backColor: #000000;
+    --borderColor: white;
+    --fontColor: #ededed;
 }
 .sheet-body select, .sheet-body textarea, .sheet-body input, .sheet-body .uneditable-input, .sheet-body label, .sheet-body button, .sheet-rolltemplate-scp select, .sheet-rolltemplate-scp textarea, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
     all: unset;
@@ -94,6 +114,7 @@ form {
     border-width: 2px 5px;
     border-style: solid;
     border-color: black;
+    color: var(--fontColor);
     filter: drop-shadow(0px -10px white);
     padding: 5px;
     display: grid;
@@ -303,11 +324,17 @@ input[type="radio"] {
     display: block;
     white-space: nowrap;
 }
-.main .boxed.thick-right, .sheet-rolltemplate-scp .boxed.thick-right {
+.main .boxed.thick-right{
     border-right-width: 5px;
 }
-.main .boxed.thick-bottom, .sheet-rolltemplate-scp .boxed.thick-bottom {
+.main .boxed.thick-bottom{
     border-bottom-width: 5px;
+}
+.main .boxed.thick-left{
+    border-left-width: 5px;
+}
+.main .boxed.thick-top{
+    border-top-width: 5px;
 }
 .main .boxed, .sheet-rolltemplate-scp .boxed {
     border: 1px solid black;
@@ -360,7 +387,7 @@ input.h5 {
 
 #reverence {
     display: inline-grid;
-    width: 11rem;
+    width: 10rem;
     grid-template-columns: auto;
     grid-template-rows: 2rem 2rem 1fr;
     grid-row-gap: var(--half-gap);
@@ -435,7 +462,7 @@ input.h5 {
 }
 #exertion {
     display: inline-grid;
-    width: 11rem;
+    width: 10rem;
     grid-template-rows: 2rem 1rem 0.25rem 1fr;
     grid-row-gap: 5px;
     grid-template-areas:
@@ -475,4 +502,223 @@ input.h5 {
 
 .character_row_other > div{
     width: 32%;
+}
+
+.personnel_button{
+    display: flex;
+    place-self: start center;
+}
+
+.character_row_personnel{
+    display: flex;
+    justify-content: space-between;
+    height: 3em;
+}
+
+
+
+.personnel-label {
+    border: 1px;
+    display: block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    border-style: solid;
+    font-size: small;
+}
+
+input[type="radio"]:checked + .personnel-label {
+    background-color: black;
+    color: white;
+}
+.personnel_class{
+    display: grid;
+    text-align: center;
+    grid-auto-rows: max-content;
+    width: 50%;
+}
+.credit{
+    width: auto;
+    height: auto;
+}
+#credits{
+    height: auto;
+}
+.personnel_button label{
+    margin: 0 0.5em
+}
+
+#security_level {
+    place-self: start center;
+    display: grid;
+    grid-template-columns: 6rem auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "head head"
+        "qr-code merit"
+        "qr-code id";
+    border-radius: 10px;
+    border-width: 2px 3px 3px 2px;
+    border: solid black;
+    overflow: hidden;
+}
+
+#security_level > .head {
+    --scpSize: 5rem;
+    background-color: var(--backColor);
+    transition: var(--focusTrans);
+    grid-area: head;
+    display: grid;
+    grid-template-columns: 10rem 5rem 1fr;
+    grid-template-rows: calc(var(--scpSize) - 1rem) 2rem;
+    grid-template-areas:
+        "header logo level"
+        "sub . level";
+    border-bottom: 2px solid var(--borderColor);
+}
+#security_level > .head > .header {
+    grid-area: header;
+    font-size: var(--scpSize);
+    text-transform: uppercase;
+    place-self: start center;
+    line-height: calc(var(--scpSize) - 1rem);
+}
+#security_level > .head .sub-header {
+    font-family: Baumans;
+    grid-area: sub;
+    font-size: calc(var(--scpSize) * 0.16);
+}
+#security_level > .head .transparent-logo {
+    grid-area: logo;
+    width: 100%;
+}
+.transparent-logo{
+    aspect-ratio: 1/1;
+    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237119631/qha_0dNwFDUbYjLIGp2SCg/original.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+#security_level > .head .security_level {
+    grid-area: level;
+    place-items: center;
+    gap: 0px;
+    place-self: center;
+}
+.input-label.stacked{
+    grid-template-columns: auto;
+    grid-template-areas:
+        "over"
+        "under";
+}
+#security_level > .qr-code {
+    grid-area: qr-code;
+    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237721889/dzJg1nel3HT7J2OhxtWBJg/thumb.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    place-self: center;
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+#security_level > .merit {
+    --selectedRadio: var(--backColor);
+    --track-gap: calc(var(--tiny-gap) / 2);
+    grid-area: merit;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "header tracker";
+    grid-gap: var(--half-gap);
+    padding-right: var(--half-gap);
+}
+#security_level > .merit > h5 {
+    place-self: center;
+    white-space: pre-wrap;
+    place-self: center;
+}
+#security_level > .merit > .fillTrack {
+    place-self: center;
+    grid-auto-columns: 0.9rem;
+}
+#security_level > .merit > .fillTrack > .separated-label {
+    filter: drop-shadow(-1px 0px 0 black) drop-shadow(1px 0px 0 black) drop-shadow(0px -1px 0 black) drop-shadow(0px 1px 0 black);
+    background-color: transparent !important;
+    border: 0px solid transparent;
+}
+#security_level > .id {
+    padding: 5px 0 0 5px;
+    display: grid;
+    --arrowsize: 1.5rem;
+    grid-template-columns: 3rem 1fr;
+    grid-template-rows: 3.5rem;
+    grid-column-gap: var(--half-gap);
+    grid-template-areas: "logo id";
+    background-color: var(--backColor);
+    transition: var(--focusTrans);
+    grid-area: id;
+    border: solid var(--borderColor);
+    border-width: 2px 0 0 2px;
+}
+
+.black-logo {
+    aspect-ratio: 1/1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "content";
+}
+.black-logo > .black-diamond, .black-logo .sheet-black-diamond, .sheet-black-logo > .black-diamond, .sheet-black-logo .sheet-black-diamond{
+    grid-area: content;
+    background-color: var(--fontColor);
+    width: 100%;
+    height: 100%;
+    transform: scale(0.75) rotate(45deg);
+}
+
+.black-logo > .logo, #main .black-logo .sheet-logo, #main .sheet-black-logo > .logo, #main .sheet-black-logo .sheet-logo, .sheet-rolltemplate-scp .black-logo > .logo, .sheet-rolltemplate-scp .black-logo .sheet-logo, .sheet-rolltemplate-scp .sheet-black-logo > .logo, .sheet-rolltemplate-scp .sheet-black-logo .sheet-logo {
+    grid-area: content;
+    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237119632/ALMH-rWYBVVqwtIQI970xw/original.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 10;
+}
+#security_level > .id > span[name*=attr] {
+    place-self: start center;
+    font-size: 0.65rem;
+    place-self: center;
+}
+#security_level > .head .security_level > input {
+    width: 4rem;
+    place-self: start center;
+    background-color: white;
+    color: black;
+}
+
+#security_level > .merit > .fillTrack > .separated-label:before {
+    clip-path: polygon(45% 0, 100% 50%, 45% 100%, 0% 100%, 55% 50%, 0% 0%);
+    grid-area: b;
+    position: absolute;
+    content: "";
+    place-self: center;
+    width: 100%;
+    height: 100%;
+}
+#security_level > .head .security_level > input, #main h1, #main .h1, #main button[type=roll].h1, #main button[type=action].h1{
+    font-size: 3rem;
+    display: block;
+    font-family: Baumans;
+}
+#security_level > .head *:not(input) {
+    color: var(--fontColor);
+}
+.fillTrack .separated-label:before, .fillTrack .separated-span:before {
+    background-color: var(--selectedRadio);
+}
+
+.fillTrack .separated-label:checked ~ .separated-label:before, .fillTrack .separated-span:checked ~ .separated-label:before {
+    background-color: white;
 }

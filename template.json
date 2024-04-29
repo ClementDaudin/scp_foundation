@@ -12,15 +12,25 @@
       "age": 24,
       "hair": "blond",
       "eyes": "marron",
-      "appearance": "Attractive",
-      "body_type": "Thin",
-      "reasoning": "scientific",
+      "appearance": "Attractif",
+      "body_type": "Mince",
+      "reasoning": "Scientifique",
+      "security_level": 2,
       "equipement": [],
       "experience":0,
       "exertion": {
         "max": 1,
         "actual": 1
       },
+      "melee_multiplier": {
+        "personnal": 0,
+        "bonus": 0
+      },
+      "projection_multiplier": {
+        "personnal": 0,
+        "bonus": 0
+      },
+      "recoil": 0,
       "reverence": 0,
       "attributes": {
         "stock": {
@@ -75,8 +85,9 @@
       },
       "damage_reduction": 0,
       "reaction_defense": 0,
-      "move_speed": 0,
+      "move_speed": 2,
       "cognitive_resistence": 0,
+      "mod": 0,
       "perks": {
         "categorie1": {
           "fight": {

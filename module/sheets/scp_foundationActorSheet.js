@@ -30,7 +30,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         this.updateExertionSpan(html);
         this.updateTiles(html, "exertion");
         this.updateTiles(html, "reverence");
-
+        this.updateOther(html);
         window.addEventListener('keydown',function(e) {
             if (e.keyIdentifier=='U+000A' || e.keyIdentifier=='Enter' || e.keyCode==13) {
                 if (e.target.nodeName=='INPUT' && e.target.type=='text') {
@@ -64,14 +64,40 @@ export default class scp_foundationActorSheet extends ActorSheet{
             })
         })
 
-        let exertionTable = html.find('.exertion');
+        let exertionTable = html.find('.exertionTile');
         let exertionArray = Array.from(exertionTable);
         exertionArray.forEach((exertionTile) => {
             exertionTile.addEventListener('click', async () => {
                 await this.changeExertion(exertionTile, html);
             })
         })
+        let reverenceTable = html.find('.reverenceTile');
+        let reverenceArray = Array.from(reverenceTable);
+        reverenceArray.forEach((reverenceTile) => {
+            reverenceTile.addEventListener('click', async () => {
+                await this.changeReverence(reverenceTile, html);
+            })
+        })
+        let body_type = html.find("#body_type");
+       /* body_type[0].addEventListener("change", async()=>{
+            await this.updateOther(body_type[0], html)
+        })*/
+        /*let reasoning = html.find("#reasoningButton");
+        let reasoningButton = reasoning[0];
+        reasoningButton.addEventListener("click", function() {
+            // Affichage de la liste déroulante
 
+            html.find("#reasoningList")[0].style.display = "block";
+        });
+
+// Gestion de la sélection d'une option dans la liste
+
+        html.find("#reasoningList")[0].addEventListener("change", function() {
+            let selectedOption = this.value;
+            alert("Raisonnement sélectionné: " + selectedOption);
+            // Réinitialisation de la liste déroulante
+            this.style.display = "none";
+        });*/
     }
 
     async buyDice(dice, html){
@@ -113,7 +139,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
     }
     async exchangeDice(diceClicked, html){
-        html.find('input[type="text"]').prop('disabled', true); //avoid experience reset
+        html.find('input[type="text"]').prop('disabled', true);
         let diceElements = diceClicked.name.split("_");
         let diceNumber = diceElements[2];
         let diceType = diceElements[1];
@@ -123,13 +149,18 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let nbRequis = diceValue - nbActuDiceVal;
         let stock = this.actor.system.attributes.stock[diceNumber];
         let isOk = nbRequis<=stock;
+        let differenceInDice = 0;
+
         switch (diceNumber){
             case "d8":
+                differenceInDice = (diceValue - nbActuDice["d8"])*3;
                 break;
             case "d10":
+                differenceInDice = (diceValue - nbActuDice["d10"])*6;
                 isOk = isOk && nbActuDice["d8"]>=2*diceValue;
                 break;
             case "d12":
+                differenceInDice = (diceValue - nbActuDice["d12"])*16;
                 isOk = isOk && nbActuDice["d10"]>=2*diceValue;
                 break;
         }
@@ -140,12 +171,19 @@ export default class scp_foundationActorSheet extends ActorSheet{
             let updateData = {};
             updateData[diceNumberStockAttribute] = stockLeft;
             updateData[diceTypeNumberAttribute] = diceValue;
+            if(diceType === "health"){
+                let actualHP = this.actor.system.hp.max;
+                actualHP = actualHP -(-differenceInDice);
+                updateData["system.hp.max"] = actualHP;
+            }
 
             await this.actor.update(updateData);
-        }
-        this.updateDicesTiles(html);
+            await this.diceBonus(html);
 
+        }
+      //  this.updateDicesTiles(html);
         html.find('input[type="text"]').prop('disabled', false);
+
     }
 
 
@@ -173,22 +211,34 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', true);
         let nbMax = this.actor.system.exertion.max;
         if(parseInt(exertionClicked.value) <= parseInt(nbMax)){
-            exertionClicked.checked = true;
             await this.actor.update({
                 "system.exertion.actual": exertionClicked.value
             });
 
-        }else{
-            exertionClicked.checked = false;
         }
         this.updateTiles(html, "exertion");
+        html.find('input[type="text"]').prop('disabled', false);
+
+    }
+    async changeReverence(reverenceClicked, html){
+       html.find('input[type="text"]').prop('disabled', true);
+        console.log(reverenceClicked.value);
+        await this.actor.update({
+            "system.reverence": reverenceClicked.value
+        });
+        this.updateTiles(html, "reverence");
         html.find('input[type="text"]').prop('disabled', false);
 
     }
     updateTiles(html, type){
         let tilesTable = html.find('.' + type + 'Tile');
         let tilesArray = Array.from(tilesTable);
-        let nbTiles = this.actor.system[type];
+        let nbTiles = 0;
+        if(type == "exertion"){
+            nbTiles = this.actor.system.exertion.actual;
+        }else{
+            nbTiles = this.actor.system[type];
+        }
         tilesArray.forEach((tile) => {
             let tileValue = tile.value;
             if(parseInt(tileValue) <= parseInt(nbTiles)){
@@ -208,5 +258,71 @@ export default class scp_foundationActorSheet extends ActorSheet{
             exertionSpan.css('background-color', 'white');
 
         }
+    }
+
+    async diceBonus(html){
+        html.find('input[type="text"]').prop('disabled', true);
+        let strength = this.actor.system.attributes.strength;
+        let perception = this.actor.system.attributes.perception;
+        let dexterity = this.actor.system.attributes.dexterity;
+        let intelligence = this.actor.system.attributes.intelligence;
+        let willpower = this.actor.system.attributes.willpower;
+        let meleeValue = Math.floor(strength.d10/2) -(- strength.d10%2) -(- strength.d12);
+        let recoil = strength.d12;
+        let projectionValue = Math.floor(perception.d10/2) -(- perception.d10%2) -(- perception.d12);
+        let reactDef = perception.d10 -(- dexterity.d12) -(- intelligence.d10);
+        let moveValue = 2 -(- dexterity.d12);
+        let modAvailable = intelligence.d10/2
+        let exertionMax = 1 - (-willpower.d10);
+
+        let updateBonus = {};
+        updateBonus["system.melee_multiplier.bonus"] = meleeValue;
+        updateBonus["system.projection_multiplier.bonus"] = projectionValue;
+        updateBonus["system.recoil"] = recoil;
+        updateBonus["system.reaction_defense"] = reactDef;
+        updateBonus["system.move_speed"] = moveValue;
+        updateBonus["system.mod"] = modAvailable;
+        updateBonus["system.exertion.max"] = exertionMax;
+
+        await this.actor.update(updateBonus);
+
+        html.find('input[type="text"]').prop('disabled', false);
+
+    }
+
+    updateOther(html){
+        html.find('input[type="text"]').prop('disabled', true);
+        let appearance = html.find('#appearance')[0];
+        let body_type = html.find('#body_type')[0];
+        let reasoning = html.find('#reasoning')[0];
+        let body_type_selected = this.actor.system.body_type;
+        let appearance_selected = this.actor.system.appearance;
+        let reasoning_selected = this.actor.system.reasoning;
+        let optionsAppearance = appearance.options;
+        let optionsBody = body_type.options;
+        let optionsReasoning = reasoning.options;
+
+        for (let i = 0; i < optionsAppearance.length; i++) {
+            if (optionsAppearance[i].value === appearance_selected) {
+                optionsAppearance[i].selected = true;
+            } else {
+                optionsAppearance[i].selected = false;
+            }
+        }
+        for (let i = 0; i < optionsBody.length; i++) {
+            if (optionsBody[i].value === body_type_selected) {
+                optionsBody[i].selected = true;
+            } else {
+                optionsBody[i].selected = false;
+            }
+        }
+        for (let i = 0; i < optionsReasoning.length; i++) {
+            if (optionsReasoning[i].value === reasoning_selected) {
+                optionsReasoning[i].selected = true;
+            } else {
+                optionsReasoning[i].selected = false;
+            }
+        }
+        html.find('input[type="text"]').prop('disabled', false);
     }
 }

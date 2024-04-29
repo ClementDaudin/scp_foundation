@@ -30,6 +30,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         this.updateExertionSpan(html);
         this.updateTiles(html, "exertion");
         this.updateTiles(html, "reverence");
+        this.updateTiles(html, "merit_point");
         this.updateOther(html);
         window.addEventListener('keydown',function(e) {
             if (e.keyIdentifier=='U+000A' || e.keyIdentifier=='Enter' || e.keyCode==13) {
@@ -78,26 +79,14 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 await this.changeReverence(reverenceTile, html);
             })
         })
-        let body_type = html.find("#body_type");
-       /* body_type[0].addEventListener("change", async()=>{
-            await this.updateOther(body_type[0], html)
-        })*/
-        /*let reasoning = html.find("#reasoningButton");
-        let reasoningButton = reasoning[0];
-        reasoningButton.addEventListener("click", function() {
-            // Affichage de la liste déroulante
+        let meritTable = html.find('.meritTile');
+        let meritArray = Array.from(meritTable);
+        meritArray.forEach((meritTile) => {
+            meritTile.addEventListener('click', async () => {
+                await this.changeMerit(meritTile, html);
+            })
+        })
 
-            html.find("#reasoningList")[0].style.display = "block";
-        });
-
-// Gestion de la sélection d'une option dans la liste
-
-        html.find("#reasoningList")[0].addEventListener("change", function() {
-            let selectedOption = this.value;
-            alert("Raisonnement sélectionné: " + selectedOption);
-            // Réinitialisation de la liste déroulante
-            this.style.display = "none";
-        });*/
     }
 
     async buyDice(dice, html){
@@ -222,11 +211,19 @@ export default class scp_foundationActorSheet extends ActorSheet{
     }
     async changeReverence(reverenceClicked, html){
        html.find('input[type="text"]').prop('disabled', true);
-        console.log(reverenceClicked.value);
         await this.actor.update({
             "system.reverence": reverenceClicked.value
         });
         this.updateTiles(html, "reverence");
+        html.find('input[type="text"]').prop('disabled', false);
+
+    }
+    async changeMerit(meritClicked, html){
+       html.find('input[type="text"]').prop('disabled', true);
+        await this.actor.update({
+            "system.merit_point": meritClicked.value
+        });
+        this.updateTiles(html, "merit_point");
         html.find('input[type="text"]').prop('disabled', false);
 
     }
@@ -274,7 +271,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let moveValue = 2 -(- dexterity.d12);
         let modAvailable = intelligence.d10/2
         let exertionMax = 1 - (-willpower.d10);
-
+        let cognitive_value = exertionMax;
         let updateBonus = {};
         updateBonus["system.melee_multiplier.bonus"] = meleeValue;
         updateBonus["system.projection_multiplier.bonus"] = projectionValue;
@@ -283,6 +280,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         updateBonus["system.move_speed"] = moveValue;
         updateBonus["system.mod"] = modAvailable;
         updateBonus["system.exertion.max"] = exertionMax;
+        updateBonus["system.cognitive_resistance"] = exertionMax;
 
         await this.actor.update(updateBonus);
 

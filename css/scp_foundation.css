@@ -1,9 +1,12 @@
 .sheet {
     min-height: 300px;
     height: 400px;
-    min-width: 1000px;
-    width: 1000px    ;
+    min-width: 900px;
+    width: 900px    ;
     overflow: scroll;
+}
+.sheet-rolltemplate-scp{
+    font-size: 14px;
 }
 .level-1 {
     --backColor: #6abd47;
@@ -39,7 +42,7 @@
     all: unset;
 }
 .sheet-rolltemplate-scp {
-    --grid-gap: 1rem;
+    --grid-gap: 1em;
     --half-gap: calc(var(--grid-gap) / 2);
     --tiny-gap: calc(var(--half-gap) / 2);
     position: relative;
@@ -56,10 +59,10 @@
 }
 .sheet-rolltemplate-scp .sheet-body {
     --selectedRadio: grey;
-    --fillTrackRadioHeight: 2rem;
-    --fillTrackRadioWidth: 1rem;
-    --fillTrackSpanWidth: 1rem;
-    --fillTrackSpanHeight: 0.5rem;
+    --fillTrackRadioHeight: 2em;
+    --fillTrackRadioWidth: 1em;
+    --fillTrackSpanWidth: 1em;
+    --fillTrackSpanHeight: 0.5em;
     --fillItemFlex: 0 0 auto;
     --track-gap: var(--tiny-gap);
 }
@@ -119,7 +122,7 @@ form {
     padding: 5px;
     display: grid;
     grid-template-columns: 1fr [strength-start fate-start] auto [strength-end fate-end health-start charisma-start] auto [health-end charisma-end perception-start intelligence-start] auto [perception-end intelligence-end dexterity-start willpower-start] auto [dexterity-end willpower-end];
-    grid-template-rows: [strength-start health-start perception-start dexterity-start] 1rem [fate-start charisma-start intelligence-start willpower-start] 1rem [strength-end health-end perception-end dexterity-end] 1rem [fate-end charisma-end intelligence-end willpower-end];
+    grid-template-rows: [strength-start health-start perception-start dexterity-start] 1em [fate-start charisma-start intelligence-start willpower-start] 1em [strength-end health-end perception-end dexterity-end] 1em [fate-end charisma-end intelligence-end willpower-end];
     grid-template-areas:
         "character_name . . . ."
         "character_name . . . ."
@@ -136,7 +139,7 @@ form {
     place-self: center;
 }
 .h4{
-    font-size: 1.5rem;
+    font-size: 1.5em;
     font-weight: bold;
     display: block;
 }
@@ -144,7 +147,7 @@ form {
 #summary > .ability-summary {
     align-self: center;
     display: grid;
-    grid-template-columns: 2.5rem repeat(3, 1rem auto);
+    grid-template-columns: 2.5em repeat(3, 1em auto);
 }
 
 #summary > .strength {
@@ -176,7 +179,7 @@ form {
 }
 
 #summary > .ability-summary > .perks {
-    margin: 0 0.5rem 0.5rem;
+    margin: 0 0.5em 0.5em;
 }
 
 #attributes {
@@ -189,7 +192,7 @@ form {
 #attributes > .ability_score {
     position: relative;
     display: grid;
-    grid-template-columns: 3rem 10rem;
+    grid-template-columns: 3em 10em;
     grid-template-rows: repeat(4, auto);
     grid-template-areas:
         "header header "
@@ -277,7 +280,7 @@ input[type="radio"] {
 
 .sheet-body h4:not(input){
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     font-weight: bold;
 }
 .sheet-rolltemplate-scp button {
@@ -387,9 +390,9 @@ input.h5 {
 
 #reverence {
     display: inline-grid;
-    width: 10rem;
+    width: 10em;
     grid-template-columns: auto;
-    grid-template-rows: 2rem 2rem 1fr;
+    grid-template-rows: 2em 2em 1fr;
     grid-row-gap: var(--half-gap);
     grid-template-areas:
         "header"
@@ -411,7 +414,7 @@ input.h5 {
 .main .help {
     grid-area: help;
     white-space: pre-wrap;
-    font-size: 0.5rem;
+    font-size: 0.5em;
 }
 
 .main #defenses {
@@ -462,8 +465,8 @@ input.h5 {
 }
 #exertion {
     display: inline-grid;
-    width: 10rem;
-    grid-template-rows: 2rem 1rem 0.25rem 1fr;
+    width: 10em;
+    grid-template-rows: 2em 1em 0.25em 1fr;
     grid-row-gap: 5px;
     grid-template-areas:
         "header"
@@ -473,7 +476,7 @@ input.h5 {
     border: 2px solid black;
     background-color: teal;
     background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, #ca6866, white, #ca6866);
-    --fillTrackRadioHeight: 1rem;
+    --fillTrackRadioHeight: 1em;
 }
 
 #exertion .help {
@@ -554,7 +557,7 @@ input[type="radio"]:checked + .personnel-label {
 #security_level {
     place-self: start center;
     display: grid;
-    grid-template-columns: 6rem auto;
+    grid-template-columns: 6em auto;
     grid-template-rows: auto auto auto;
     grid-template-areas:
         "head head"
@@ -567,13 +570,13 @@ input[type="radio"]:checked + .personnel-label {
 }
 
 #security_level > .head {
-    --scpSize: 5rem;
+    --scpSize: 5em;
     background-color: var(--backColor);
     transition: var(--focusTrans);
     grid-area: head;
     display: grid;
-    grid-template-columns: 10rem 5rem 1fr;
-    grid-template-rows: calc(var(--scpSize) - 1rem) 2rem;
+    grid-template-columns: 10em 5em 1fr;
+    grid-template-rows: calc(var(--scpSize) - 1em) 2em;
     grid-template-areas:
         "header logo level"
         "sub . level";
@@ -584,12 +587,12 @@ input[type="radio"]:checked + .personnel-label {
     font-size: var(--scpSize);
     text-transform: uppercase;
     place-self: start center;
-    line-height: calc(var(--scpSize) - 1rem);
+    line-height: calc(var(--scpSize) - 4em);
 }
 #security_level > .head .sub-header {
     font-family: Baumans;
     grid-area: sub;
-    font-size: calc(var(--scpSize) * 0.16);
+    font-size: calc(var(--scpSize) * 0.15);
 }
 #security_level > .head .transparent-logo {
     grid-area: logo;
@@ -629,7 +632,7 @@ input[type="radio"]:checked + .personnel-label {
     --track-gap: calc(var(--tiny-gap) / 2);
     grid-area: merit;
     display: grid;
-    grid-template-columns: 3rem 1fr;
+    grid-template-columns: 3em 1fr;
     grid-template-rows: auto;
     grid-template-areas: "header tracker";
     grid-gap: var(--half-gap);
@@ -642,7 +645,7 @@ input[type="radio"]:checked + .personnel-label {
 }
 #security_level > .merit > .fillTrack {
     place-self: center;
-    grid-auto-columns: 0.9rem;
+    grid-auto-columns: 0.9em;
 }
 #security_level > .merit > .fillTrack > .separated-label {
     filter: drop-shadow(-1px 0px 0 black) drop-shadow(1px 0px 0 black) drop-shadow(0px -1px 0 black) drop-shadow(0px 1px 0 black);
@@ -652,9 +655,9 @@ input[type="radio"]:checked + .personnel-label {
 #security_level > .id {
     padding: 5px 0 0 5px;
     display: grid;
-    --arrowsize: 1.5rem;
-    grid-template-columns: 3rem 1fr;
-    grid-template-rows: 3.5rem;
+    --arrowsize: 1.5em;
+    grid-template-columns: 3em 1fr;
+    grid-template-rows: 3.5em;
     grid-column-gap: var(--half-gap);
     grid-template-areas: "logo id";
     background-color: var(--backColor);
@@ -688,11 +691,12 @@ input[type="radio"]:checked + .personnel-label {
 }
 #security_level > .id > span[name*=attr] {
     place-self: start center;
-    font-size: 0.65rem;
+    font-size: 0.65em;
     place-self: center;
 }
 #security_level > .head .security_level > input {
-    width: 4rem;
+    width: 1.5em;
+    height: 1.5em;
     place-self: start center;
     background-color: white;
     color: black;
@@ -708,7 +712,7 @@ input[type="radio"]:checked + .personnel-label {
     height: 100%;
 }
 #security_level > .head .security_level > input, #main h1, #main .h1, #main button[type=roll].h1, #main button[type=action].h1{
-    font-size: 3rem;
+    font-size: 2em;
     display: block;
     font-family: Baumans;
 }

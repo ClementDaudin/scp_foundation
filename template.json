@@ -32,6 +32,7 @@
       },
       "recoil": 0,
       "reverence": 0,
+      "merit_point": 0,
       "attributes": {
         "stock": {
           "d8": 1,
@@ -86,30 +87,337 @@
       "damage_reduction": 0,
       "reaction_defense": 0,
       "move_speed": 2,
-      "cognitive_resistence": 0,
+      "cognitive_resistance": 0,
       "mod": 0,
       "perks": {
-        "categorie1": {
-          "fight": {
+        "knowledges": {
+          "anatomy_first_aid": {
             "perso": 0,
             "mod": 0,
-            "total": 0,
-            "type": "Str"
+            "type": "int"
+          },
+          "ancient_languages": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "architecture": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "astronomy": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "caretaking_nurture": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "computer_hacking": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "cooking": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "demolition": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "fashion_etiquette": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "gambling_gaming": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dst"
+          },
+          "general_knowledge": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "history_lore": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "identify_taste_smell": {
+            "perso": 0,
+            "mod": 0,
+            "type": "per"
+          },
+          "investigate": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "law_politics": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "mathematics": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "mechanics": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "navigate": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "occulte_scp_lore": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "psychology": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "religion": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "research_internet": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "science_physics": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "survival_tracking": {
+            "perso": 0,
+            "mod": 0,
+            "type": "per"
+          },
+          "technology": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "visual_sign_sign_lang": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
           }
         },
-        "categorie2": {
-          "hide": {
+        "skills": {
+          "melee": {
             "perso": 0,
             "mod": 0,
-            "total": 0,
-            "type": "Int"
+            "type": "dex"
+          },
+          "assault_rifle": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "handgun": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "heavy_artillery": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "hunting_sniper_rifle": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "shotgun": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "submachine_gun": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "acting_lie": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "art_music": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "break_free_escape": {
+            "perso": 0,
+            "mod": 0,
+            "type": "for"
+          },
+          "catch_throw": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "climb": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "disguise_blend_in": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "drive": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "lockpicking": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "pickpocket": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "pilot": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "stealth_hide": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "showmanship": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "swim": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "teaching": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "wrestle_disarm": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "writing": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
           }
-        },"categorie3": {
+        },"abilities": {
+          "awareness_reaction": {
+            "perso": 0,
+            "mod": 0,
+            "type": "per"
+          },
+          "dodge_block": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "animal_ken_tame": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "athletics": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "empathy": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "endurance": {
+            "perso": 0,
+            "mod": 0,
+            "type": "san"
+          },
+          "initiative": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "intimidate_taunt": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "intuition": {
+            "perso": 0,
+            "mod": 0,
+            "type": "int"
+          },
+          "jump": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dex"
+          },
+          "leadership": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "lift_push": {
+            "perso": 0,
+            "mod": 0,
+            "type": "for"
+          },
+          "negociation_persuade": {
+            "perso": 0,
+            "mod": 0,
+            "type": "chr"
+          },
+          "resist_ko_death": {
+            "perso": 0,
+            "mod": 0,
+            "type": "dst"
+          },
           "resist_distress": {
             "perso": 0,
             "mod": 0,
-            "total": 0,
-            "type": "Chr"
+            "type": "wil"
+          },
+          "self_controle": {
+            "perso": 0,
+            "mod": 0,
+            "type": "wil"
           }
         }
       }

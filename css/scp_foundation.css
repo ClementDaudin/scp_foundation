@@ -518,6 +518,12 @@ input.h5 {
     height: 3em;
 }
 
+.character_row_card{
+    display: flex;
+    height: auto;
+    justify-content: space-between;
+}
+
 
 
 .personnel-label {
@@ -725,4 +731,56 @@ input[type="radio"]:checked + .personnel-label {
 
 .fillTrack .separated-label:checked ~ .separated-label:before, .fillTrack .separated-span:checked ~ .separated-label:before {
     background-color: white;
+}
+
+.action{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+}
+:is(#knowledges, #skills, #abilities) > div {
+    position: relative;
+    display: inline-grid;
+    width: 100%;
+    grid-template-columns: 1fr 2rem 2rem;
+    grid-gap: var(--half-gap);
+    margin-bottom: var(--half-gap);
+}
+:is(#knowledges, #skills, #abilities) > div > label {
+    place-self: center start;
+    text-transform: capitalize;
+}
+:is(#knowledges, #skills, #abilities) > div > .underlined {
+    align-self: center;
+    width: 100%;
+}
+:is(#knowledges, #skills, #abilities) > div > input[name*=self_mod] {
+    opacity: 0;
+    z-index: 10;
+    transition: var(--inputSwap);
+    position: absolute;
+    grid-column: 3/4;
+}
+:is(#knowledges, #skills, #abilities) > div > input[name*=self_mod]:hover {
+    opacity: 100;
+}
+
+:is(#knowledges, #skills, #abilities) > div > input[name*=self_mod]:hover ~ input{
+    opacity: 0;
+}
+.underlined.thick {
+    border-bottom-width: 5px;
+}
+.action .thick {
+    padding-bottom: var(--half-gap);
+}
+.action {
+    column-width: 255px;
+    column-gap: var(--grid-gap);
+    column-rule: 1px solid black;
+}
+.perksRoller:hover{
+    color:var(--backColor)
+}
+.roller:hover{
+    color:var(--backColor)
 }

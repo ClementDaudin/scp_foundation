@@ -86,7 +86,13 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 await this.changeMerit(meritTile, html);
             })
         })
-
+        let rollButtonTable = html.find('.roller');
+        let rollButtonArray = Array.from(rollButtonTable);
+        rollButtonArray.forEach((rollButton) => {
+            rollButton.addEventListener('click', () =>{
+                this.selectDice(rollButton.value);
+            })
+        })
     }
 
     async buyDice(dice, html){
@@ -322,5 +328,10 @@ export default class scp_foundationActorSheet extends ActorSheet{
             }
         }
         html.find('input[type="text"]').prop('disabled', false);
+    }
+
+    selectDice(type, bonus=0){
+        console.log(type);
+        console.log(this.actor.system.attributes[type]);
     }
 }

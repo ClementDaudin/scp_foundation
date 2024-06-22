@@ -1,42 +1,56 @@
 .sheet {
-    min-height: 300px;
-    height: 400px;
-    min-width: 900px;
-    width: 900px    ;
+    width: 900px;
     overflow: scroll;
+    text-transform: capitalize;
 }
 .sheet-rolltemplate-scp{
     font-size: 14px;
+    background-color: white;
+
+}
+#summary{
+    min-width: max-content;
 }
 .level-1 {
     --backColor: #6abd47;
     --selectColor: var(--backColor);
     --selectShadow: none;
+    --buttonBackColor: white;
 }
 .level-2{
     --backColor: #4f72b7;
     --selectColor: var(--backColor);
     --selectShadow: none;
+    --buttonBackColor: white;
+
 }
 .level-3 {
     --backColor: #ef6024;
     --selectColor: var(--backColor);
     --selectShadow: none;
+    --buttonBackColor: white;
+
 }
 .level-4 {
     --backColor: #ed2025;
     --selectColor: var(--backColor);
     --selectShadow: none;
+    --buttonBackColor: white;
+
 }
 .level-5 {
     --backColor: #7d52a1;
     --selectColor: var(--backColor);
     --selectShadow: none;
+    --buttonBackColor: white;
+
 }
 .level-6 {
     --backColor: #000000;
     --borderColor: white;
     --fontColor: #ededed;
+    --buttonBackColor: #000000;
+
 }
 .sheet-body select, .sheet-body textarea, .sheet-body input, .sheet-body .uneditable-input, .sheet-body label, .sheet-body button, .sheet-rolltemplate-scp select, .sheet-rolltemplate-scp textarea, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
     all: unset;
@@ -67,9 +81,6 @@
     --track-gap: var(--tiny-gap);
 }
 
-form {
-    height: 100%;
-}
 .editor, .editor-content {
     height: 70%;
 }
@@ -259,6 +270,7 @@ input[type="radio"] {
 }
 #attributes > .available-dice {
     grid-column: 1/-1;
+    background-color: white;
 }
 
 #attributes:not(.active-section) > .available-dice {
@@ -269,7 +281,7 @@ input[type="radio"] {
     z-index: 100;
 }
 #attributes:not(.active-section) > .available-dice, .sticky-sub {
-    top: 70.5px;
+    top: -8px;
     position: sticky;
     z-index: 100;
 }
@@ -321,7 +333,6 @@ input[type="radio"] {
     text-align: center;
 }
 .main h5, .main .h5, .main button[type=roll].h5, .main button[type=action].h5, .main h4, .main .h4, .main button[type=roll].h4, .main button[type=action].h4, .main h3, .main .h3, .main button[type=roll].h3, .main button[type=action].h3, .main .input-label.large > input, .main .h2, .main button[type=roll].h2, .main button[type=action].h2, #security_level > .head .security_level > input, .main h1, .main .h1, .main button[type=roll].h1, .main button[type=action].h1{
-    text-transform: capitalize;
     font-weight: bold;
     line-height: normal;
     display: block;
@@ -355,7 +366,6 @@ input[type="radio"] {
 
 .sheet-body :is(span, label){
     line-height: normal;
-    text-transform: capitalize;
 }
 .main input.number, .sheet-rolltemplate-scp input.number {
     -moz-appearance: textfield !important;
@@ -747,24 +757,23 @@ input[type="radio"]:checked + .personnel-label {
 }
 :is(#knowledges, #skills, #abilities) > div > label {
     place-self: center start;
-    text-transform: capitalize;
 }
 :is(#knowledges, #skills, #abilities) > div > .underlined {
     align-self: center;
     width: 100%;
 }
-:is(#knowledges, #skills, #abilities) > div > input[name*=self_mod] {
+:is(#knowledges, #skills, #abilities, #melee-mult) > div > input[name*=self_mod] {
     opacity: 0;
     z-index: 10;
     transition: var(--inputSwap);
     position: absolute;
     grid-column: 3/4;
 }
-:is(#knowledges, #skills, #abilities) > div > input[name*=self_mod]:hover {
+:is(#knowledges, #skills, #abilities, #melee-mult) > div > input[name*=self_mod]:hover {
     opacity: 100;
 }
 
-:is(#knowledges, #skills, #abilities) > div > input[name*=self_mod]:hover ~ input{
+:is(#knowledges, #skills, #abilities, #melee-mult) > div > input[name*=self_mod]:hover ~ input{
     opacity: 0;
 }
 .underlined.thick {
@@ -783,4 +792,288 @@ input[type="radio"]:checked + .personnel-label {
 }
 .roller:hover{
     color:var(--backColor)
+}
+
+
+.popup {
+    display: none;
+    position: absolute;
+    top: 40vh;
+    left: 40vh;
+    transform: translate(-50%, -50%);
+    background-color: #333333;
+    color: white;
+    padding: 20px;
+    border: 1px solid black;
+    z-index: 1000;
+}
+
+/* Styles pour le contenu de la popup */
+.popup-content {
+    max-width: 400px; /* ajustez la largeur selon vos besoins */
+}
+
+/* Styles pour le bouton de fermeture */
+.closePopup {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.message-content .sheet-scp {
+    border: solid black;
+    overflow: hidden;
+    border-width: var(--templateBorderW);
+    border-color: var(--borderColor);
+    background-color: var(--backColor);
+    color: var(--fontColor);
+}
+
+.message-content .sheet-scp .sheet-template-head {
+    color: var(--fontColor);
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-gap: 5px;
+    padding: 5px;
+}
+.message-content .sheet-scp .sheet-template-head:not(.sheet-element) {
+    grid-template-columns: 39px 1fr;
+    grid-template-areas:
+        "black-logo roll_name"
+        "black-logo character_name";
+}
+.message-content .sheet-scp .sheet-template-head .sheet-black-logo {
+    grid-area: black-logo;
+    place-self: start stretch;
+}
+
+.message-content .sheet-black-logo {
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: "content";
+}
+
+.message-content .sheet-black-logo .sheet-logo {
+    grid-area: content;
+    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237119632/ALMH-rWYBVVqwtIQI970xw/original.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 10;
+}
+.message-content .sheet-black-logo .sheet-black-diamond {
+    grid-area: content;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    transform: scale(0.75) rotate(45deg);
+}
+.message-content .sheet-scp .sheet-template-head .sheet-roll_name {
+    grid-area: roll_name;
+    place-self: center end;
+}
+.message-content .sheet-scp .sheet-template-head .sheet-character_name {
+    grid-area: character_name;
+    place-self: start end;
+}
+.message-content .sheet-scp .sheet-roll-content {
+    background-color: white;
+    padding: 2px;
+}
+
+.message-content .sheet-scp .sheet-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 5px;
+}
+.message-content .sheet-continuation .sheet-result-values {
+    width: 100%;
+}
+.message-content .sheet-result-values {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.message-content .sheet-scp > .sheet-total {
+    position: relative;
+    display: grid;
+    place-items: center;
+    color: black;
+    grid-template-columns: 106px 50px 10px 70px;
+    grid-template-rows: auto 1fr 1fr;
+    grid-template-areas:
+        "high-label . . total-label"
+        "high modifier . total "
+        "high ones . total ";
+    place-content: stretch center;
+    padding: 5px;
+}
+.message-content .sheet-scp > .sheet-total > .sheet-high-label {
+    grid-area: high-label;
+}
+.message-content .sheet-scp > .sheet-total > .sheet-high-dice {
+    border-radius: 0.625em 0 0 0.625em;
+    grid-area: high;
+    justify-self: end;
+    place-self: stretch;
+    display: flex;
+    justify-content: space-around;
+}
+.message-content .sheet-total > .sheet-high-dice, .message-content .sheet-scp > .sheet-total > .sheet-total-value {
+    background-color: white;
+    border-color: var(--borderColor);
+    border-style: solid;
+}
+.message-content .sheet-scp > .sheet-total > .sheet-high-dice {
+    border-radius: 0.625em 0 0 0.625em;
+    grid-area: high;
+    justify-self: end;
+    place-self: stretch;
+    display: flex;
+    justify-content: space-around;
+}
+
+.message-content .sheet-total > .sheet-modifier, .message-content .sheet-scp > .sheet-total > .sheet-ones {
+    background-color: white;
+    border-color: black;
+    border-style: solid;
+    display: grid;
+    place-self: stretch;
+    place-content: center;
+    position: relative;
+    left: -5px;
+
+}
+
+.message-content .sheet-scp > .sheet-total .sheet-modifier {
+    grid-area: modifier;
+    border-radius: 0 0.625em 0 0;
+}
+.message-content .sheet-scp > .sheet-total .sheet-ones {
+    grid-area: ones;
+    border-radius: 0 0 0.625em;
+}
+
+.message-content .sheet-scp > .sheet-total > .sheet-total-label {
+    grid-area: total-label;
+}
+
+.message-content .sheet-scp > .sheet-total > .sheet-total-value {
+    grid-area: total;
+    padding: 5px;
+    display: grid;
+    place-content: center;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.message-content .sheet-scp > .sheet-total > .sheet-total-value {
+    border-radius: 0.625em;
+}
+.message-content .malus{
+    color: red;
+}
+.message-content{
+    text-transform: capitalize;
+}
+
+.message-content h5{
+    margin: 0;
+}
+
+.message-content .sheet-roll-content{
+    height: 4em;
+}
+
+.message-content .dice-tooltip .dice-rolls .roll {
+    background-size: 2em;
+    width: 2em;
+    height: 2em;
+    align-items: center;
+    display: grid;
+}
+.message-content .dice-tooltip {
+    align-items: center;
+    display: grid;
+    color: black;
+}
+.message-content .sheet-scp .sheet-roll-buttons {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 2px;
+}
+.message-content .sheet-scp .sheet-roll-buttons input{
+    background-color:  var(--buttonBackColor);
+    border-radius: 0.625em;
+    border-width: 2px 5px 2px 5px;
+    border-color: black;
+    text-transform: uppercase;
+    color: var(--selectColor);
+    text-shadow: var(--selectShadow);
+    font-weight: bold;
+    font-size: x-small;
+}
+.message-content .sheet-scp .sheet-color-cond * {
+    color: var(--fontColor);
+}
+.message-content p {
+    margin: 0;
+}
+#section-tabs {
+    position: sticky;
+    top: -1px;
+    border-radius: 5px;
+    background-color: #adadad;
+    display: inline-flex;
+    flex-direction: column;
+    float: left;
+}
+#section-tabs > .section-control {
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transform: rotate(-180deg);
+    writing-mode: vertical-rl;
+}
+#section-tabs input:checked + label, #section-tabs label:hover {
+    background-color: var(--backColor);
+    color: var(--fontColor);
+}
+
+#weapons{
+    display: none;
+}
+#weapons > h4:not(input) {
+    grid-area: header;
+    text-align: left;
+    padding-left: 1rem;
+    border: solid black;
+    border-width: 2px 1px;
+}
+#weapons .number {
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: 10px 10px 10px 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+}
+.input-label:not(:is(.stacked, .right)), .sheet-rolltemplate-scp .input-label:not(:is(.stacked, .right)) {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "left right";
+}
+
+#multiplier {
+    display:flex;
+    justify-content: space-around;
+    border: solid black;
+
 }

@@ -458,7 +458,7 @@
                 </div>
                 <div class="player_name boxData">
                     <label class="input-label thick-left thick-bottom boxed" id="player_name">
-                        <input class="h5" name="attr_player_name" type="text" title="@{player_name}" value="{{systemData.player}}"><span class="h5" data-i18n="player name">Nom du joueur</span>
+                        <input class="h5" name="system.player" type="text" title="@{player_name}" value="{{systemData.player}}"><span class="h5" data-i18n="player name">Nom du joueur</span>
                     </label>
                 </div>
             </div>
@@ -626,23 +626,23 @@
                         <h5>Classe du Personnel</h5>
                         <div class="personnel_button">
                             <label>
-                                <input type="radio" name="button" value="A">
+                                <input type="radio" name="personnelButton" value="A" class="personnelButton">
                                 <span class="personnel-label personnel-a" >A</span>
                             </label>
                             <label>
-                                <input type="radio" name="button" value="B">
+                                <input type="radio" name="personnelButton" value="B" class="personnelButton">
                                 <span class="personnel-label personnel-b">B</span>
                             </label>
                             <label>
-                                <input type="radio" name="button" value="C">
+                                <input type="radio" name="personnelButton" value="C" class="personnelButton">
                                 <span class="personnel-label personnel-c">C</span>
                             </label>
                             <label>
-                                <input type="radio" name="button" value="D">
+                                <input type="radio" name="personnelButton" value="D" class="personnelButton">
                                 <span class="personnel-label personnel-d">D</span>
                             </label>
                             <label>
-                                <input type="radio" name="button" value="E">
+                                <input type="radio" name="personnelButton" value="E" class="personnelButton">
                                 <span class="personnel-label personnel-e">E</span>
                             </label>
                         </div>
@@ -650,7 +650,8 @@
 
                     <div class="credit">
                         <label class="input-label thick-left thick-bottom thick-right thick-top boxed" id="credits">
-                            <input class="number number" name="attr_credits" type="text" title="@{credits}"><span data-i18n="credits">credits</span>
+                            <span class="h5" data-i18n="credits">credits</span>
+                            <input class="number number" name="system.credits" type="text" title="@{credits}" value="{{systemData.credits}}">
                         </label>
                     </div>
                 </div>
@@ -1362,7 +1363,144 @@
                         <input class="number h5 boxed" name="attr_ranged_multiplier" type="text" value="{{systemData.melee_multiplier.bonus}}" title="@{ranged_multiplier}"><span class="h5" data-i18n="ranged multiplier">ranged multiplier</span>
                     </label>
                 </div>
-
+                <div id="attributesValues">
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/gun.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Arme de poing</h5>
+                            <p>{{systemData.perks.skills.handgun.perso}} + {{systemData.perks.skills.handgun.total_mod}}</p>
+                        </div>
+                    </div>
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/machine-gun.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Artillerie Lourde</h5>
+                            <p>{{systemData.perks.skills.heavy_artillery.perso}} + {{systemData.perks.skills.heavy_artillery.total_mod}}</p>
+                        </div>
+                    </div>
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/snipe.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Chasse / Fusil de Sniper</h5>
+                            <p>{{systemData.perks.skills.hunting_sniper_rifle.perso}} + {{systemData.perks.skills.hunting_sniper_rifle.total_mod}}</p>
+                        </div>
+                    </div>
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/shotgun.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Fusil à Pompe</h5>
+                            <p>{{systemData.perks.skills.shotgun.perso}} + {{systemData.perks.skills.shotgun.total_mod}}</p>
+                        </div>
+                    </div>
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/rifle.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Fusil d'Assault</h5>
+                            <p>{{systemData.perks.skills.assault_rifle.perso}} + {{systemData.perks.skills.assault_rifle.total_mod}}</p>
+                        </div>
+                    </div>
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/knife.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Mêlée</h5>
+                            <p>{{systemData.perks.skills.melee.perso}} + {{systemData.perks.skills.melee.total_mod}}</p>
+                        </div>
+                    </div>
+                    <div class="rectangle">
+                        <div class="left">
+                            <img src="systems/scp_foundation/assets/uzi.png" alt="Image">
+                        </div>
+                        <div class="right">
+                            <h5>Mitraillette</h5>
+                            <p>{{systemData.perks.skills.submachine_gun.perso}} + {{systemData.perks.skills.submachine_gun.total_mod}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="listeArmes">
+                    <table id="tableArmes">
+                        <tr>
+                            <th></th>
+                            <th>Arme</th>
+                            <th>Type</th>
+                            <th>Recul</th>
+                            <th>Mélée</th>
+                            <th>Hip</th>
+                            <th>Ready</th>
+                            <th>Aim</th>
+                            <th>Chargeur</th>
+                            <th>Base</th>
+                            <th>X</th>
+                            <th>Element</th>
+                            <th>Portée</th>
+                            <th>Vendre</th>
+                        </tr>
+                        {{#each actor.items as |item key|}}
+                        {{#if (eq item.type "arme")}}
+                        <tr class="item arme" data-item-id="{{item._id}}">
+                            <td><img src="{{item.img}}" class="toggle-details" title="[[item.name}}" height="32" width="32"/> </td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.system.skill}}</td>
+                            <td>{{item.system.recoil}}</td>
+                            <td>
+                                <input type="radio" id="item{{item._id}}Melee" name="item{{item._id}}" value="1" class="radio-item-system">
+                                <label for="item{{item._id}}Melee">{{item.system.melee}}</label>
+                            </td>
+                            <td>
+                                <input type="radio" id="item{{item._id}}Hip" name="item{{item._id}}" value="2" class="radio-item-system">
+                                <label for="item{{item._id}}Hip">{{item.system.hip}}</label>
+                            </td>
+                            <td>
+                                <input type="radio" id="item{{item._id}}Ready" name="item{{item._id}}" value="3" class="radio-item-system">
+                                <label for="item{{item._id}}Ready">{{item.system.ready}}</label>
+                            </td>
+                            <td>
+                                <input type="radio" id="item{{item._id}}Aim" name="item{{item._id}}" value="4" class="radio-item-system">
+                                <label for="item{{item._id}}Aim">{{item.system.aim}}</label>
+                            </td>
+                            <td>{{item.system.clip_size}}</td>
+                            <td>{{item.system.base_damage}}</td>
+                            <td>{{item.system.x_damage}}</td>
+                            <td>{{item.system.element}}</td>
+                            <td>{{item.system.range}}</td>
+                            <td>
+                                <a class="item-delete" title="Vendre l'item"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="attachments" style="display: none">
+                            <td colspan="14">
+                                <!-- Contenu du tableau de détails -->
+                                <table class="item-details">
+                        {{#each actor.items as |attachment key|}}
+                            {{#each item.system.attachments as |attachmentId key|}}
+                                {{#if (eq attachment._id attachmentId)}}
+                                    <tr class="item" data-item-id="{{attachmentId}}">
+                                        <td colspan="13">{{attachment.name}}</td>
+                                        <td>
+                                            <a class="item-delete" title="Vendre l'item"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                {{/if}}
+                            {{/each}}
+                        {{/each}}
+                                </table>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                    </table>
+                </div>
             </div>
         </section>
         </section>

@@ -8,7 +8,7 @@
     background-color: white;
 
 }
-#summary{
+.sheet-rolltemplate-scp #summary{
     min-width: max-content;
 }
 .level-1 {
@@ -52,7 +52,7 @@
     --buttonBackColor: #000000;
 
 }
-.sheet-body select, .sheet-body textarea, .sheet-body input, .sheet-body .uneditable-input, .sheet-body label, .sheet-body button, .sheet-rolltemplate-scp select, .sheet-rolltemplate-scp textarea, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
+.sheet-rolltemplate-scp .sheet-body select, .sheet-rolltemplate-scp textarea, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
     all: unset;
 }
 .sheet-rolltemplate-scp {
@@ -81,11 +81,11 @@
     --track-gap: var(--tiny-gap);
 }
 
-.editor, .editor-content {
+.sheet-rolltemplate-scp .editor, .editor-content {
     height: 70%;
 }
 
-.sheet-header {
+.sheet-rolltemplate-scp .sheet-header {
     flex: 0 0 100px;
     overflow: hidden;
     display: flex;
@@ -118,6 +118,7 @@
     }
 }
 
+
 #summary{
     position: sticky;
     top: 0px;
@@ -149,48 +150,47 @@
     line-height: 0;
     place-self: center;
 }
-.h4{
-    font-size: 1.5em;
-    font-weight: bold;
-    display: block;
-}
-
 #summary > .ability-summary {
     align-self: center;
     display: grid;
     grid-template-columns: 2.5em repeat(3, 1em auto);
 }
-
 #summary > .strength {
     grid-area: strength;
 }
 #summary > .health {
-     grid-area: health;
- }
+    grid-area: health;
+}
 #summary > .perception {
-      grid-area: perception;
-  }
+    grid-area: perception;
+}
 #summary > .dexterity {
-       grid-area: dexterity;
-   }
+    grid-area: dexterity;
+}
 #summary > .fate {
-        grid-area: fate;
-    }
+    grid-area: fate;
+}
 #summary > .charisma {
-         grid-area: charisma;
-     }
+    grid-area: charisma;
+}
 #summary > .intelligence {
-          grid-area: intelligence;
-      }
+    grid-area: intelligence;
+}
 #summary > .willpower {
-           grid-area: willpower;
-       }
+    grid-area: willpower;
+}
 #summary > .ability-summary > .die-num {
     justify-self: end;
 }
-
 #summary > .ability-summary > .perks {
     margin: 0 0.5em 0.5em;
+}
+
+
+.h4{
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
 }
 
 #attributes {
@@ -199,7 +199,6 @@
     --fillItemFlex: 1 1 0;
     margin-right: 10px;
 }
-
 #attributes > .ability_score {
     position: relative;
     display: grid;
@@ -214,7 +213,6 @@
     margin-bottom: var(--grid-gap);
     border: 1px solid black;
 }
-
 #attributes > .ability_score .attribute {
     grid-area: header;
     text-align: center;
@@ -226,18 +224,45 @@
     background-color: white;
     margin: 0;
 }
+#attributes > .available-dice {
+    grid-column: 1/-1;
+    background-color: white;
+}
+#attributes:not(.active-section) > .available-dice {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--half-gap);
+    margin-bottom: var(--grid-gap);
+    z-index: 100;
+}
+#attributes:not(.active-section) > .available-dice, .sticky-sub {
+    top: -8px;
+    position: sticky;
+    z-index: 100;
+}
+#attributes:not(.active-section) > .available-dice h4 {
+    grid-column: 1/-1;
+}
+#attributes > .available-dice > button[type=action] {
+    box-shadow: inset 0 0 5px black;
+    color: black;
+    border-radius: 5px;
+    padding: 3px 5px;
+    display: flex;
+    justify-content: center;
+    transition: var(--focusTrans);
+}
+
 .fillTrack {
     position: relative;
     display: inline-flex;
     gap: var(--track-gap);
     align-items: center;
 }
-
 .fillTrack .separated-label:checked ~ .separated-label, .fillTrack .separated-span:checked ~ .separated-label {
     order: 3;
     background-color: white;
 }
-
 .fillTrack .separated-label, .fillTrack .separated-span {
     appearance: none;
     border: 1px solid black;
@@ -254,6 +279,7 @@
 .fillTrack .separated-label {
     cursor: pointer;
 }
+
 input[type="radio"] {
     position: relative;
     margin: 0;
@@ -268,27 +294,6 @@ input[type="radio"] {
     place-items: center start;
     place-content: center;
 }
-#attributes > .available-dice {
-    grid-column: 1/-1;
-    background-color: white;
-}
-
-#attributes:not(.active-section) > .available-dice {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--half-gap);
-    margin-bottom: var(--grid-gap);
-    z-index: 100;
-}
-#attributes:not(.active-section) > .available-dice, .sticky-sub {
-    top: -8px;
-    position: sticky;
-    z-index: 100;
-}
-
-#attributes:not(.active-section) > .available-dice h4 {
-    grid-column: 1/-1;
-}
 
 .sheet-body h4:not(input){
     text-align: center;
@@ -300,15 +305,6 @@ input[type="radio"] {
     cursor: pointer;
 }
 
-#attributes > .available-dice > button[type=action] {
-    box-shadow: inset 0 0 5px black;
-    color: black;
-    border-radius: 5px;
-    padding: 3px 5px;
-    display: flex;
-    justify-content: center;
-    transition: var(--focusTrans);
-}
 
 .main{
     display: grid;
@@ -317,7 +313,6 @@ input[type="radio"] {
     display:flex;
     justify-content: space-between;
 }
-
 .main .charactere_stats{
     display:flex;
     justify-content: space-between;
@@ -325,7 +320,6 @@ input[type="radio"] {
 .main .boxData{
     display: inline-block;
 }
-
 .main .boxed{
     width:200px;
     height:60px;
@@ -363,33 +357,59 @@ input[type="radio"] {
     grid-gap: var(--half-gap);
     place-items: center stretch;
 }
-
-.sheet-body :is(span, label){
-    line-height: normal;
-}
 .main input.number, .sheet-rolltemplate-scp input.number {
     -moz-appearance: textfield !important;
     text-align: center;
 }
-
 .main .input-label > *, .sheet-rolltemplate-scp .input-label > * {
     margin: 0;
 }
-
 .main .input-label:not(:is(.stacked, .right)) > span, .sheet-rolltemplate-scp .input-label:not(:is(.stacked, .right)) > span {
     grid-area: left;
 }
-
 .main h4, .main h5, .main h6 {
     line-height: 18px;
 }
-
 .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
     margin: 0;
     font-weight: bold;
     color: #333;
     text-rendering: optimizelegibility;
 }
+.main .help {
+    grid-area: help;
+    white-space: pre-wrap;
+    font-size: 0.5em;
+}
+.main #defenses {
+    grid-area: defenses;
+    display: grid;
+    grid: repeat(2, auto)/repeat(3, 1fr);
+    grid-template-areas:
+        "hp hp_max damage_reduction";
+    align-items: start;
+}
+.main #defenses .hp {
+    grid-area: hp;
+}
+.main .input-label.stacked, .sheet-rolltemplate-scp .input-label.stacked {
+    grid-template-columns: auto;
+    grid-template-areas:
+        "over"
+        "under";
+}
+.main .charactere_character {
+    display: flex;
+}
+.main .fillTrack .separated-span {
+    width: var(--fillTrackSpanWidth);
+    height: var(--fillTrackSpanHeight);
+}
+
+.sheet-body :is(span, label){
+    line-height: normal;
+}
+
 
 .market{
     vertical-align: top;
@@ -412,66 +432,18 @@ input.h5 {
     background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, teal, white, teal);
     border: 2px solid black;
 }
-
-.stats{
-    display: inline-block;
+#reverence > .fillTrack {
+    place-self: center;
 }
-
 #reverence .help {
     background-color: grey;
 }
 
-.main .help {
-    grid-area: help;
-    white-space: pre-wrap;
-    font-size: 0.5em;
-}
-
-.main #defenses {
-    grid-area: defenses;
-}
-#defenses {
-    display: grid;
-    grid: repeat(2, auto)/repeat(3, 1fr);
-    grid-template-areas:
-        "hp hp_max damage_reduction";
-    align-items: start;
-}
-
-.main .input-label.stacked, .sheet-rolltemplate-scp .input-label.stacked {
-    grid-template-columns: auto;
-    grid-template-areas:
-        "over"
-        "under";
-}
-#defenses .hp {
-    grid-area: hp;
-}
-
-.main .charactere_character {
-    display: flex;
-}
-
-.underlined, .sheet-rolltemplate-scp .underlined {
-    border-radius: 5px 5px 0 0;
-    border-bottom: 1px solid black;
-    transition: var(--focusTrans);
-}
-
-.fillTrack .separated-label:checked, #main .fillTrack .separated-span:checked {
-    display: none;
-}
-#reverence > .fillTrack {
-    place-self: center;
-}
-
-.main .fillTrack .separated-span {
-    width: var(--fillTrackSpanWidth);
-    height: var(--fillTrackSpanHeight);
-}
-
 .exertion{
     display: inline-block;
+}
+.exertionMax > .unused{
+    background-color: white;
 }
 #exertion {
     display: inline-grid;
@@ -488,15 +460,26 @@ input.h5 {
     background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, #ca6866, white, #ca6866);
     --fillTrackRadioHeight: 1em;
 }
-
 #exertion .help {
     background-color: grey;
 }
 #exertion > .fillTrack {
     place-self: center;
 }
-.exertionMax > .unused{
-    background-color: white;
+
+.stats{
+    display: inline-block;
+}
+
+
+.underlined, .sheet-rolltemplate-scp .underlined {
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid black;
+    transition: var(--focusTrans);
+}
+
+.fillTrack .separated-label:checked, #main .fillTrack .separated-span:checked {
+    display: none;
 }
 
 .character_row_first, .character_row_other{
@@ -1076,4 +1059,62 @@ input[type="radio"]:checked + .personnel-label {
     justify-content: space-around;
     border: solid black;
 
+}
+#attributesValues {
+    display: flex; /* Utilisation de flexbox pour aligner les rectangles horizontalement */
+    gap: 20px; /* Espacement entre chaque rectangle */
+}
+.rectangle {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.rectangle .left {
+    flex: 1;
+    padding: 10px;
+}
+
+.rectangle .left img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.rectangle .right {
+    flex: 2;
+    padding: 10px;
+}
+
+.rectangle .right h2 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.rectangle .right p {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+.rectangle .right h5 {
+    white-space: normal;
+}
+
+#listeArmes input[type="radio"]:checked + label {
+    border-width: 1px 3px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: var(--focusTrans);
+    background-color: var(--backColor);
+    color: var(--fontColor);
+    font-weight: bold;
+}
+
+#tableArmes{
+    text-align: center;
+}
+
+.attributeValues{
+    display: flex;
 }

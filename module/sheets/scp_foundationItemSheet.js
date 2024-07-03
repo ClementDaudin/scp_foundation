@@ -1,8 +1,8 @@
 export default class scp_foundationItemSheet extends ItemSheet{
     get template(){
-        console.log(`scp_foundation | Récupération du fichier html ${this.item.data.type}-sheet.`);
+        console.log(`scp_foundation | Récupération du fichier html ${this.item.type}-sheet.`);
 
-        return `systems/scp_foundation/templates/sheets/${this.item.data.type}-sheet.html`;
+        return `systems/scp_foundation/templates/sheets/${this.item.type}-sheet.html`;
     }
 
     async getData(options){

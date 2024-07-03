@@ -5,22 +5,18 @@ export default class scp_foundationActorSheet extends ActorSheet{
         this.data = null; // Variable pour stocker les données récupérées une seule fois
     }
     get template(){
-        console.log(`scp_foundation | Récupération du fichier html ${this.actor.data.type}-sheet.`);
+        console.log(`scp_foundation | Récupération du fichier html ${this.actor.type}-sheet.`);
 
-        return `systems/scp_foundation/templates/sheets/${this.actor.data.type}-sheet.html`;
+        return `systems/scp_foundation/templates/sheets/${this.actor.type}-sheet.html`;
     }
 
     async getData(options){
-        //const data = await super.getData(options);
         this.data = await super.getData(options);
-        //data.systemData = data.data.system;
         this.data.systemData = this.data.data.system;
-        //data.descriptionHTML = await TextEditor.enrichHTML(data.systemData.description, {
         this.data.descriptionHTML = await TextEditor.enrichHTML(this.data.systemData.description, {
             secrets: this.document.isOwner,
             async: true
         });
-        //console.log(data);
         console.log(this.data);
         return this.data;
     }
@@ -44,6 +40,29 @@ export default class scp_foundationActorSheet extends ActorSheet{
         }, true);
         console.log(`scp_foundation | Récupération des listeners.`);
 
+        const radiosTable = html.find(".radio-item-system");
+        const radios = Array.from(radiosTable);
+        radios.forEach(radio => {
+            radio.addEventListener('change', async function () {
+                // Mettre à jour une variable ou faire autre chose ici
+                const itemId = radio.getAttribute('name').replace('item', ''); // Récupère l'ID de l'item
+                const value = radio.value; // Récupère la valeur sélectionnée du radio
+                let arme = this.actor.items.get(itemId);
+                await arme.update("system.actual_position", value);
+            });
+        });
+        const personnelTable = html.find(".personnelButton");
+        const personnel = Array.from(personnelTable);
+        personnel.forEach(radio => {
+            radio.addEventListener('change', async () => {
+                await this.actor.update({"system.personnel_class": radio.value});
+            });
+            if(radio.value === this.actor.system.personnel_class){
+                radio.checked = true;
+            }
+        });
+
+        html.find(".item-delete").click(this._onItemDelete.bind(this));
         // Sélectionnez le bouton par sa classe ou son ID, ajustez le sélecteur en fonction de votre HTML
         const diceButton = html.find('.die-purchase');
 
@@ -80,7 +99,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 await this.changeReverence(reverenceTile, html);
             })
         })
-        let meritTable = html.find('.meritTile');
+        let meritTable = html.find('.merit_pointTile');
         let meritArray = Array.from(meritTable);
         meritArray.forEach((meritTile) => {
             meritTile.addEventListener('click', async () => {
@@ -154,6 +173,22 @@ export default class scp_foundationActorSheet extends ActorSheet{
             html.find("#charactere_data")[0].style.display = "none";
             html.find("#weapons")[0].style.display = "block";
         })
+
+        const armesTable = html.find('.arme');
+        const armesArray = Array.from(armesTable);
+
+        armesArray.forEach(arme => {
+            const toggleButton = arme.querySelector('.toggle-details');
+            const detailsRow = arme.nextElementSibling;
+
+            toggleButton.addEventListener('click', function() {
+                if(detailsRow.style.display === "none"){
+                    detailsRow.style.display = "table-row";
+                }else{
+                    detailsRow.style.display = "none";
+                }
+            });
+        });
     }
 
     async buyDice(dice, html){
@@ -298,7 +333,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let tilesTable = html.find('.' + type + 'Tile');
         let tilesArray = Array.from(tilesTable);
         let nbTiles = 0;
-        if(type == "exertion"){
+        if(type === "exertion"){
             nbTiles = this.actor.system.exertion.actual;
         }else{
             nbTiles = this.actor.system[type];
@@ -331,24 +366,25 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let dexterity = this.actor.system.attributes.dexterity;
         let intelligence = this.actor.system.attributes.intelligence;
         let willpower = this.actor.system.attributes.willpower;
-        let awareness = this.actor.system.skills.abilities.awareness_reaction.perso - (-this.actor.system.skills.abilities.awareness_reaction.total_mod);
+        let awareness = this.actor.system.perks.abilities.awareness_reaction.perso - (-this.actor.system.perks.abilities.awareness_reaction.total_mod);
         let meleeValue = Math.floor(strength.d10/2) -(- strength.d10%2) -(- strength.d12)+1;
         let recoil = strength.d12;
         let projectionValue = Math.floor(perception.d10/2) -(- perception.d10%2) -(- perception.d12)+1;
-        let reactDef = perception.d10 -(- dexterity.d12) -(- intelligence.d10) - (- awareness);
+        let reactDef = perception.d10 -(- dexterity.d12) -(- intelligence.d10) - (- awareness) - (- this.actor.system.reaction_defense.bonus);
         let moveValue = 2 -(- dexterity.d12);
         let modAvailable = intelligence.d10/2
         let exertionMax = 1 - (-willpower.d10);
-        let cognitive_value = exertionMax;
+        let self_controle = this.actor.system.perks.abilities.self_controle.perso - (-this.actor.system.perks.abilities.self_controle.total_mod);
+        let cognitive_value = exertionMax - (- this.actor.system.cognitive_resistance.bonus) - (- self_controle) ;
         let updateBonus = {};
         updateBonus["system.melee_multiplier.bonus"] = meleeValue;
         updateBonus["system.projection_multiplier.bonus"] = projectionValue;
         updateBonus["system.recoil"] = recoil;
-        updateBonus["system.reaction_defense"] = reactDef;
+        updateBonus["system.reaction_defense.value"] = reactDef;
         updateBonus["system.move_speed"] = moveValue;
         updateBonus["system.mod"] = modAvailable;
         updateBonus["system.exertion.max"] = exertionMax;
-        updateBonus["system.cognitive_resistance.value"] = exertionMax;
+        updateBonus["system.cognitive_resistance.value"] = cognitive_value;
 
         await this.actor.update(updateBonus);
 
@@ -987,5 +1023,28 @@ export default class scp_foundationActorSheet extends ActorSheet{
         await this.actor.update(updateBonus);
         html.find('input[type="text"]').prop('disabled', false);
 
+    }
+
+    getItemFromEvent = (ev) => {
+        const parent = $(ev.currentTarget).parents(".item");
+        return this.actor.items.get(parent.data("itemId"));
+    }
+
+    async _onItemDelete(event) {
+        const item = this.getItemFromEvent(event);
+        if (item.type === "arme") {
+            this.actor.deleteEmbeddedDocuments("Item", item.system.attachments);
+        } else if (item.type === "attachment") {
+            let selectedWeapon = this.actor.items.get(item.system.idArme);
+            let updateArme = {};
+            updateArme["system.recoil"] = selectedWeapon.system.recoil - item.system.effect.recoil;
+            updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
+            updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
+            updateArme["system.ready"] = selectedWeapon.system.ready - item.system.effect.ready;
+            updateArme["system.aim"] = selectedWeapon.system.aim - item.system.effect.aim;
+            updateArme["system.clip_size"] = selectedWeapon.system.clip_size - item.system.effect.clip_size;
+            await selectedWeapon.update(updateArme);
+        }
+        this.actor.deleteEmbeddedDocuments("Item", [item._id]);
     }
 }

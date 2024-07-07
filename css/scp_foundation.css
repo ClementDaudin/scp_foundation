@@ -6,8 +6,8 @@
 .sheet-rolltemplate-scp{
     font-size: 14px;
     background-color: white;
+  }
 
-}
 .sheet-rolltemplate-scp #summary{
     min-width: max-content;
 }
@@ -52,7 +52,7 @@
     --buttonBackColor: #000000;
 
 }
-.sheet-rolltemplate-scp .sheet-body select, .sheet-rolltemplate-scp textarea, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
+.sheet-rolltemplate-scp .sheet-body select, .sheet-rolltemplate-scp input, .sheet-rolltemplate-scp .uneditable-input, .sheet-rolltemplate-scp label, .sheet-rolltemplate-scp button {
     all: unset;
 }
 .sheet-rolltemplate-scp {
@@ -79,10 +79,6 @@
     --fillTrackSpanHeight: 0.5em;
     --fillItemFlex: 0 0 auto;
     --track-gap: var(--tiny-gap);
-}
-
-.sheet-rolltemplate-scp .editor, .editor-content {
-    height: 70%;
 }
 
 .sheet-rolltemplate-scp .sheet-header {
@@ -514,7 +510,6 @@ input.h5 {
 .character_row_card{
     display: flex;
     height: auto;
-    justify-content: space-between;
 }
 
 
@@ -804,11 +799,18 @@ input[type="radio"]:checked + .personnel-label {
     cursor: pointer;
 }
 
+.message-content {
+    --templateRadius: 0.8125rem;
+    --dieSize: 50px;
+    --templateBorderW: 2px 5px 2px 5px;
+    --fumbleColor: red;
+    --critColor: green;
+    --innerBorderRadius: 5px;
+}
 .message-content .sheet-scp {
     border: solid black;
     overflow: hidden;
     border-width: var(--templateBorderW);
-    border-color: var(--borderColor);
     background-color: var(--backColor);
     color: var(--fontColor);
 }
@@ -900,7 +902,7 @@ input[type="radio"]:checked + .personnel-label {
     grid-area: high-label;
 }
 .message-content .sheet-scp > .sheet-total > .sheet-high-dice {
-    border-radius: 0.625em 0 0 0.625em;
+    border-radius: var(--templateRadius);
     grid-area: high;
     justify-self: end;
     place-self: stretch;
@@ -913,7 +915,7 @@ input[type="radio"]:checked + .personnel-label {
     border-style: solid;
 }
 .message-content .sheet-scp > .sheet-total > .sheet-high-dice {
-    border-radius: 0.625em 0 0 0.625em;
+    border-radius: var(--templateRadius);
     grid-area: high;
     justify-self: end;
     place-self: stretch;
@@ -935,11 +937,11 @@ input[type="radio"]:checked + .personnel-label {
 
 .message-content .sheet-scp > .sheet-total .sheet-modifier {
     grid-area: modifier;
-    border-radius: 0 0.625em 0 0;
+    border-radius: var(--templateRadius);
 }
 .message-content .sheet-scp > .sheet-total .sheet-ones {
     grid-area: ones;
-    border-radius: 0 0 0.625em;
+    border-radius: var(--templateRadius);
 }
 
 .message-content .sheet-scp > .sheet-total > .sheet-total-label {
@@ -956,7 +958,7 @@ input[type="radio"]:checked + .personnel-label {
     box-sizing: border-box;
 }
 .message-content .sheet-scp > .sheet-total > .sheet-total-value {
-    border-radius: 0.625em;
+    border-radius: var(--templateRadius);
 }
 .message-content .malus{
     color: red;
@@ -993,7 +995,7 @@ input[type="radio"]:checked + .personnel-label {
 }
 .message-content .sheet-scp .sheet-roll-buttons input{
     background-color:  var(--buttonBackColor);
-    border-radius: 0.625em;
+    border-radius: var(--templateRadius);
     border-width: 2px 5px 2px 5px;
     border-color: black;
     text-transform: uppercase;
@@ -1117,4 +1119,75 @@ input[type="radio"]:checked + .personnel-label {
 
 .attributeValues{
     display: flex;
+}
+
+.sheet-scp .sheet-template-head.sheet-element {
+    grid-template-columns: 39px 1fr 2fr;
+    grid-template-areas:
+        "black-logo roll_name roll_name"
+        "black-logo element character_name";
+}
+.sheet-scp .sheet-template-head .sheet-element {
+    grid-area: element;
+    border-width: 2px 5px;
+    border-style: solid;
+    border-color: var(--fontColor);
+    border-radius: var(--templateRadius);
+    background-color: white;
+    padding: 0.4063rem;
+}
+
+.sheet-scp .sheet-damage {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+    grid-template-rows: auto 34px;
+    place-content: center;
+    grid-column-gap: 10px;
+    grid-template-areas:
+        "base-label x-label total-label"
+        "base-damage x-damage total-damage";
+    border-radius: 0 0 var(--innerBorderRadius) var(--innerBorderRadius);
+    padding: 2px;
+}
+
+.sheet-base-damage{
+    grid-area: base-damage
+}
+.sheet-base-label{
+    grid-area: base-label
+}
+.sheet-x-damage{
+    grid-area: x-damage
+}
+.sheet-x-label{
+    grid-area: x-label
+}
+.sheet-total-damage{
+    grid-area: total-damage
+}
+.sheet-total-label{
+    grid-area: total-label
+}
+
+.sheet-base-damage, .sheet-x-damage, .sheet-total-damage {
+    border-width: 2px 5px;
+    border-style: solid;
+    border-color: var(--fontColor);
+    border-radius: var(--templateRadius);
+    background-color: white;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    place-content: center;
+}
+.sheet-scp .sheet-damage .sheet-x-damage {
+    border-width: 2px 5px;
+    border-style: solid;
+    border-color: var(--fontColor);
+    border-radius: var(--templateRadius);
+    background-color: white;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    place-content: center;
 }

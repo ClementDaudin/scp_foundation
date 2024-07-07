@@ -14,9 +14,22 @@
         <label>Description </label>
         {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
         <div class="attributeValues">
-            <label>Skill
-            <input name="system.skill" type="text" value="{{systemData.skill}}" placeholder="Skill">
-            </label><label>Melee
+            <label class="input-label body_type">
+                <span class="h5" data-i18n="body type">Compétence</span>
+                <select name="system.skill" title="@{skill}" id="skill">
+                    <option value="handgun" data-i18n="Arme de poing">Arme de poing</option>
+                    <option value="heavy_artillery" data-i18n="Artillerie lourde">Artillerie lourde</option>
+                    <option value="hunting_sniper_rifle" data-i18n="Chasse / Fusil de sniper">Chasse / Fusil de sniper</option>
+                    <option value="shotgun" data-i18n="Fusil à pompe">Fusil à pompe</option>
+                    <option value="assault_rifle" data-i18n="Fusil d'assault">Fusil d'assault</option>
+                    <option value="melee" data-i18n="Mêlée">Mêlée</option>
+                    <option value="submachine_gun" data-i18n="Mitraillette">Mitraillette</option>
+                </select>
+            </label>
+            <label>Recul
+            <input name="system.recoil.base" type="text" value="{{systemData.recoil.base}}" placeholder="Recoil">
+            </label>
+            <label>Melee
                 <input name="system.melee" type="number" value="{{systemData.melee}}" placeholder="Melee">
             </label><label>Hip
                 <input name="system.hip" type="number" value="{{systemData.hip}}" placeholder="Hip">
@@ -25,7 +38,7 @@
             </label><label>Aim
                 <input name="system.aim" type="number" value="{{systemData.aim}}" placeholder="Aim">
             </label>
-            <label>Clip Size
+            <label>Chargeur
                 <input name="system.clip_size" type="number" value="{{systemData.clip_size}}" placeholder="Clip Size">
             </label><label>Base Damage
             <input name="system.base_damage" type="text" value="{{systemData.base_damage}}" placeholder="Base Damage">

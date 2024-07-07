@@ -10,7 +10,6 @@ Hooks.once("init", () => {
     Actors.registerSheet("scp_foundation", scp_foundationActorSheet, {makeDefault: true});
 })
 Hooks.on("createItem", async (item, itemData) => {
-    // Insérez votre logique ici
     if(item.parent !== null) {
         const actor = game.actors.get(item.parent._id);
 
@@ -58,12 +57,11 @@ Hooks.on("createItem", async (item, itemData) => {
 
                                 //update de l'arme
                                 let updateArme = {};
-                                updateArme["system.recoil"] = selectedWeapon.system.recoil + item.system.effect.recoil;
-                                updateArme["system.melee"] = selectedWeapon.system.melee + item.system.effect.melee;
-                                updateArme["system.hip"] = selectedWeapon.system.hip + item.system.effect.hip;
-                                updateArme["system.ready"] = selectedWeapon.system.ready + item.system.effect.ready;
-                                updateArme["system.aim"] = selectedWeapon.system.aim + item.system.effect.aim;
-                                updateArme["system.clip_size"] = selectedWeapon.system.clip_size + item.system.effect.clip_size;
+                                updateArme["system.melee"] = selectedWeapon.system.melee - (- item.system.effect.melee);
+                                updateArme["system.hip"] = selectedWeapon.system.hip - (- item.system.effect.hip);
+                                updateArme["system.ready"] = selectedWeapon.system.ready - (- item.system.effect.ready);
+                                updateArme["system.aim"] = selectedWeapon.system.aim - (- item.system.effect.aim);
+                                updateArme["system.clip_size"] = selectedWeapon.system.clip_size - (- item.system.effect.clip_size);
                                 await selectedWeapon.update(updateArme);
 
                                 // Résoudre la promesse avec true pour indiquer un choix effectué
@@ -94,6 +92,7 @@ Hooks.on("createItem", async (item, itemData) => {
                 return false; // Annuler l'ajout de l'item
             }
         }
+        await scp_foundationActorSheet._updateRecoil(actor);
     }
     return true;
 });

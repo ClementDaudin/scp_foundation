@@ -15,4 +15,25 @@ export default class scp_foundationItemSheet extends ItemSheet{
         console.log(data);
         return data;
     }
+
+    activateListeners(html) {
+        this.updateOther(html);
+    }
+
+    updateOther(html){
+        html.find('input[type="text"]').prop('disabled', true);
+        let skill = html.find('#skill')[0];
+        let skill_selected = this.item.system.skill;
+        let optionsSkill = skill.options;
+
+        for (let i = 0; i < optionsSkill.length; i++) {
+            if (optionsSkill[i].value === skill_selected) {
+                optionsSkill[i].selected = true;
+            } else {
+                optionsSkill[i].selected = false;
+            }
+        }
+        html.find('input[type="text"]').prop('disabled', false);
+    }
+
 }

@@ -67,12 +67,6 @@
         <div id="section-tabs">
             <input class="hidden" name="attr_section" type="radio" value="all" id="all-radio" checked="" title="@{section}">
             <label class="all-radio section-control h5" for="all-radio" data-i18n="all">all</label>
-            <input class="hidden" name="attr_section" type="radio" value="character_details" id="character_details-radio" title="@{section}">
-            <label class="character_details-radio section-control h5" for="character_details-radio" data-i18n="character details">character details</label>
-            <input class="hidden" name="attr_section" type="radio" value="attributes" id="attributes-radio" title="@{section}">
-            <label class="attributes-radio section-control h5" for="attributes-radio" data-i18n="attributes">attributes</label>
-            <input class="hidden" name="attr_section" type="radio" value="actions" id="actions-radio" title="@{section}">
-            <label class="actions-radio section-control h5" for="actions-radio" data-i18n="actions">actions</label>
             <input class="hidden" name="attr_section" type="radio" value="attacks" id="attacks-radio" title="@{section}">
             <label class="attacks-radio section-control h5" for="attacks-radio" data-i18n="attacks">attacks</label>
             <input class="hidden" name="attr_section" type="radio" value="equipment" id="equipment-radio" title="@{section}">
@@ -689,6 +683,10 @@
                                 <div class="logo"></div>
                             </div><span name="attr_operative_id" title="@{operative_id}">-N9lEsYpatOkyDUHqOUJ</span>
                         </div>
+                    </div>
+                    <div style="display: grid; margin-left: 1em">
+                        <label>Description </label>
+                        <textarea name="system.biography" style="min-height: 11em; min-width: 22em">{{systemData.biography}}</textarea>
                     </div>
                 </div>
                 <div class="action">
@@ -1357,10 +1355,10 @@
             <div class="weapons" id="weapons">
                 <div id="multiplier">
                     <label class="input-label melee-mult">
-                        <input class="number h5 boxed" name="attr_melee_multiplier" type="text" value="{{systemData.melee_multiplier.bonus}}" title="@{melee_multiplier}"><span class="h5" data-i18n="melee multiplier">melee multiplier</span>
+                        <input class="number h5 boxed" id="meleeMult" name="attr_melee_multiplier" type="text" value="{{systemData.melee_multiplier.bonus}}" title="@{melee_multiplier}"><span class="h5" data-i18n="melee multiplier">melee multiplier</span>
                     </label>
                     <label class="input-label ranged-mult">
-                        <input class="number h5 boxed" name="attr_ranged_multiplier" type="text" value="{{systemData.melee_multiplier.bonus}}" title="@{ranged_multiplier}"><span class="h5" data-i18n="ranged multiplier">ranged multiplier</span>
+                        <input class="number h5 boxed" id="projMult" name="attr_ranged_multiplier" type="text" value="{{systemData.projection_multiplier.bonus}}" title="@{ranged_multiplier}"><span class="h5" data-i18n="ranged multiplier">ranged multiplier</span>
                     </label>
                 </div>
                 <div id="attributesValues">
@@ -1450,9 +1448,14 @@
                         {{#if (eq item.type "arme")}}
                         <tr class="item arme" data-item-id="{{item._id}}">
                             <td><img src="{{item.img}}" class="toggle-details" title="[[item.name}}" height="32" width="32"/> </td>
-                            <td>{{item.name}}</td>
+                            <td><label class="roll-label" title="%{weapon}">
+                                <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
+                                </div>
+                                <button class="weaponRoller" name="{{item.name}}" data-i18n="{{item.name}}" value="{{item._id}}">{{item.name}}</button>
+                            </label>
+                            </td>
                             <td>{{item.system.skill}}</td>
-                            <td>{{item.system.recoil}}</td>
+                            <td>{{item.system.recoil.actual}}</td>
                             <td>
                                 <input type="radio" id="item{{item._id}}Melee" name="item{{item._id}}" value="1" class="radio-item-system">
                                 <label for="item{{item._id}}Melee">{{item.system.melee}}</label>

@@ -43,13 +43,13 @@ export default class scp_foundationActorSheet extends ActorSheet{
         const radiosTable = html.find(".radio-item-system");
         const radios = Array.from(radiosTable);
         radios.forEach(radio => {
-            radio.addEventListener('change', async function () {
-                // Mettre à jour une variable ou faire autre chose ici
-                const itemId = radio.getAttribute('name').replace('item', ''); // Récupère l'ID de l'item
-                const value = radio.value; // Récupère la valeur sélectionnée du radio
-                let arme = this.actor.items.get(itemId);
-                await arme.update("system.actual_position", value);
+            const itemId = radio.getAttribute('name').replace('item', ''); // Récupère l'ID de l'item
+            let arme = this.actor.items.get(itemId);
+            let value = radio.value
+            radio.addEventListener('change', async () => {
+                await arme.update({"system.actual_position": value});
             });
+            radio.checked = value === arme.system.actual_position;
         });
         const personnelTable = html.find(".personnelButton");
         const personnel = Array.from(personnelTable);
@@ -117,7 +117,14 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let perksArray = Array.from(perksTable);
         perksArray.forEach((perksButton) => {
             perksButton.addEventListener('click', () =>{
-                this.preparePerksRoll(html, perksButton.name, perksButton.value);
+                this.preparePerksRoll(html, perksButton.name, perksButton.value, null, 0);
+            })
+        });
+        let weaponTable = html.find('.weaponRoller');
+        let weaponArray = Array.from(weaponTable);
+        weaponArray.forEach((weaponButton) => {
+            weaponButton.addEventListener('click', () =>{
+                this.prepareAttackRoll(html, weaponButton.name, weaponButton.value);
             })
         });
 
@@ -168,11 +175,31 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find("#all-radio")[0].addEventListener('click', () =>{
             html.find("#charactere_data")[0].style.display = "block";
             html.find("#weapons")[0].style.display = "none";
+            localStorage.setItem('page', 'all')
         })
         html.find("#attacks-radio")[0].addEventListener('click', () =>{
             html.find("#charactere_data")[0].style.display = "none";
             html.find("#weapons")[0].style.display = "block";
+            localStorage.setItem('page', 'attack')
         })
+
+        switch(localStorage.getItem('page')){
+            case "all":
+                html.find("#charactere_data")[0].style.display = "block";
+                html.find("#weapons")[0].style.display = "none";
+                html.find("#all-radio")[0].checked = true;
+                break;
+            case "attack":
+                html.find("#charactere_data")[0].style.display = "none";
+                html.find("#weapons")[0].style.display = "block";
+                html.find("#attacks-radio")[0].checked = true;
+                break;
+            default:
+                html.find("#charactere_data")[0].style.display = "block";
+                html.find("#weapons")[0].style.display = "none";
+                html.find("#all-radio")[0].checked = true;
+                break;
+        }
 
         const armesTable = html.find('.arme');
         const armesArray = Array.from(armesTable);
@@ -387,6 +414,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         updateBonus["system.cognitive_resistance.value"] = cognitive_value;
 
         await this.actor.update(updateBonus);
+        await this._updateRecoil();
 
         html.find('input[type="text"]').prop('disabled', false);
 
@@ -428,41 +456,72 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
     }
 
-    preparePerksRoll(html, rollName, perks){
+    prepareAttackRoll(html, rollName, weaponId){
+        let weapon = this.actor.items.get(weaponId);
+        console.log(weapon)
+        let skill = weapon.system.skill
+        let bonus = 0;
+        switch (weapon.system.actual_position){
+            case "0":
+                ui.notifications.warn(`L'objet n'est pas utilisable`);
+                break;
+            case "1":
+                bonus = weapon.system.melee;
+                break;
+            case "2":
+                bonus = weapon.system.hip;
+                break;
+            case "3":
+                bonus = weapon.system.ready;
+                break;
+            case "4":
+                bonus = weapon.system.aim;
+                break;
+            default:
+                ui.notifications.warn(`Une erreur innatendue est survenue. le statut "${weapon.system.actual_position}" n'existe pas.`);
+                break;
+        }
+        skill = "skills."+skill;
+        console.log(rollName);
+        console.log(bonus);
+        console.log(skill);
+        this.preparePerksRoll(html, rollName, skill, weapon, bonus);
+    }
+    preparePerksRoll(html, rollName, perks, weapon, bonus){
         let fullPerks = perks.split(".");
         let category = this.actor.system.perks[fullPerks[0]];
         let myPerk = category[fullPerks[1]];
-        let bonus = myPerk.perso - (-myPerk.total_mod);
+        bonus -= -(myPerk.perso - (-myPerk.total_mod));
         switch (myPerk.type){
             case "for":
-                this.prepareRoll(html, rollName, "strength", bonus);
+                this.prepareRoll(html, rollName, "strength", weapon, bonus);
                 break;
             case "dex":
-                this.prepareRoll(html, rollName, "dexterity", bonus);
+                this.prepareRoll(html, rollName, "dexterity", weapon, bonus);
                 break;
             case "int":
-                this.prepareRoll(html, rollName, "intelligence", bonus);
+                this.prepareRoll(html, rollName, "intelligence", weapon, bonus);
                 break;
             case "chr":
-                this.prepareRoll(html, rollName, "charisma", bonus);
+                this.prepareRoll(html, rollName, "charisma", weapon, bonus);
                 break;
             case "per":
-                this.prepareRoll(html, rollName, "perception", bonus);
+                this.prepareRoll(html, rollName, "perception", weapon, bonus);
                 break;
             case "vol":
-                this.prepareRoll(html, rollName, "willpower", bonus);
+                this.prepareRoll(html, rollName, "willpower", weapon, bonus);
                 break;
             case "san":
-                this.prepareRoll(html, rollName, "health", bonus);
+                this.prepareRoll(html, rollName, "health", weapon, bonus);
                 break;
             case "dst":
-                this.prepareRoll(html, rollName, "fate", bonus);
+                this.prepareRoll(html, rollName, "fate", weapon, bonus);
                 break;
         }
 
     }
 
-    prepareRoll(html, rollName, type, bonus=0){
+    prepareRoll(html, rollName, type, weapon = null, bonus=0){
         let Dices = this.actor.system.attributes[type];
         let popup = html.find("#ma_popup")[0];
         popup.style.display = "block";
@@ -529,7 +588,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let labelElement = html.find('.input-label.launchDice')[0];
         labelElement.appendChild(nouveauLaunchDiceInput);
         nouveauLaunchDiceInput.addEventListener('click', () =>{
-            this.prepareFormulae(html, rollName, type, bonus);
+            this.prepareFormulae(html, rollName, type, weapon, bonus);
             html.find("#ma_popup")[0].style.display = 'none';
             html.find('#diceUse')[0].value = "true";
             html.find(".diceToUse")[0].style.display = "none";
@@ -602,8 +661,10 @@ export default class scp_foundationActorSheet extends ActorSheet{
         }
     }
 
-    async prepareFormulae(html, rollName, type, bonus) {
+    async prepareFormulae(html, rollName, type, weapon, bonus) {
         let isBestDicesUsed = html.find('#diceUse')[0].value;
+        let exertionUsed = parseInt(html.find('#exertionUse')[0].value);
+        await this.actor.update({"system.exertion.actual" : parseInt(this.actor.system.exertion.actual) - exertionUsed})
         let Dices = this.actor.system.attributes[type];
         let maxD8 = Dices.d8;
         let maxD10 = Dices.d10;
@@ -646,14 +707,22 @@ export default class scp_foundationActorSheet extends ActorSheet{
             diceFormulae.push("1d12");
             d12Used--;
         }
-        this.launchRoll(html, rollName, diceFormulae, type, bonus)
+        while(exertionUsed > 0){
+            diceFormulae.push("1d12");
+            exertionUsed--;
+        }
+        this.launchRoll(html, rollName, diceFormulae, type, false, weapon, bonus)
     }
-
-    async launchRoll(html, rollName, diceFormulae, type, bonus){
-        console.log(this.actor);
+    async launchRoll(html, rollName, diceFormulae, type, reroll, weapon, bonus, previousPosition = 0){
+        if(weapon !== null && previousPosition !== 0){
+            await weapon.update({'system.actual_position': previousPosition});
+        }
         let diceResults = [];
         let diceExplosions = [];
         let malus = 0;
+        if(reroll){
+            rollName = "Reroll : "+rollName;
+        }
         // Lancez les dés et stockez les résultats
         for (let formula of diceFormulae) {
             let roll = new Roll(formula);
@@ -796,14 +865,24 @@ export default class scp_foundationActorSheet extends ActorSheet{
           <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5>
           <span class="sheet-total-value">
           <span class="totalLaunch" >`+ (bestResultsValue - (-bonus) - (-malus)) +`</span></span>
-        </div>
-        <div class="sheet-roll-buttons"><span class="sheet-reverence-reroll"><input type="button" value="reroll" class="reroll" onclick="(function() {
-            console.log('Bouton reroll cliqué !');
-            // Ajoutez votre code ici pour gérer le clic sur le bouton reroll
-        })()"></span>
-        </div>
-        <div class="sheet-description">
-        </div>
+        </div>`
+        if(!reroll){
+            diceRollsHTML +=
+
+        `<div class="sheet-roll-buttons"><span class="sheet-reverence-reroll"><input type="button" value="reroll" class="reroll"></span>`
+        }
+        if(weapon !== null){
+            diceRollsHTML +=  `
+        <span class="sheet-roll-damage"><input type="button" value="Roll Damage" class="rollDamage"></span>`;
+            previousPosition = weapon.system.actual_position;
+            if(parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <=1) {
+                await weapon.update({'system.actual_position': "0"})
+            }else{
+                await weapon.update({'system.actual_position': ""+Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
+            }
+        }
+        diceRollsHTML +=  `
+        </div>  
       </div>
         `
         // Construit le contenu du message de chat avec HTML
@@ -820,15 +899,73 @@ export default class scp_foundationActorSheet extends ActorSheet{
             rerollButton.addEventListener("click", async () => {
                 let reverence = this.actor.system.reverence;
                 if (reverence >= 2) {
-                    this.launchRoll(html, rollName, diceFormulae, type, bonus)
+                    this.launchRoll(html, rollName, diceFormulae, type, true, weapon, bonus, previousPosition)
                     await this.actor.update({
                         "system.reverence": reverence - 2
                     });
+                }else{
+                    ui.notifications.warn(`Vous n'avez pas assez de point de révérence`);
+
                 }
+            });
+            let rollDamageArray = document.getElementsByClassName("rollDamage");
+            let rollDamageButton = rollDamageArray[rollDamageArray.length - 1];
+            rollDamageButton.addEventListener("click", async () => {
+                this.rollDamage(html, weapon, previousPosition, rollName);
+                console.log("roll damage");
             });
         })
     }
 
+    async rollDamage(html, weapon, position, rollName) {
+
+        let baseDamageRoll = new Roll(weapon.system.base_damage);
+        await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
+        let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
+        let xFormula = "(" + weapon.system.x_damage + ")";
+        if(position === "1"){
+            let currentMeleeMult = html.find("#meleeMult")[0].value;
+            xFormula = xFormula + "*" + currentMeleeMult;
+        }
+        else{
+            let currentProjMult = html.find("#projMult")[0].value;
+            xFormula = xFormula + "*" + currentProjMult;
+        }
+        let xDamageRoll = new Roll(xFormula);
+        await xDamageRoll.evaluate(); // Évalue le résultat du lancer
+        let xDamage = xDamageRoll.total; // Obtient le total du résultat
+        let totalDamage = baseDamage - (- xDamage);
+
+            let
+        damageHTML = `
+                <div class="sheet-template sheet-scp level-` + this.actor.system.security_level + ` sheet-finished">
+                    <div class="sheet-template-head sheet-element">
+                        <div class="sheet-black-logo">
+                            <div class="sheet-logo"></div>
+                            <div class="sheet-black-diamond"></div>
+                        </div>
+                        <h3 class="sheet-roll_name sheet-color-cond">` + rollName + `</h3>
+                        <h4 class="sheet-character_name sheet-color-cond">
+                            <p>` + this.actor.name + `</p>
+                        </h4>
+                        <h5 class="sheet-element">` + weapon.system.element + `</h5>
+                    </div>
+                    <div class="sheet-damage">
+                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span class="sheet-base-damage"><span class="showtip" title="Rolling 7d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>7</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>3</span>+<span class=&quot;basicdiceroll&quot;>5</span>)">`+ baseDamage + `</span></span>
+                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span class="sheet-x-damage"><span class="inlinerollresult showtip tipsy-n-right importantroll" title="<img src=&quot;/images/quantumrollwhite.png&quot; class=&quot;inlineqroll&quot;> Rolling 2d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critfail &quot;>1</span>)">` + xDamage + `</span></span>
+                        <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5><span class="sheet-total-damage"><span class="inlinerollresult showtip tipsy-n-right" title="Rolling 0[computed value] = 0">` + totalDamage + `</span></span>
+                    </div>
+                </div>
+        `
+        // Crée le message de chat
+        let messageContent = `<div>${damageHTML}</div>`;
+
+        ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({actor: this.actor}),
+            content: messageContent,
+        });
+
+    }
     async totalModUpdate(evt, perkSelected) {
         let perksName = perkSelected.name
         let perksNameTable = perksName.split(".");
@@ -1037,14 +1174,57 @@ export default class scp_foundationActorSheet extends ActorSheet{
         } else if (item.type === "attachment") {
             let selectedWeapon = this.actor.items.get(item.system.idArme);
             let updateArme = {};
-            updateArme["system.recoil"] = selectedWeapon.system.recoil - item.system.effect.recoil;
+            let attachmentsList = selectedWeapon.system.attachments || [];
+            attachmentsList = attachmentsList.filter(attachment => attachment !== item._id);
+            await selectedWeapon.update({"system.attachments": attachmentsList});
             updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
             updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
             updateArme["system.ready"] = selectedWeapon.system.ready - item.system.effect.ready;
             updateArme["system.aim"] = selectedWeapon.system.aim - item.system.effect.aim;
             updateArme["system.clip_size"] = selectedWeapon.system.clip_size - item.system.effect.clip_size;
             await selectedWeapon.update(updateArme);
+            await this._updateRecoil(this.actor);
         }
         this.actor.deleteEmbeddedDocuments("Item", [item._id]);
+    }
+
+    static async _updateRecoil(actorSelect){
+        const armes = actorSelect.items.filter(item => item.type === "arme");
+        armes.map(async arme => {
+            let updateArme = {};
+            let recoil = arme.system.recoil.base;
+            recoil -= actorSelect.system.recoil;
+            let attachmentsList = arme.system.attachments;
+            attachmentsList.map(attachmentId => {
+                let attachment = actorSelect.items.get(attachmentId)
+                recoil -= -attachment.system.effect.recoil;
+            })
+            if (recoil < 0) {
+                updateArme["system.recoil.actual"] = 0;
+            } else {
+                updateArme["system.recoil.actual"] = recoil;
+            }
+            await arme.update(updateArme);
+        })
+    }
+
+    async _updateRecoil() {
+        const armes = this.actor.items.filter(item => item.type === "arme");
+        armes.map(async arme => {
+            let updateArme = {};
+            let recoil = arme.system.recoil.base;
+            recoil -= this.actor.system.recoil;
+            let attachmentsList = arme.system.attachments;
+            attachmentsList.map(attachmentId => {
+                let attachment = this.actor.items.get(attachmentId)
+                recoil -= -attachment.system.effect.recoil;
+            })
+            if (recoil < 0) {
+                updateArme["system.recoil.actual"] = 0;
+            } else {
+                updateArme["system.recoil.actual"] = recoil;
+            }
+            await arme.update(updateArme);
+        })
     }
 }

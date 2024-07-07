@@ -12,10 +12,28 @@
         <label>Description </label>
         {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
         <div class="attributeValues">
-            <label>Price
-                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
+            <label>Type
+                <input name="system.skill" type="text" value="{{systemData.skill}}" placeholder="Skill">
             </label>
+            <label>Recul
+                <input name="system.effect.recoil" type="text" value="{{systemData.effect.recoil}}" placeholder="Recoil">
+            </label>
+            <label>Melee
+                <input name="system.effect.melee" type="number" value="{{systemData.effect.melee}}" placeholder="Melee">
+            </label><label>Hip
+            <input name="system.effect.hip" type="number" value="{{systemData.effect.hip}}" placeholder="Hip">
+        </label><label>Ready
+            <input name="system.effect.ready" type="number" value="{{systemData.effect.ready}}" placeholder="Ready">
+        </label><label>Aim
+            <input name="system.effect.aim" type="number" value="{{systemData.effect.aim}}" placeholder="Aim">
+        </label>
+            <label>Chargeur
+                <input name="system.effect.clip_size" type="number" value="{{systemData.effect.clip_size}}" placeholder="Clip Size">
+            </label><label>Price
+            <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
+        </label>
         </div>
+
     </section>
 
 </form>

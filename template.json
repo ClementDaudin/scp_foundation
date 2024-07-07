@@ -567,8 +567,12 @@
     "arme": {
       "id": 0,
       "description": "",
-      "skill": "Handgun",
-      "recoil": 0,
+      "skill": "handgun",
+      "recoil": {
+        "base": 0,
+        "actual": 0,
+        "real": 0
+      },
       "melee": 0,
       "hip": 0,
       "ready": 0,

@@ -9,13 +9,15 @@
     </header>
 
     <section class="sheet-body">
-        <label>Description </label>
-        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
+        <div class="description">
+            <label>Description </label>
+            {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
+        </div>
         <div class="attributeValues">
-            <label>Rent
+            <label>Location
                 <input name="system.rent" type="text" value="{{systemData.rent}}" placeholder="Rent">
             </label>
-            <label>Price
+            <label>Prix
                 <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
             </label>
         </div>

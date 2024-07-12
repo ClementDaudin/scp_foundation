@@ -43,7 +43,7 @@
                     <span class="h5" data-i18n="diceToUse">d12 : </span>
                     <select name="diceToUse" class="chooseDice" title="@{d12Selected}" id="d12Selected">
                     </select>
-                    <span class="h5" data-i18n="exertionUse">d10 : </span>
+                    <span class="h5" data-i18n="diceToUse">d10 : </span>
                     <select name="diceToUse" class="chooseDice" title="@{d10Selected}" id="d10Selected">
                     </select>
                     <span class="h5" data-i18n="diceToUse">d8 : </span>
@@ -52,7 +52,8 @@
                 </label>
                 <label class="input-label exertionUse" style="display: none">
                     <span class="h5" data-i18n="exertionUse">Utiliser des points d'exertion ?</span>
-                    <select name="exertionUse" title="@{exertionUse}" id="exertionUse">
+                    <select name="exertionUse" title="@{exertionUse}" id="exertionUse" >
+                        <option value="0">0</option>
                     </select>
                 </label>
                 <label class="input-label launchDice">
@@ -66,11 +67,11 @@
     <section class="sheet-body level-{{systemData.security_level}}">
         <div id="section-tabs">
             <input class="hidden" name="attr_section" type="radio" value="all" id="all-radio" checked="" title="@{section}">
-            <label class="all-radio section-control h5" for="all-radio" data-i18n="all">all</label>
+            <label class="all-radio section-control h5" for="all-radio" data-i18n="all">Général</label>
             <input class="hidden" name="attr_section" type="radio" value="attacks" id="attacks-radio" title="@{section}">
-            <label class="attacks-radio section-control h5" for="attacks-radio" data-i18n="attacks">attacks</label>
+            <label class="attacks-radio section-control h5" for="attacks-radio" data-i18n="attacks">Armurerie</label>
             <input class="hidden" name="attr_section" type="radio" value="equipment" id="equipment-radio" title="@{section}">
-            <label class="equipment-radio section-control h5" for="equipment-radio" data-i18n="equipment">equipment</label>
+            <label class="equipment-radio section-control h5" for="equipment-radio" data-i18n="equipment">Inventaire</label>
         </div>
         <section id="attributes">
             <div class="available-dice">
@@ -474,25 +475,41 @@
                     </section>
                 </div>
                 <div class="stats">
-                    <section class="active-section sticky-sub" id="defenses">
-                        <label class="input-label hp stacked">
-                            <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}" title="@{hp}"><span data-i18n="hp">hp</span>
-                        </label>
-                        <label class="input-label hp_max stacked">
-                            <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}" title="@{hp|max}"><span data-i18n="max hp">hp max</span>
-                        </label>
-                        <label class="input-label damage_reduction stacked">
-                            <input class="number h5 underlined" name="system.damage_reduction" type="text" value="{{systemData.damage_reduction}}" title="@{damage_reduction}"><span data-i18n="damage reduction">reduction de dégât</span>
-                        </label>
-                        <label class="input-label reaction_defense stacked">
-                            <input class="number h5 underlined" name="system.reaction_defense" type="text" readonly="" value="{{systemData.reaction_defense.value}}" title="@{reaction_defense}"><span data-i18n="reaction defense">réaction de défense</span>
-                        </label>
-                        <label class="input-label move_speed stacked">
-                            <input class="number h5 underlined" name="system.move_speed" type="text" readonly="" value="{{systemData.move_speed}}" title="@{move_speed}"><span data-i18n="move speed">vitesse de déplacement</span>
-                        </label>
-                        <label class="input-label cognitive_resistance stacked">
-                            <input class="number h5 underlined" name="system.cognitive_resistance" type="text" readonly="" value="{{systemData.cognitive_resistance.value}}" title="@{cognitive_resistance}"><span data-i18n="cognitive resistance">résistance cognitive</span>
-                        </label>
+                    <section class="active-section" id="defenses">
+                        <div class="character_row_other">
+                            <div>
+                                <label class="input-label hp stacked">
+                                    <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}" title="@{hp}"><span data-i18n="hp">hp</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="input-label hp_max stacked">
+                                    <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}" title="@{hp|max}"><span data-i18n="max hp">hp max</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="input-label damage_reduction stacked">
+                                    <input class="number h5 underlined" name="system.damage_reduction" type="text" value="{{systemData.damage_reduction}}" title="@{damage_reduction}"><span data-i18n="damage reduction">reduction de dégât</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="character_row_other">
+                            <div>
+                                <label class="input-label reaction_defense stacked">
+                                    <input class="number h5 underlined" name="system.reaction_defense" type="text" readonly="" value="{{systemData.reaction_defense.value}}" title="@{reaction_defense}"><span data-i18n="reaction defense">réaction de défense</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="input-label move_speed stacked">
+                                    <input class="number h5 underlined" name="system.move_speed" type="text" readonly="" value="{{systemData.move_speed}}" title="@{move_speed}"><span data-i18n="move speed">vitesse de déplacement</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="input-label cognitive_resistance stacked">
+                                    <input class="number h5 underlined" name="system.cognitive_resistance" type="text" readonly="" value="{{systemData.cognitive_resistance.value}}" title="@{cognitive_resistance}"><span data-i18n="cognitive resistance">résistance cognitive</span>
+                                </label>
+                            </div>
+                        </div>
                     </section>
                 </div>
                 <div class="exertion">
@@ -686,7 +703,7 @@
                     </div>
                     <div style="display: grid; margin-left: 1em">
                         <label>Description </label>
-                        <textarea name="system.biography" style="min-height: 11em; min-width: 22em">{{systemData.biography}}</textarea>
+                        <textarea name="system.biography" style="min-height: 11em; min-width: 18em">{{systemData.biography}}</textarea>
                     </div>
                 </div>
                 <div class="action">
@@ -698,9 +715,9 @@
                                 </div>
                                 <button class="perksRoller" name="Arme de poing" data-i18n="handgun system.perks.skills.handgun.type" value="skills.handgun">Arme de poing ({{systemData.perks.skills.handgun.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.handgun.perso" type="text" step="0.1" title="@{handgun_proficiency}" value="{{systemData.perks.skills.handgun.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.handgun.self_mod" type="text" step="0.1" title="@{handgun_base_mod}" value="{{systemData.perks.skills.handgun.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.handgun.total_mod" type="text" readonly="" step="0.1" title="@{handgun_mod}" value="{{systemData.perks.skills.handgun.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.handgun.perso" type="text" step="0.1" title="@{handgun_proficiency}" value="{{systemData.perks.skills.handgun.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.handgun.self_mod" type="text" step="0.1" title="@{handgun_base_mod}" value="{{systemData.perks.skills.handgun.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.handgun.total_mod" type="text" readonly="" step="0.1" title="@{handgun_mod}" value="{{systemData.perks.skills.handgun.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{heavy artillery}">
@@ -708,9 +725,9 @@
                                 </div>
                                 <button class="perksRoller" name="Artillerie lourde" data-i18n="heavy artillery system.perks.skills.heavy_artillery.type" value="skills.heavy_artillery">Artillerie lourde ({{systemData.perks.skills.heavy_artillery.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.heavy_artillery.perso" type="text" step="0.1" title="@{heavy_artillery_proficiency}" value="{{systemData.perks.skills.heavy_artillery.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.heavy_artillery.self_mod" type="text" step="0.1" title="@{heavy_artillery_base_mod}" value="{{systemData.perks.skills.heavy_artillery.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.heavy_artillery.total_mod" type="text" readonly="" step="0.1" title="@{heavy_artillery_mod}" value="{{systemData.perks.skills.heavy_artillery.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.heavy_artillery.perso" type="text" step="0.1" title="@{heavy_artillery_proficiency}" value="{{systemData.perks.skills.heavy_artillery.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.heavy_artillery.self_mod" type="text" step="0.1" title="@{heavy_artillery_base_mod}" value="{{systemData.perks.skills.heavy_artillery.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.heavy_artillery.total_mod" type="text" readonly="" step="0.1" title="@{heavy_artillery_mod}" value="{{systemData.perks.skills.heavy_artillery.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{hunting/sniper rifle}">
@@ -718,9 +735,9 @@
                                 </div>
                                 <button class="perksRoller" name="Chasse / Fusil de Sniper" data-i18n="hunting / sniper rifle system.perks.skills.hunting_sniper_rifle.type" value="skills.hunting_sniper_rifle">Chasse / Fusil de Sniper ({{systemData.perks.skills.hunting_sniper_rifle.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.hunting_sniper_rifle.perso" type="text" step="0.1" title="@{hunting_sniper_rifle_proficiency}" value="{{systemData.perks.skills.hunting_sniper_rifle.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.hunting_sniper_rifle.self_mod" type="text" step="0.1" title="@{hunting_sniper_rifle_base_mod}" value="{{systemData.perks.skills.hunting_sniper_rifle.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.hunting_sniper_rifle.total_mod" type="text" readonly="" step="0.1" title="@{hunting_sniper_rifle_mod}" value="{{systemData.perks.skills.hunting_sniper_rifle.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.hunting_sniper_rifle.perso" type="text" step="0.1" title="@{hunting_sniper_rifle_proficiency}" value="{{systemData.perks.skills.hunting_sniper_rifle.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.hunting_sniper_rifle.self_mod" type="text" step="0.1" title="@{hunting_sniper_rifle_base_mod}" value="{{systemData.perks.skills.hunting_sniper_rifle.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.hunting_sniper_rifle.total_mod" type="text" readonly="" step="0.1" title="@{hunting_sniper_rifle_mod}" value="{{systemData.perks.skills.hunting_sniper_rifle.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{shotgun}">
@@ -728,9 +745,9 @@
                                 </div>
                                 <button class="perksRoller" name="Fusil à pompe" data-i18n="shotgun system.perks.skills.shotgun.type" value="skills.shotgun">Fusil à pompe ({{systemData.perks.skills.shotgun.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.shotgun.perso" type="text" step="0.1" title="@{shotgun_proficiency}" value="{{systemData.perks.skills.shotgun.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.shotgun.self_mod" type="text" step="0.1" title="@{shotgun_base_mod}" value="{{systemData.perks.skills.shotgun.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.shotgun.total_mod" type="text" readonly="" step="0.1" title="@{shotgun_mod}" value="{{systemData.perks.skills.shotgun.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.shotgun.perso" type="text" step="0.1" title="@{shotgun_proficiency}" value="{{systemData.perks.skills.shotgun.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.shotgun.self_mod" type="text" step="0.1" title="@{shotgun_base_mod}" value="{{systemData.perks.skills.shotgun.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.shotgun.total_mod" type="text" readonly="" step="0.1" title="@{shotgun_mod}" value="{{systemData.perks.skills.shotgun.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{assault rifle}">
@@ -738,9 +755,9 @@
                                 </div>
                                 <button class="perksRoller" name="Fusil D'assault" data-i18n="assault rifle system.perks.skills.assault_rifle.type" value="skills.assault_rifle">Fusil D'Assault ({{systemData.perks.skills.assault_rifle.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.assault_rifle.perso" type="text" step="0.1" title="@{assault_rifle_proficiency}" value="{{systemData.perks.skills.assault_rifle.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.assault_rifle.self_mod" type="text" step="0.1" title="@{assault_rifle_base_mod}" value="{{systemData.perks.skills.assault_rifle.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.assault_rifle.total_mod" type="text" readonly="" step="0.1" title="@{assault_rifle_mod}" value="{{systemData.perks.skills.assault_rifle.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.assault_rifle.perso" type="text" step="0.1" title="@{assault_rifle_proficiency}" value="{{systemData.perks.skills.assault_rifle.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.assault_rifle.self_mod" type="text" step="0.1" title="@{assault_rifle_base_mod}" value="{{systemData.perks.skills.assault_rifle.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.assault_rifle.total_mod" type="text" readonly="" step="0.1" title="@{assault_rifle_mod}" value="{{systemData.perks.skills.assault_rifle.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{melee}">
@@ -748,9 +765,9 @@
                                 </div>
                                 <button class="perksRoller" name="Mêlée" data-i18n="melee system.perks.skills.melee.type" value="skills.melee">Mêlée ({{systemData.perks.skills.melee.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.melee.perso" type="text" step="0.1" title="@{melee_proficiency}" value="{{systemData.perks.skills.melee.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.melee.self_mod" type="text" step="0.1" title="@{melee_base_mod}" value="{{systemData.perks.skills.melee.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.melee.total_mod" type="text" readonly="" step="0.1" title="@{melee_mod}" value="{{systemData.perks.skills.melee.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.melee.perso" type="text" step="0.1" title="@{melee_proficiency}" value="{{systemData.perks.skills.melee.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.melee.self_mod" type="text" step="0.1" title="@{melee_base_mod}" value="{{systemData.perks.skills.melee.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.melee.total_mod" type="text" readonly="" step="0.1" title="@{melee_mod}" value="{{systemData.perks.skills.melee.total_mod}}">
                         </div>
 
                         <div class="underlined thick">
@@ -759,9 +776,9 @@
                                 </div>
                                 <button class="perksRoller" name="Mitraillette" data-i18n="submachine gun system.perks.skills.submachine_gun.type" value="skills.submachine_gun">Mitraillette ({{systemData.perks.skills.submachine_gun.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.submachine_gun.perso" type="text" step="0.1" title="@{submachine_gun_proficiency}" value="{{systemData.perks.skills.submachine_gun.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.submachine_gun.self_mod" type="text" step="0.1" title="@{submachine_gun_base_mod}" value="{{systemData.perks.skills.submachine_gun.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.submachine_gun.total_mod" type="text" readonly="" step="0.1" title="@{submachine_gun_mod}" value="{{systemData.perks.skills.submachine_gun.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.submachine_gun.perso" type="text" step="0.1" title="@{submachine_gun_proficiency}" value="{{systemData.perks.skills.submachine_gun.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.submachine_gun.self_mod" type="text" step="0.1" title="@{submachine_gun_base_mod}" value="{{systemData.perks.skills.submachine_gun.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.submachine_gun.total_mod" type="text" readonly="" step="0.1" title="@{submachine_gun_mod}" value="{{systemData.perks.skills.submachine_gun.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{art / music}">
@@ -769,9 +786,9 @@
                                 </div>
                                 <button class="perksRoller" name="Art / Musique" data-i18n="art / music system.perks.skills.art_music.type" value="skills.art_music">Art / Musique ({{systemData.perks.skills.art_music.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.art_music.perso" type="text" step="0.1" title="@{art_music_proficiency}" value="{{systemData.perks.skills.art_music.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.art_music.self_mod" type="text" step="0.1" title="@{art_music_base_mod}" value="{{systemData.perks.skills.art_music.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.art_music.total_mod" type="text" readonly="" step="0.1" title="@{art_music_mod}" value="{{systemData.perks.skills.art_music.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.art_music.perso" type="text" step="0.1" title="@{art_music_proficiency}" value="{{systemData.perks.skills.art_music.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.art_music.self_mod" type="text" step="0.1" title="@{art_music_base_mod}" value="{{systemData.perks.skills.art_music.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.art_music.total_mod" type="text" readonly="" step="0.1" title="@{art_music_mod}" value="{{systemData.perks.skills.art_music.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{catch / throw}">
@@ -779,9 +796,9 @@
                                 </div>
                                 <button class="perksRoller" name="Attraper / Jeter" data-i18n="catch / throw system.perks.skills.catch_throw.type" value="skills.catch_throw">Attraper / Jeter ({{systemData.perks.skills.catch_throw.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.catch_throw.perso" type="text" step="0.1" title="@{catch_throw_proficiency}" value="{{systemData.perks.skills.catch_throw.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.catch_throw.self_mod" type="text" step="0.1" title="@{catch_throw_base_mod}" value="{{systemData.perks.skills.catch_throw.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.catch_throw.total_mod" type="text" readonly="" step="0.1" title="@{catch_throw_mod}" value="{{systemData.perks.skills.catch_throw.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.catch_throw.perso" type="text" step="0.1" title="@{catch_throw_proficiency}" value="{{systemData.perks.skills.catch_throw.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.catch_throw.self_mod" type="text" step="0.1" title="@{catch_throw_base_mod}" value="{{systemData.perks.skills.catch_throw.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.catch_throw.total_mod" type="text" readonly="" step="0.1" title="@{catch_throw_mod}" value="{{systemData.perks.skills.catch_throw.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{drive}">
@@ -789,9 +806,9 @@
                                 </div>
                                 <button class="perksRoller" name="Conduite" data-i18n="drive system.perks.skills.drive.type" value="skills.drive">Conduite ({{systemData.perks.skills.drive.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.drive.perso" type="text" step="0.1" title="@{drive_proficiency}" value="{{systemData.perks.skills.drive.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.drive.self_mod" type="text" step="0.1" title="@{drive_base_mod}" value="{{systemData.perks.skills.drive.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.drive.total_mod" type="text" readonly="" step="0.1" title="@{drive_mod}" value="{{systemData.perks.skills.drive.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.drive.perso" type="text" step="0.1" title="@{drive_proficiency}" value="{{systemData.perks.skills.drive.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.drive.self_mod" type="text" step="0.1" title="@{drive_base_mod}" value="{{systemData.perks.skills.drive.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.drive.total_mod" type="text" readonly="" step="0.1" title="@{drive_mod}" value="{{systemData.perks.skills.drive.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{lockpicking}">
@@ -799,9 +816,9 @@
                                 </div>
                                 <button class="perksRoller" name="Crochetage" data-i18n="lockpicking system.perks.skills.lockpicking.type" value="skills.lockpicking">Crochetage ({{systemData.perks.skills.lockpicking.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.lockpicking.perso" type="text" step="0.1" title="@{lockpicking_proficiency}" value="{{systemData.perks.skills.lockpicking.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.lockpicking.self_mod" type="text" step="0.1" title="@{lockpicking_base_mod}" value="{{systemData.perks.skills.lockpicking.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.lockpicking.total_mod" type="text" readonly="" step="0.1" title="@{lockpicking_mod}" value="{{systemData.perks.skills.lockpicking.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.lockpicking.perso" type="text" step="0.1" title="@{lockpicking_proficiency}" value="{{systemData.perks.skills.lockpicking.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.lockpicking.self_mod" type="text" step="0.1" title="@{lockpicking_base_mod}" value="{{systemData.perks.skills.lockpicking.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.lockpicking.total_mod" type="text" readonly="" step="0.1" title="@{lockpicking_mod}" value="{{systemData.perks.skills.lockpicking.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{writing}">
@@ -809,9 +826,9 @@
                                 </div>
                                 <button class="perksRoller" name="écriture" data-i18n="writing system.perks.skills.writing.type" value="skills.writing">écriture ({{systemData.perks.skills.writing.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.writing.perso" type="text" step="0.1" title="@{writing_proficiency}" value="{{systemData.perks.skills.writing.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.writing.self_mod" type="text" step="0.1" title="@{writing_base_mod}" value="{{systemData.perks.skills.writing.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.writing.total_mod" type="text" readonly="" step="0.1" title="@{writing_mod}" value="{{systemData.perks.skills.writing.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.writing.perso" type="text" step="0.1" title="@{writing_proficiency}" value="{{systemData.perks.skills.writing.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.writing.self_mod" type="text" step="0.1" title="@{writing_base_mod}" value="{{systemData.perks.skills.writing.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.writing.total_mod" type="text" readonly="" step="0.1" title="@{writing_mod}" value="{{systemData.perks.skills.writing.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{teaching}">
@@ -819,9 +836,9 @@
                                 </div>
                                 <button class="perksRoller" name="Enseignement" data-i18n="teaching system.perks.skills.teaching.type" value="skills.teaching">Enseignement ({{systemData.perks.skills.teaching.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.teaching.perso" type="text" step="0.1" title="@{teaching_proficiency}" value="{{systemData.perks.skills.teaching.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.teaching.self_mod" type="text" step="0.1" title="@{teaching_base_mod}" value="{{systemData.perks.skills.teaching.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.teaching.total_mod" type="text" readonly="" step="0.1" title="@{teaching_mod}" value="{{systemData.perks.skills.teaching.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.teaching.perso" type="text" step="0.1" title="@{teaching_proficiency}" value="{{systemData.perks.skills.teaching.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.teaching.self_mod" type="text" step="0.1" title="@{teaching_base_mod}" value="{{systemData.perks.skills.teaching.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.teaching.total_mod" type="text" readonly="" step="0.1" title="@{teaching_mod}" value="{{systemData.perks.skills.teaching.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{climb}">
@@ -829,9 +846,9 @@
                                 </div>
                                 <button class="perksRoller" name="Escalade" data-i18n="climb system.perks.skills.climb.type" value="skills.climb">Escalade ({{systemData.perks.skills.climb.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.climb.perso" type="text" step="0.1" title="@{climb_proficiency}" value="{{systemData.perks.skills.climb.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.climb.self_mod" type="text" step="0.1" title="@{climb_base_mod}" value="{{systemData.perks.skills.climb.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.climb.total_mod" type="text" readonly="" step="0.1" title="@{climb_mod}" value="{{systemData.perks.skills.climb.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.climb.perso" type="text" step="0.1" title="@{climb_proficiency}" value="{{systemData.perks.skills.climb.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.climb.self_mod" type="text" step="0.1" title="@{climb_base_mod}" value="{{systemData.perks.skills.climb.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.climb.total_mod" type="text" readonly="" step="0.1" title="@{climb_mod}" value="{{systemData.perks.skills.climb.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{stealth / hide}">
@@ -839,9 +856,9 @@
                                 </div>
                                 <button class="perksRoller" name="furtivité / se cacher" data-i18n="stealth / hide system.perks.skills.stealth_hide.type" value="skills.stealth_hide">furtivité / se cacher ({{systemData.perks.skills.stealth_hide.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.stealth_hide.perso" type="text" step="0.1" title="@{stealth_hide_proficiency}" value="{{systemData.perks.skills.stealth_hide.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.stealth_hide.self_mod" type="text" step="0.1" title="@{stealth_hide_base_mod}" value="{{systemData.perks.skills.stealth_hide.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.stealth_hide.total_mod" type="text" readonly="" step="0.1" title="@{stealth_hide_mod}" value="{{systemData.perks.skills.stealth_hide.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.stealth_hide.perso" type="text" step="0.1" title="@{stealth_hide_proficiency}" value="{{systemData.perks.skills.stealth_hide.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.stealth_hide.self_mod" type="text" step="0.1" title="@{stealth_hide_base_mod}" value="{{systemData.perks.skills.stealth_hide.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.stealth_hide.total_mod" type="text" readonly="" step="0.1" title="@{stealth_hide_mod}" value="{{systemData.perks.skills.stealth_hide.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{acting/lie}">
@@ -849,9 +866,9 @@
                                 </div>
                                 <button class="perksRoller" name="Jouer la comédie / Mentir" data-i18n="acting / lie system.perks.skills.acting_lie.type" value="skills.acting_lie">Jouer la comédie / Mentir ({{systemData.perks.skills.acting_lie.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.acting_lie.perso" type="text" step="0.1" title="@{acting_lie_proficiency}" value="{{systemData.perks.skills.acting_lie.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.acting_lie.self_mod" type="text" step="0.1" title="@{acting_lie_base_mod}" value="{{systemData.perks.skills.acting_lie.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.acting_lie.total_mod" type="text" readonly="" step="0.1" title="@{acting_lie_mod}" value="{{systemData.perks.skills.acting_lie.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.acting_lie.perso" type="text" step="0.1" title="@{acting_lie_proficiency}" value="{{systemData.perks.skills.acting_lie.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.acting_lie.self_mod" type="text" step="0.1" title="@{acting_lie_base_mod}" value="{{systemData.perks.skills.acting_lie.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.acting_lie.total_mod" type="text" readonly="" step="0.1" title="@{acting_lie_mod}" value="{{systemData.perks.skills.acting_lie.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{wrestle / disarm}">
@@ -859,9 +876,9 @@
                                 </div>
                                 <button class="perksRoller" name="lutte / désarmer" data-i18n="wrestle / disarm system.perks.skills.wrestle_disarm.type" value="skills.wrestle_disarm">lutte / désarmer ({{systemData.perks.skills.wrestle_disarm.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.wrestle_disarm.perso" type="text" step="0.1" title="@{wrestle_disarm_proficiency}" value="{{systemData.perks.skills.wrestle_disarm.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.wrestle_disarm.self_mod" type="text" step="0.1" title="@{wrestle_disarm_base_mod}" value="{{systemData.perks.skills.wrestle_disarm.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.wrestle_disarm.total_mod" type="text" readonly="" step="0.1" title="@{wrestle_disarm_mod}" value="{{systemData.perks.skills.wrestle_disarm.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.wrestle_disarm.perso" type="text" step="0.1" title="@{wrestle_disarm_proficiency}" value="{{systemData.perks.skills.wrestle_disarm.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.wrestle_disarm.self_mod" type="text" step="0.1" title="@{wrestle_disarm_base_mod}" value="{{systemData.perks.skills.wrestle_disarm.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.wrestle_disarm.total_mod" type="text" readonly="" step="0.1" title="@{wrestle_disarm_mod}" value="{{systemData.perks.skills.wrestle_disarm.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{showmanship}">
@@ -869,9 +886,9 @@
                                 </div>
                                 <button class="perksRoller" name="Mise en scène" data-i18n="showmanship system.perks.skills.showmanship.type" value="skills.showmanship">Mise en scène ({{systemData.perks.skills.showmanship.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.showmanship.perso" type="text" step="0.1" title="@{showmanship_proficiency}" value="{{systemData.perks.skills.showmanship.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.showmanship.self_mod" type="text" step="0.1" title="@{showmanship_base_mod}" value="{{systemData.perks.skills.showmanship.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.showmanship.total_mod" type="text" readonly="" step="0.1" title="@{showmanship_mod}" value="{{systemData.perks.skills.showmanship.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.showmanship.perso" type="text" step="0.1" title="@{showmanship_proficiency}" value="{{systemData.perks.skills.showmanship.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.showmanship.self_mod" type="text" step="0.1" title="@{showmanship_base_mod}" value="{{systemData.perks.skills.showmanship.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.showmanship.total_mod" type="text" readonly="" step="0.1" title="@{showmanship_mod}" value="{{systemData.perks.skills.showmanship.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{swim}">
@@ -879,9 +896,9 @@
                                 </div>
                                 <button class="perksRoller" name="Natation" data-i18n="swim system.perks.skills.swim.type" value="skills.swim">Natation ({{systemData.perks.skills.swim.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.swim.perso" type="text" step="0.1" title="@{swim_proficiency}" value="{{systemData.perks.skills.swim.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.swim.self_mod" type="text" step="0.1" title="@{swim_base_mod}" value="{{systemData.perks.skills.swim.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.swim.total_mod" type="text" readonly="" step="0.1" title="@{swim_mod}" value="{{systemData.perks.skills.swim.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.swim.perso" type="text" step="0.1" title="@{swim_proficiency}" value="{{systemData.perks.skills.swim.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.swim.self_mod" type="text" step="0.1" title="@{swim_base_mod}" value="{{systemData.perks.skills.swim.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.swim.total_mod" type="text" readonly="" step="0.1" title="@{swim_mod}" value="{{systemData.perks.skills.swim.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{pickpocket}">
@@ -889,9 +906,9 @@
                                 </div>
                                 <button class="perksRoller" name="pickpocket" data-i18n="pickpocket system.perks.skills.pickpocket.type" value="skills.pickpocket">pickpocket ({{systemData.perks.skills.pickpocket.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.pickpocket.perso" type="text" step="0.1" title="@{pickpocket_proficiency}" value="{{systemData.perks.skills.pickpocket.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.pickpocket.self_mod" type="text" step="0.1" title="@{pickpocket_base_mod}" value="{{systemData.perks.skills.pickpocket.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.pickpocket.total_mod" type="text" readonly="" step="0.1" title="@{pickpocket_mod}" value="{{systemData.perks.skills.pickpocket.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.pickpocket.perso" type="text" step="0.1" title="@{pickpocket_proficiency}" value="{{systemData.perks.skills.pickpocket.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.pickpocket.self_mod" type="text" step="0.1" title="@{pickpocket_base_mod}" value="{{systemData.perks.skills.pickpocket.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.pickpocket.total_mod" type="text" readonly="" step="0.1" title="@{pickpocket_mod}" value="{{systemData.perks.skills.pickpocket.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{pilot}">
@@ -899,9 +916,9 @@
                                 </div>
                                 <button class="perksRoller" name="Pilotage" data-i18n="pilot system.perks.skills.pilot.type" value="skills.pilot">Pilotage ({{systemData.perks.skills.pilot.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.pilot.perso" type="text" step="0.1" title="@{pilot_proficiency}" value="{{systemData.perks.skills.pilot.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.pilot.self_mod" type="text" step="0.1" title="@{pilot_base_mod}" value="{{systemData.perks.skills.pilot.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.pilot.total_mod" type="text" readonly="" step="0.1" title="@{pilot_mod}" value="{{systemData.perks.skills.pilot.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.pilot.perso" type="text" step="0.1" title="@{pilot_proficiency}" value="{{systemData.perks.skills.pilot.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.pilot.self_mod" type="text" step="0.1" title="@{pilot_base_mod}" value="{{systemData.perks.skills.pilot.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.pilot.total_mod" type="text" readonly="" step="0.1" title="@{pilot_mod}" value="{{systemData.perks.skills.pilot.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{disguise / blend in}">
@@ -909,9 +926,9 @@
                                 </div>
                                 <button class="perksRoller" name="se déguiser / se fondre dans la masse" data-i18n="disguise / blend in system.perks.skills.disguise_blend_in.type" value="skills.disguise_blend_in">se déguiser / se fondre dans la masse ({{systemData.perks.skills.disguise_blend_in.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.disguise_blend_in.perso" type="text" step="0.1" title="@{disguise_blend_in_proficiency}" value="{{systemData.perks.skills.disguise_blend_in.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.disguise_blend_in.self_mod" type="text" step="0.1" title="@{disguise_blend_in_base_mod}" value="{{systemData.perks.skills.disguise_blend_in.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.disguise_blend_in.total_mod" type="text" readonly="" step="0.1" title="@{disguise_blend_in_mod}" value="{{systemData.perks.skills.disguise_blend_in.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.disguise_blend_in.perso" type="text" step="0.1" title="@{disguise_blend_in_proficiency}" value="{{systemData.perks.skills.disguise_blend_in.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.disguise_blend_in.self_mod" type="text" step="0.1" title="@{disguise_blend_in_base_mod}" value="{{systemData.perks.skills.disguise_blend_in.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.disguise_blend_in.total_mod" type="text" readonly="" step="0.1" title="@{disguise_blend_in_mod}" value="{{systemData.perks.skills.disguise_blend_in.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{break free / escape}">
@@ -919,9 +936,9 @@
                                 </div>
                                 <button class="perksRoller" name="se libérer / s'échapper" data-i18n="break free / escape system.perks.skills.break_free_escape.type" value="skills.break_free_escape">se libérer / s'échapper ({{systemData.perks.skills.break_free_escape.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.skills.break_free_escape.perso" type="text" step="0.1" title="@{break_free_escape_proficiency}" value="{{systemData.perks.skills.break_free_escape.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.skills.break_free_escape.self_mod" type="text" step="0.1" title="@{break_free_escape_base_mod}" value="{{systemData.perks.skills.break_free_escape.self_mod}}">
-                            <input class="number underlined" name="system.perks.skills.break_free_escape.total_mod" type="text" readonly="" step="0.1" title="@{break_free_escape_mod}" value="{{systemData.perks.skills.break_free_escape.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.break_free_escape.perso" type="text" step="0.1" title="@{break_free_escape_proficiency}" value="{{systemData.perks.skills.break_free_escape.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.skills.break_free_escape.self_mod" type="text" step="0.1" title="@{break_free_escape_base_mod}" value="{{systemData.perks.skills.break_free_escape.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.skills.break_free_escape.total_mod" type="text" readonly="" step="0.1" title="@{break_free_escape_mod}" value="{{systemData.perks.skills.break_free_escape.total_mod}}">
                         </div>
                     </div>
                     <div id="knowledges">
@@ -932,9 +949,9 @@
                                 </div>
                                 <button class="perksRoller" name="anatomie / premiers secours" data-i18n="anatomy / first aid system.perks.knowledges.anatomy_first_aid.type" value="knowledges.anatomy_first_aid">anatomie / premiers secours ({{systemData.perks.knowledges.anatomy_first_aid.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.anatomy_first_aid.perso" type="text" step="0.1" title="@{anatomy_first_aid_proficiency}" value="{{systemData.perks.knowledges.anatomy_first_aid.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.anatomy_first_aid.self_mod" type="text" step="0.1" title="@{anatomy_first_aid_base_mod}" value="{{systemData.perks.knowledges.anatomy_first_aid.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.anatomy_first_aid.total_mod" type="text" readonly="" step="0.1" title="@{anatomy_first_aid_mod}" value="{{systemData.perks.knowledges.anatomy_first_aid.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.anatomy_first_aid.perso" type="text" step="0.1" title="@{anatomy_first_aid_proficiency}" value="{{systemData.perks.knowledges.anatomy_first_aid.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.anatomy_first_aid.self_mod" type="text" step="0.1" title="@{anatomy_first_aid_base_mod}" value="{{systemData.perks.knowledges.anatomy_first_aid.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.anatomy_first_aid.total_mod" type="text" readonly="" step="0.1" title="@{anatomy_first_aid_mod}" value="{{systemData.perks.knowledges.anatomy_first_aid.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{architecture}">
@@ -942,9 +959,9 @@
                                 </div>
                                 <button class="perksRoller" name="architecture" data-i18n="architecture system.perks.knowledges.architecture.type" value="knowledges.architecture">architecture ({{systemData.perks.knowledges.architecture.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.architecture.perso" type="text" step="0.1" title="@{architecture_proficiency}" value="{{systemData.perks.knowledges.architecture.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.architecture.self_mod" type="text" step="0.1" title="@{architecture_base_mod}" value="{{systemData.perks.knowledges.architecture.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.architecture.total_mod" type="text" readonly="" step="0.1" title="@{architecture_mod}" value="{{systemData.perks.knowledges.architecture.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.architecture.perso" type="text" step="0.1" title="@{architecture_proficiency}" value="{{systemData.perks.knowledges.architecture.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.architecture.self_mod" type="text" step="0.1" title="@{architecture_base_mod}" value="{{systemData.perks.knowledges.architecture.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.architecture.total_mod" type="text" readonly="" step="0.1" title="@{architecture_mod}" value="{{systemData.perks.knowledges.architecture.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{astronomy}">
@@ -952,9 +969,9 @@
                                 </div>
                                 <button class="perksRoller" name="astronomie" data-i18n="astronomy system.perks.knowledges.astronomy.type" value="knowledges.astronomy">astronomie ({{systemData.perks.knowledges.astronomy.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.astronomy.perso" type="text" step="0.1" title="@{astronomy_proficiency}" value="{{systemData.perks.knowledges.astronomy.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.astronomy.self_mod" type="text" step="0.1" title="@{astronomy_base_mod}" value="{{systemData.perks.knowledges.astronomy.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.astronomy.total_mod" type="text" readonly="" step="0.1" title="@{astronomy_mod}" value="{{systemData.perks.knowledges.astronomy.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.astronomy.perso" type="text" step="0.1" title="@{astronomy_proficiency}" value="{{systemData.perks.knowledges.astronomy.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.astronomy.self_mod" type="text" step="0.1" title="@{astronomy_base_mod}" value="{{systemData.perks.knowledges.astronomy.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.astronomy.total_mod" type="text" readonly="" step="0.1" title="@{astronomy_mod}" value="{{systemData.perks.knowledges.astronomy.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{general knowledge}">
@@ -962,9 +979,9 @@
                                 </div>
                                 <button class="perksRoller" name="connaissances générales" data-i18n="general knowledge system.perks.knowledges.general_knowledge.type" value="knowledges.general_knowledge">connaissances générales ({{systemData.perks.knowledges.general_knowledge.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.general_knowledge.perso" type="text" step="0.1" title="@{general_knowledge_proficiency}" value="{{systemData.perks.knowledges.general_knowledge.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.general_knowledge.self_mod" type="text" step="0.1" title="@{general_knowledge_base_mod}" value="{{systemData.perks.knowledges.general_knowledge.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.general_knowledge.total_mod" type="text" readonly="" step="0.1" title="@{general_knowledge_mod}" value="{{systemData.perks.knowledges.general_knowledge.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.general_knowledge.perso" type="text" step="0.1" title="@{general_knowledge_proficiency}" value="{{systemData.perks.knowledges.general_knowledge.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.general_knowledge.self_mod" type="text" step="0.1" title="@{general_knowledge_base_mod}" value="{{systemData.perks.knowledges.general_knowledge.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.general_knowledge.total_mod" type="text" readonly="" step="0.1" title="@{general_knowledge_mod}" value="{{systemData.perks.knowledges.general_knowledge.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{cooking}">
@@ -972,9 +989,9 @@
                                 </div>
                                 <button class="perksRoller" name="Cuisine" data-i18n="cooking system.perks.knowledges.cooking.type" value="knowledges.cooking">Cuisine ({{systemData.perks.knowledges.cooking.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.cooking.perso" type="text" step="0.1" title="@{cooking_proficiency}" value="{{systemData.perks.knowledges.cooking.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.cooking.self_mod" type="text" step="0.1" title="@{cooking_base_mod}" value="{{systemData.perks.knowledges.cooking.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.cooking.total_mod" type="text" readonly="" step="0.1" title="@{cooking_mod}" value="{{systemData.perks.knowledges.cooking.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.cooking.perso" type="text" step="0.1" title="@{cooking_proficiency}" value="{{systemData.perks.knowledges.cooking.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.cooking.self_mod" type="text" step="0.1" title="@{cooking_base_mod}" value="{{systemData.perks.knowledges.cooking.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.cooking.total_mod" type="text" readonly="" step="0.1" title="@{cooking_mod}" value="{{systemData.perks.knowledges.cooking.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{demolition}">
@@ -982,9 +999,9 @@
                                 </div>
                                 <button class="perksRoller" name="démolition" data-i18n="demolition system.perks.knowledges.demolition.type" value="knowledges.demolition">démolition ({{systemData.perks.knowledges.demolition.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.demolition.perso" type="text" step="0.1" title="@{demolition_proficiency}" value="{{systemData.perks.knowledges.demolition.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.demolition.self_mod" type="text" step="0.1" title="@{demolition_base_mod}" value="{{systemData.perks.knowledges.demolition.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.demolition.total_mod" type="text" readonly="" step="0.1" title="@{demolition_mod}" value="{{systemData.perks.knowledges.demolition.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.demolition.perso" type="text" step="0.1" title="@{demolition_proficiency}" value="{{systemData.perks.knowledges.demolition.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.demolition.self_mod" type="text" step="0.1" title="@{demolition_base_mod}" value="{{systemData.perks.knowledges.demolition.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.demolition.total_mod" type="text" readonly="" step="0.1" title="@{demolition_mod}" value="{{systemData.perks.knowledges.demolition.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{history / lore}">
@@ -992,9 +1009,9 @@
                                 </div>
                                 <button class="perksRoller" name="histoire / lore" data-i18n="history / lore system.perks.knowledges.history_lore.type" value="knowledges.history_lore">histoire / lore ({{systemData.perks.knowledges.history_lore.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.history_lore.perso" type="text" step="0.1" title="@{history_lore_proficiency}" value="{{systemData.perks.knowledges.history_lore.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.history_lore.self_mod" type="text" step="0.1" title="@{history_lore_base_mod}" value="{{systemData.perks.knowledges.history_lore.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.history_lore.total_mod" type="text" readonly="" step="0.1" title="@{history_lore_mod}" value="{{systemData.perks.knowledges.history_lore.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.history_lore.perso" type="text" step="0.1" title="@{history_lore_proficiency}" value="{{systemData.perks.knowledges.history_lore.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.history_lore.self_mod" type="text" step="0.1" title="@{history_lore_base_mod}" value="{{systemData.perks.knowledges.history_lore.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.history_lore.total_mod" type="text" readonly="" step="0.1" title="@{history_lore_mod}" value="{{systemData.perks.knowledges.history_lore.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{identify taste / smell}">
@@ -1002,9 +1019,9 @@
                                 </div>
                                 <button class="perksRoller" name="identifier le goût / l'odeur" data-i18n="identify taste / smell system.perks.knowledges.identify_taste_smell.type" value="knowledges.identify_taste_smell">identifier le goût / l'odeur ({{systemData.perks.knowledges.identify_taste_smell.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.identify_taste_smell.perso" type="text" step="0.1" title="@{identify_taste_smell_proficiency}" value="{{systemData.perks.knowledges.identify_taste_smell.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.identify_taste_smell.self_mod" type="text" step="0.1" title="@{identify_taste_smell_base_mod}" value="{{systemData.perks.knowledges.identify_taste_smell.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.identify_taste_smell.total_mod" type="text" readonly="" step="0.1" title="@{identify_taste_smell_mod}" value="{{systemData.perks.knowledges.identify_taste_smell.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.identify_taste_smell.perso" type="text" step="0.1" title="@{identify_taste_smell_proficiency}" value="{{systemData.perks.knowledges.identify_taste_smell.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.identify_taste_smell.self_mod" type="text" step="0.1" title="@{identify_taste_smell_base_mod}" value="{{systemData.perks.knowledges.identify_taste_smell.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.identify_taste_smell.total_mod" type="text" readonly="" step="0.1" title="@{identify_taste_smell_mod}" value="{{systemData.perks.knowledges.identify_taste_smell.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{computer / hacking}">
@@ -1012,9 +1029,9 @@
                                 </div>
                                 <button class="perksRoller" name="informatique / piratage" data-i18n="computer / hacking system.perks.knowledges.computer_hacking.type" value="knowledges.computer_hacking">informatique / piratage ({{systemData.perks.knowledges.computer_hacking.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.computer_hacking.perso" type="text" step="0.1" title="@{computer_hacking_proficiency}" value="{{systemData.perks.knowledges.computer_hacking.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.computer_hacking.self_mod" type="text" step="0.1" title="@{computer_hacking_base_mod}" value="{{systemData.perks.knowledges.computer_hacking.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.computer_hacking.total_mod" type="text" readonly="" step="0.1" title="@{computer_hacking_mod}" value="{{systemData.perks.knowledges.computer_hacking.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.computer_hacking.perso" type="text" step="0.1" title="@{computer_hacking_proficiency}" value="{{systemData.perks.knowledges.computer_hacking.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.computer_hacking.self_mod" type="text" step="0.1" title="@{computer_hacking_base_mod}" value="{{systemData.perks.knowledges.computer_hacking.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.computer_hacking.total_mod" type="text" readonly="" step="0.1" title="@{computer_hacking_mod}" value="{{systemData.perks.knowledges.computer_hacking.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{investigate}">
@@ -1022,9 +1039,9 @@
                                 </div>
                                 <button class="perksRoller" name="investigation" data-i18n="investigate system.perks.knowledges.investigate.type" value="knowledges.investigate">investigation ({{systemData.perks.knowledges.investigate.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.investigate.perso" type="text" step="0.1" title="@{investigate_proficiency}" value="{{systemData.perks.knowledges.investigate.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.investigate.self_mod" type="text" step="0.1" title="@{investigate_base_mod}" value="{{systemData.perks.knowledges.investigate.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.investigate.total_mod" type="text" readonly="" step="0.1" title="@{investigate_mod}" value="{{systemData.perks.knowledges.investigate.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.investigate.perso" type="text" step="0.1" title="@{investigate_proficiency}" value="{{systemData.perks.knowledges.investigate.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.investigate.self_mod" type="text" step="0.1" title="@{investigate_base_mod}" value="{{systemData.perks.knowledges.investigate.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.investigate.total_mod" type="text" readonly="" step="0.1" title="@{investigate_mod}" value="{{systemData.perks.knowledges.investigate.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{gambling / gaming}">
@@ -1032,9 +1049,9 @@
                                 </div>
                                 <button class="perksRoller" name="jeux d'argent / jeux de hasard" data-i18n="gambling / gaming system.perks.knowledges.gambling_gaming.type" value="knowledges.gambling_gaming">jeux d'argent / jeux de hasard ({{systemData.perks.knowledges.gambling_gaming.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.gambling_gaming.perso" type="text" step="0.1" title="@{gambling_gaming_proficiency}" value="{{systemData.perks.knowledges.gambling_gaming.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.gambling_gaming.self_mod" type="text" step="0.1" title="@{gambling_gaming_base_mod}" value="{{systemData.perks.knowledges.gambling_gaming.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.gambling_gaming.total_mod" type="text" readonly="" step="0.1" title="@{gambling_gaming_mod}" value="{{systemData.perks.knowledges.gambling_gaming.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.gambling_gaming.perso" type="text" step="0.1" title="@{gambling_gaming_proficiency}" value="{{systemData.perks.knowledges.gambling_gaming.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.gambling_gaming.self_mod" type="text" step="0.1" title="@{gambling_gaming_base_mod}" value="{{systemData.perks.knowledges.gambling_gaming.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.gambling_gaming.total_mod" type="text" readonly="" step="0.1" title="@{gambling_gaming_mod}" value="{{systemData.perks.knowledges.gambling_gaming.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{ancient languages}">
@@ -1042,9 +1059,9 @@
                                 </div>
                                 <button class="perksRoller" name="langues anciennes" data-i18n="ancient languages system.perks.knowledges.ancient_languages.type" value="knowledges.ancient_languages">langues anciennes({{systemData.perks.knowledges.ancient_languages.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.ancient_languages.perso" type="text" step="0.1" title="@{ancient_languages_proficiency}" value="{{systemData.perks.knowledges.ancient_languages.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.ancient_languages.self_mod" type="text" step="0.1" title="@{ancient_languages_base_mod}" value="{{systemData.perks.knowledges.ancient_languages.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.ancient_languages.total_mod" type="text" readonly="" step="0.1" title="@{ancient_languages_mod}" value="{{systemData.perks.knowledges.ancient_languages.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.ancient_languages.perso" type="text" step="0.1" title="@{ancient_languages_proficiency}" value="{{systemData.perks.knowledges.ancient_languages.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.ancient_languages.self_mod" type="text" step="0.1" title="@{ancient_languages_base_mod}" value="{{systemData.perks.knowledges.ancient_languages.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.ancient_languages.total_mod" type="text" readonly="" step="0.1" title="@{ancient_languages_mod}" value="{{systemData.perks.knowledges.ancient_languages.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{law / politics}">
@@ -1052,19 +1069,19 @@
                                 </div>
                                 <button class="perksRoller" name="loi / politique" data-i18n="law / politics system.perks.knowledges.law_politics.type" value="knowledges.law_politics">loi / politique ({{systemData.perks.knowledges.law_politics.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.law_politics.perso" type="text" step="0.1" title="@{law_politics_proficiency}" value="{{systemData.perks.knowledges.law_politics.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.law_politics.self_mod" type="text" step="0.1" title="@{law_politics_base_mod}" value="{{systemData.perks.knowledges.law_politics.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.law_politics.total_mod" type="text" readonly="" step="0.1" title="@{law_politics_mod}" value="{{systemData.perks.knowledges.law_politics.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.law_politics.perso" type="text" step="0.1" title="@{law_politics_proficiency}" value="{{systemData.perks.knowledges.law_politics.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.law_politics.self_mod" type="text" step="0.1" title="@{law_politics_base_mod}" value="{{systemData.perks.knowledges.law_politics.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.law_politics.total_mod" type="text" readonly="" step="0.1" title="@{law_politics_mod}" value="{{systemData.perks.knowledges.law_politics.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{mathematics}">
                                 <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                                 </div>
-                                <button class="perksRoller" name="mathématiques" data-i18n="mathematics system.perks.knowledges.mathematics.type" value="mathematics.perso">mathématiques ({{systemData.perks.knowledges.mathematics.type}})</button>
+                                <button class="perksRoller" name="mathématiques" data-i18n="mathematics system.perks.knowledges.mathematics.type" value="knowledges.mathematics">mathématiques ({{systemData.perks.knowledges.mathematics.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.mathematics.perso" type="text" step="0.1" title="@{mathematics_proficiency}" value="{{systemData.perks.knowledges.mathematics.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.mathematics.self_mod" type="text" step="0.1" title="@{mathematics_base_mod}" value="{{systemData.perks.knowledges.mathematics.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.mathematics.total_mod" type="text" readonly="" step="0.1" title="@{mathematics_mod}" value="{{systemData.perks.knowledges.mathematics.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.mathematics.perso" type="text" step="0.1" title="@{mathematics_proficiency}" value="{{systemData.perks.knowledges.mathematics.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.mathematics.self_mod" type="text" step="0.1" title="@{mathematics_base_mod}" value="{{systemData.perks.knowledges.mathematics.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.mathematics.total_mod" type="text" readonly="" step="0.1" title="@{mathematics_mod}" value="{{systemData.perks.knowledges.mathematics.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{mechanics}">
@@ -1072,9 +1089,9 @@
                                 </div>
                                 <button class="perksRoller" name="méchanique" data-i18n="mechanics system.perks.knowledges.mechanics.type" value="knowledges.mechanics">méchanique ({{systemData.perks.knowledges.mechanics.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.mechanics.perso" type="text" step="0.1" title="@{mechanics_proficiency}" value="{{systemData.perks.knowledges.mechanics.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.mechanics.self_mod" type="text" step="0.1" title="@{mechanics_base_mod}" value="{{systemData.perks.knowledges.mechanics.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.mechanics.total_mod" type="text" readonly="" step="0.1" title="@{mechanics_mod}" value="{{systemData.perks.knowledges.mechanics.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.mechanics.perso" type="text" step="0.1" title="@{mechanics_proficiency}" value="{{systemData.perks.knowledges.mechanics.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.mechanics.self_mod" type="text" step="0.1" title="@{mechanics_base_mod}" value="{{systemData.perks.knowledges.mechanics.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.mechanics.total_mod" type="text" readonly="" step="0.1" title="@{mechanics_mod}" value="{{systemData.perks.knowledges.mechanics.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{fashion / etiquette}">
@@ -1082,9 +1099,9 @@
                                 </div>
                                 <button class="perksRoller" name="mode / étiquette" data-i18n="fashion / etiquette system.perks.knowledges.fashion_etiquette.type" value="knowledges.fashion_etiquette">mode / étiquette ({{systemData.perks.knowledges.fashion_etiquette.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.fashion_etiquette.perso" type="text" step="0.1" title="@{fashion_etiquette_proficiency}" value="{{systemData.perks.knowledges.fashion_etiquette.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.fashion_etiquette.self_mod" type="text" step="0.1" title="@{fashion_etiquette_base_mod}" value="{{systemData.perks.knowledges.fashion_etiquette.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.fashion_etiquette.total_mod" type="text" readonly="" step="0.1" title="@{fashion_etiquette_mod}" value="{{systemData.perks.knowledges.fashion_etiquette.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.fashion_etiquette.perso" type="text" step="0.1" title="@{fashion_etiquette_proficiency}" value="{{systemData.perks.knowledges.fashion_etiquette.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.fashion_etiquette.self_mod" type="text" step="0.1" title="@{fashion_etiquette_base_mod}" value="{{systemData.perks.knowledges.fashion_etiquette.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.fashion_etiquette.total_mod" type="text" readonly="" step="0.1" title="@{fashion_etiquette_mod}" value="{{systemData.perks.knowledges.fashion_etiquette.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{navigate}">
@@ -1092,9 +1109,9 @@
                                 </div>
                                 <button class="perksRoller" name="navigation" data-i18n="navigate system.perks.knowledges.navigate.type" value="knowledges.navigate">navigation ({{systemData.perks.knowledges.navigate.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.navigate.perso" type="text" step="0.1" title="@{navigate_proficiency}" value="{{systemData.perks.knowledges.navigate.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.navigate.self_mod" type="text" step="0.1" title="@{navigate_base_mod}" value="{{systemData.perks.knowledges.navigate.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.navigate.total_mod" type="text" readonly="" step="0.1" title="@{navigate_mod}" value="{{systemData.perks.knowledges.navigate.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.navigate.perso" type="text" step="0.1" title="@{navigate_proficiency}" value="{{systemData.perks.knowledges.navigate.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.navigate.self_mod" type="text" step="0.1" title="@{navigate_base_mod}" value="{{systemData.perks.knowledges.navigate.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.navigate.total_mod" type="text" readonly="" step="0.1" title="@{navigate_mod}" value="{{systemData.perks.knowledges.navigate.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{occulte / scp lore}">
@@ -1102,9 +1119,9 @@
                                 </div>
                                 <button class="perksRoller" name="occulte / SCP lore" data-i18n="occulte / spc lore system.perks.knowledges.occulte_scp_lore.type" value="knowledges.occulte_scp_lore">occulte / SCP lore ({{systemData.perks.knowledges.occulte_scp_lore.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.occulte_scp_lore.perso" type="text" step="0.1" title="@{occulte_scp_lore_proficiency}" value="{{systemData.perks.knowledges.occulte_scp_lore.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.occulte_scp_lore.self_mod" type="text" step="0.1" title="@{occulte_scp_lore_base_mod}" value="{{systemData.perks.knowledges.occulte_scp_lore.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.occulte_scp_lore.total_mod" type="text" readonly="" step="0.1" title="@{occulte_scp_lore_mod}" value="{{systemData.perks.knowledges.occulte_scp_lore.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.occulte_scp_lore.perso" type="text" step="0.1" title="@{occulte_scp_lore_proficiency}" value="{{systemData.perks.knowledges.occulte_scp_lore.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.occulte_scp_lore.self_mod" type="text" step="0.1" title="@{occulte_scp_lore_base_mod}" value="{{systemData.perks.knowledges.occulte_scp_lore.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.occulte_scp_lore.total_mod" type="text" readonly="" step="0.1" title="@{occulte_scp_lore_mod}" value="{{systemData.perks.knowledges.occulte_scp_lore.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{caretaking / nurture}">
@@ -1112,9 +1129,9 @@
                                 </div>
                                 <button class="perksRoller" name="prendre soin / nourrir" data-i18n="caretaking / nurture system.perks.knowledges.caretaking_nurture.type" value="knowledges.caretaking_nurture">prendre soin / nourrir ({{systemData.perks.knowledges.caretaking_nurture.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.caretaking_nurture.perso" type="text" step="0.1" title="@{caretaking_nurture_proficiency}" value="{{systemData.perks.knowledges.caretaking_nurture.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.caretaking_nurture.self_mod" type="text" step="0.1" title="@{caretaking_nurture_base_mod}" value="{{systemData.perks.knowledges.caretaking_nurture.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.caretaking_nurture.total_mod" type="text" readonly="" step="0.1" title="@{caretaking_nurture_mod}" value="{{systemData.perks.knowledges.caretaking_nurture.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.caretaking_nurture.perso" type="text" step="0.1" title="@{caretaking_nurture_proficiency}" value="{{systemData.perks.knowledges.caretaking_nurture.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.caretaking_nurture.self_mod" type="text" step="0.1" title="@{caretaking_nurture_base_mod}" value="{{systemData.perks.knowledges.caretaking_nurture.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.caretaking_nurture.total_mod" type="text" readonly="" step="0.1" title="@{caretaking_nurture_mod}" value="{{systemData.perks.knowledges.caretaking_nurture.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{psychology}">
@@ -1122,9 +1139,9 @@
                                 </div>
                                 <button class="perksRoller" name="psychologie" data-i18n="psychology system.perks.knowledges.psychology.type" value="knowledges.psychology">psychologie ({{systemData.perks.knowledges.psychology.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.psychology.perso" type="text" step="0.1" title="@{psychology_proficiency}" value="{{systemData.perks.knowledges.psychology.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.psychology.self_mod" type="text" step="0.1" title="@{psychology_base_mod}" value="{{systemData.perks.knowledges.psychology.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.psychology.total_mod" type="text" readonly="" step="0.1" title="@{psychology_mod}" value="{{systemData.perks.knowledges.psychology.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.psychology.perso" type="text" step="0.1" title="@{psychology_proficiency}" value="{{systemData.perks.knowledges.psychology.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.psychology.self_mod" type="text" step="0.1" title="@{psychology_base_mod}" value="{{systemData.perks.knowledges.psychology.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.psychology.total_mod" type="text" readonly="" step="0.1" title="@{psychology_mod}" value="{{systemData.perks.knowledges.psychology.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{research / internet}">
@@ -1132,9 +1149,9 @@
                                 </div>
                                 <button class="perksRoller" name="Recherche / Internet" data-i18n="research / internet system.perks.knowledges.research_internet.type" value="knowledges.research_internet">Recherche / Internet ({{systemData.perks.knowledges.research_internet.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.research_internet.perso" type="text" step="0.1" title="@{research_internet_proficiency}" value="{{systemData.perks.knowledges.research_internet.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.research_internet.self_mod" type="text" step="0.1" title="@{research_internet_base_mod}" value="{{systemData.perks.knowledges.research_internet.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.research_internet.total_mod" type="text" readonly="" step="0.1" title="@{research_internet_mod}" value="{{systemData.perks.knowledges.research_internet.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.research_internet.perso" type="text" step="0.1" title="@{research_internet_proficiency}" value="{{systemData.perks.knowledges.research_internet.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.research_internet.self_mod" type="text" step="0.1" title="@{research_internet_base_mod}" value="{{systemData.perks.knowledges.research_internet.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.research_internet.total_mod" type="text" readonly="" step="0.1" title="@{research_internet_mod}" value="{{systemData.perks.knowledges.research_internet.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{religion}">
@@ -1142,9 +1159,9 @@
                                 </div>
                                 <button class="perksRoller" name="religion" data-i18n="religion system.perks.knowledges.religion.type" value="knowledges.religion">religion ({{systemData.perks.knowledges.religion.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.religion.perso" type="text" step="0.1" title="@{religion_proficiency}" value="{{systemData.perks.knowledges.religion.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.religion.self_mod" type="text" step="0.1" title="@{religion_base_mod}" value="{{systemData.perks.knowledges.religion.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.religion.total_mod" type="text" readonly="" step="0.1" title="@{religion_mod}" value="{{systemData.perks.knowledges.religion.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.religion.perso" type="text" step="0.1" title="@{religion_proficiency}" value="{{systemData.perks.knowledges.religion.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.religion.self_mod" type="text" step="0.1" title="@{religion_base_mod}" value="{{systemData.perks.knowledges.religion.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.religion.total_mod" type="text" readonly="" step="0.1" title="@{religion_mod}" value="{{systemData.perks.knowledges.religion.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{science / physics}">
@@ -1152,9 +1169,9 @@
                                 </div>
                                 <button class="perksRoller" name="science / physique" data-i18n="science / physics system.perks.knowledges.science_physics.type" value="knowledges.science_physics">science / physique ({{systemData.perks.knowledges.science_physics.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.science_physics.perso" type="text" step="0.1" title="@{science_physics_proficiency}" value="{{systemData.perks.knowledges.science_physics.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.science_physics.self_mod" type="text" step="0.1" title="@{science_physics_base_mod}" value="{{systemData.perks.knowledges.science_physics.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.science_physics.total_mod" type="text" readonly="" step="0.1" title="@{science_physics_mod}" value="{{systemData.perks.knowledges.science_physics.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.science_physics.perso" type="text" step="0.1" title="@{science_physics_proficiency}" value="{{systemData.perks.knowledges.science_physics.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.science_physics.self_mod" type="text" step="0.1" title="@{science_physics_base_mod}" value="{{systemData.perks.knowledges.science_physics.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.science_physics.total_mod" type="text" readonly="" step="0.1" title="@{science_physics_mod}" value="{{systemData.perks.knowledges.science_physics.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{visual sign / sign_lang}">
@@ -1162,9 +1179,9 @@
                                 </div>
                                 <button class="perksRoller" name="signe visuel / langue des signes" data-i18n="visual sign / sign_lang system.perks.knowledges.visual_sign_sign_lang.type" value="knowledges.visual_sign_sign_lang">signe visuel / langue des signes ({{systemData.perks.knowledges.visual_sign_sign_lang.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.visual_sign_sign_lang.perso" type="text" step="0.1" title="@{visual_sign_sign_lang_proficiency}" value="{{systemData.perks.knowledges.visual_sign_sign_lang.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.visual_sign_sign_lang.self_mod" type="text" step="0.1" title="@{visual_sign_sign_lang_base_mod}" value="{{systemData.perks.knowledges.visual_sign_sign_lang.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.visual_sign_sign_lang.total_mod" type="text" readonly="" step="0.1" title="@{visual_sign_sign_lang_mod}" value="{{systemData.perks.knowledges.visual_sign_sign_lang.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.visual_sign_sign_lang.perso" type="text" step="0.1" title="@{visual_sign_sign_lang_proficiency}" value="{{systemData.perks.knowledges.visual_sign_sign_lang.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.visual_sign_sign_lang.self_mod" type="text" step="0.1" title="@{visual_sign_sign_lang_base_mod}" value="{{systemData.perks.knowledges.visual_sign_sign_lang.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.visual_sign_sign_lang.total_mod" type="text" readonly="" step="0.1" title="@{visual_sign_sign_lang_mod}" value="{{systemData.perks.knowledges.visual_sign_sign_lang.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{survival / tracking}">
@@ -1172,9 +1189,9 @@
                                 </div>
                                 <button class="perksRoller" name="survie/ traque" data-i18n="survival / tracking system.perks.knowledges.survival_tracking.type" value="knowledges.survival_tracking">survie/ traque ({{systemData.perks.knowledges.survival_tracking.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.survival_tracking.perso" type="text" step="0.1" title="@{survival_tracking_proficiency}" value="{{systemData.perks.knowledges.survival_tracking.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.survival_tracking.self_mod" type="text" step="0.1" title="@{survival_tracking_base_mod}" value="{{systemData.perks.knowledges.survival_tracking.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.survival_tracking.total_mod" type="text" readonly="" step="0.1" title="@{survival_tracking_mod}" value="{{systemData.perks.knowledges.survival_tracking.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.survival_tracking.perso" type="text" step="0.1" title="@{survival_tracking_proficiency}" value="{{systemData.perks.knowledges.survival_tracking.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.survival_tracking.self_mod" type="text" step="0.1" title="@{survival_tracking_base_mod}" value="{{systemData.perks.knowledges.survival_tracking.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.survival_tracking.total_mod" type="text" readonly="" step="0.1" title="@{survival_tracking_mod}" value="{{systemData.perks.knowledges.survival_tracking.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{technology}">
@@ -1182,9 +1199,9 @@
                                 </div>
                                 <button class="perksRoller" name="technologie" data-i18n="technology system.perks.knowledges.technology.type" value="knowledges.technology">technologie ({{systemData.perks.knowledges.technology.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.knowledges.technology.perso" type="text" step="0.1" title="@{technology_proficiency}" value="{{systemData.perks.knowledges.technology.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.knowledges.technology.self_mod" type="text" step="0.1" title="@{technology_base_mod}" value="{{systemData.perks.knowledges.technology.self_mod}}">
-                            <input class="number underlined" name="system.perks.knowledges.technology.total_mod" type="text" readonly="" step="0.1" title="@{technology_mod}" value="{{systemData.perks.knowledges.technology.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.technology.perso" type="text" step="0.1" title="@{technology_proficiency}" value="{{systemData.perks.knowledges.technology.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.knowledges.technology.self_mod" type="text" step="0.1" title="@{technology_base_mod}" value="{{systemData.perks.knowledges.technology.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.knowledges.technology.total_mod" type="text" readonly="" step="0.1" title="@{technology_mod}" value="{{systemData.perks.knowledges.technology.total_mod}}">
                         </div>
                     </div>
                     <div id="abilities">
@@ -1193,11 +1210,11 @@
                             <label class="attribute roll-label" title="%{awareness / reaction}">
                                 <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
                                 </div>
-                                <button class="roller" name="conscience / réaction" data-i18n="awareness / reaction system.perks.abilities.awareness_reaction.type" value="abilities.awareness_reaction">conscience / réaction ({{systemData.perks.abilities.awareness_reaction.type}})</button>
+                                <button class="perksRoller" name="conscience / réaction" data-i18n="awareness / reaction system.perks.abilities.awareness_reaction.type" value="abilities.awareness_reaction">conscience / réaction ({{systemData.perks.abilities.awareness_reaction.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.awareness_reaction.perso" type="text" step="0.1" title="@{awareness_reaction_proficiency}" value="{{systemData.perks.abilities.awareness_reaction.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.awareness_reaction.self_mod" type="text" step="0.1" title="@{awareness_reaction_base_mod}" value="{{systemData.perks.abilities.awareness_reaction.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.awareness_reaction.total_mod" type="text" readonly="" step="0.1" title="@{awareness_reaction_mod}" value="{{systemData.perks.abilities.awareness_reaction.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.awareness_reaction.perso" type="text" step="0.1" title="@{awareness_reaction_proficiency}" value="{{systemData.perks.abilities.awareness_reaction.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.awareness_reaction.self_mod" type="text" step="0.1" title="@{awareness_reaction_base_mod}" value="{{systemData.perks.abilities.awareness_reaction.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.awareness_reaction.total_mod" type="text" readonly="" step="0.1" title="@{awareness_reaction_mod}" value="{{systemData.perks.abilities.awareness_reaction.total_mod}}">
                         </div>
                         <div class="underlined thick">
                             <label class="attribute roll-label" title="%{dodge / block}">
@@ -1205,9 +1222,9 @@
                                 </div>
                                 <button class="perksRoller" name="esquive / bloquage" data-i18n="dodge / block system.perks.abilities.dodge_block.type" value="abilities.dodge_block">esquive / bloquage ({{systemData.perks.abilities.dodge_block.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.dodge_block.perso" type="text" step="0.1" title="@{dodge_block_proficiency}" value="{{systemData.perks.abilities.dodge_block.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.dodge_block.self_mod" type="text" step="0.1" title="@{dodge_block_base_mod}" value="{{systemData.perks.abilities.dodge_block.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.dodge_block.total_mod" type="text" readonly="" step="0.1" title="@{dodge_block_mod}" value="{{systemData.perks.abilities.dodge_block.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.dodge_block.perso" type="text" step="0.1" title="@{dodge_block_proficiency}" value="{{systemData.perks.abilities.dodge_block.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.dodge_block.self_mod" type="text" step="0.1" title="@{dodge_block_base_mod}" value="{{systemData.perks.abilities.dodge_block.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.dodge_block.total_mod" type="text" readonly="" step="0.1" title="@{dodge_block_mod}" value="{{systemData.perks.abilities.dodge_block.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{athletics}">
@@ -1215,9 +1232,9 @@
                                 </div>
                                 <button class="perksRoller" name="athlétisme" data-i18n="athletics system.perks.abilities.athletics.type" value="abilities.athletics">athlétisme ({{systemData.perks.abilities.athletics.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.athletics.perso" type="text" step="0.1" title="@{athletics_proficiency}" value="{{systemData.perks.abilities.athletics.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.athletics.self_mod" type="text" step="0.1" title="@{athletics_base_mod}" value="{{systemData.perks.abilities.athletics.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.athletics.total_mod" type="text" readonly="" step="0.1" title="@{athletics_mod}" value="{{systemData.perks.abilities.athletics.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.athletics.perso" type="text" step="0.1" title="@{athletics_proficiency}" value="{{systemData.perks.abilities.athletics.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.athletics.self_mod" type="text" step="0.1" title="@{athletics_base_mod}" value="{{systemData.perks.abilities.athletics.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.athletics.total_mod" type="text" readonly="" step="0.1" title="@{athletics_mod}" value="{{systemData.perks.abilities.athletics.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{animal ken / tame}">
@@ -1225,9 +1242,9 @@
                                 </div>
                                 <button class="perksRoller" name="Connaissance des animaux / apprivoisement" data-i18n="animal ken / tame system.perks.abilities.animal_ken_tame.type" value="abilities.animal_ken_tame">Connaissance des animaux / apprivoisement ({{systemData.perks.abilities.animal_ken_tame.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.animal_ken_tame.perso" type="text" step="0.1" title="@{animal_ken_tame_proficiency}" value="{{systemData.perks.abilities.animal_ken_tame.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.animal_ken_tame.self_mod" type="text" step="0.1" title="@{animal_ken_tame_base_mod}" value="{{systemData.perks.abilities.animal_ken_tame.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.animal_ken_tame.total_mod" type="text" readonly="" step="0.1" title="@{animal_ken_tame_mod}" value="{{systemData.perks.abilities.animal_ken_tame.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.animal_ken_tame.perso" type="text" step="0.1" title="@{animal_ken_tame_proficiency}" value="{{systemData.perks.abilities.animal_ken_tame.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.animal_ken_tame.self_mod" type="text" step="0.1" title="@{animal_ken_tame_base_mod}" value="{{systemData.perks.abilities.animal_ken_tame.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.animal_ken_tame.total_mod" type="text" readonly="" step="0.1" title="@{animal_ken_tame_mod}" value="{{systemData.perks.abilities.animal_ken_tame.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{empathy}">
@@ -1235,9 +1252,9 @@
                                 </div>
                                 <button class="perksRoller" name="empathie" data-i18n="empathy system.perks.abilities.empathy.type" value="abilities.empathy">empathie ({{systemData.perks.abilities.empathy.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.empathy.perso" type="text" step="0.1" title="@{empathy_proficiency}" value="{{systemData.perks.abilities.empathy.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.empathy.self_mod" type="text" step="0.1" title="@{empathy_base_mod}" value="{{systemData.perks.abilities.empathy.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.empathy.total_mod" type="text" readonly="" step="0.1" title="@{empathy_mod}" value="{{systemData.perks.abilities.empathy.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.empathy.perso" type="text" step="0.1" title="@{empathy_proficiency}" value="{{systemData.perks.abilities.empathy.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.empathy.self_mod" type="text" step="0.1" title="@{empathy_base_mod}" value="{{systemData.perks.abilities.empathy.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.empathy.total_mod" type="text" readonly="" step="0.1" title="@{empathy_mod}" value="{{systemData.perks.abilities.empathy.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{endurance}">
@@ -1245,9 +1262,9 @@
                                 </div>
                                 <button class="perksRoller" name="endurance" data-i18n="endurance system.perks.abilities.endurance.type" value="abilities.endurance">endurance ({{systemData.perks.abilities.endurance.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.endurance.perso" type="text" step="0.1" title="@{endurance_proficiency}" value="{{systemData.perks.abilities.endurance.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.endurance.self_mod" type="text" step="0.1" title="@{endurance_base_mod}" value="{{systemData.perks.abilities.endurance.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.endurance.total_mod" type="text" readonly="" step="0.1" title="@{endurance_mod}" value="{{systemData.perks.abilities.endurance.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.endurance.perso" type="text" step="0.1" title="@{endurance_proficiency}" value="{{systemData.perks.abilities.endurance.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.endurance.self_mod" type="text" step="0.1" title="@{endurance_base_mod}" value="{{systemData.perks.abilities.endurance.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.endurance.total_mod" type="text" readonly="" step="0.1" title="@{endurance_mod}" value="{{systemData.perks.abilities.endurance.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{initiative}">
@@ -1255,9 +1272,9 @@
                                 </div>
                                 <button class="perksRoller" name="initiative" data-i18n="initiative system.perks.abilities.initiative.type" value="abilities.initiative">initiative ({{systemData.perks.abilities.initiative.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.initiative.perso" type="text" step="0.1" title="@{initiative_proficiency}" value="{{systemData.perks.abilities.initiative.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.initiative.self_mod" type="text" step="0.1" title="@{initiative_base_mod}" value="{{systemData.perks.abilities.initiative.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.initiative.total_mod" type="text" readonly="" step="0.1" title="@{initiative_mod}" value="{{systemData.perks.abilities.initiative.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.initiative.perso" type="text" step="0.1" title="@{initiative_proficiency}" value="{{systemData.perks.abilities.initiative.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.initiative.self_mod" type="text" step="0.1" title="@{initiative_base_mod}" value="{{systemData.perks.abilities.initiative.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.initiative.total_mod" type="text" readonly="" step="0.1" title="@{initiative_mod}" value="{{systemData.perks.abilities.initiative.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{intimidate / taunt}">
@@ -1265,9 +1282,9 @@
                                 </div>
                                 <button class="perksRoller" name="intimidation / taunt" data-i18n="intimidate / taunt system.perks.abilities.intimidate_taunt.type" value="abilities.intimidate_taunt">intimidation / taunt ({{systemData.perks.abilities.intimidate_taunt.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.intimidate_taunt.perso" type="text" step="0.1" title="@{intimidate_taunt_proficiency}" value="{{systemData.perks.abilities.intimidate_taunt.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.intimidate_taunt.self_mod" type="text" step="0.1" title="@{intimidate_taunt_base_mod}" value="{{systemData.perks.abilities.intimidate_taunt.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.intimidate_taunt.total_mod" type="text" readonly="" step="0.1" title="@{intimidate_taunt_mod}" value="{{systemData.perks.abilities.intimidate_taunt.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.intimidate_taunt.perso" type="text" step="0.1" title="@{intimidate_taunt_proficiency}" value="{{systemData.perks.abilities.intimidate_taunt.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.intimidate_taunt.self_mod" type="text" step="0.1" title="@{intimidate_taunt_base_mod}" value="{{systemData.perks.abilities.intimidate_taunt.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.intimidate_taunt.total_mod" type="text" readonly="" step="0.1" title="@{intimidate_taunt_mod}" value="{{systemData.perks.abilities.intimidate_taunt.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{intuition}">
@@ -1275,9 +1292,9 @@
                                 </div>
                                 <button class="perksRoller" name="intuition" data-i18n="intuition system.perks.abilities.intuition.type" value="abilities.intuition">intuition ({{systemData.perks.abilities.intuition.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.intuition.perso" type="text" step="0.1" title="@{intuition_proficiency}" value="{{systemData.perks.abilities.intuition.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.intuition.self_mod" type="text" step="0.1" title="@{intuition_base_mod}" value="{{systemData.perks.abilities.intuition.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.intuition.total_mod" type="text" readonly="" step="0.1" title="@{intuition_mod}" value="{{systemData.perks.abilities.intuition.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.intuition.perso" type="text" step="0.1" title="@{intuition_proficiency}" value="{{systemData.perks.abilities.intuition.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.intuition.self_mod" type="text" step="0.1" title="@{intuition_base_mod}" value="{{systemData.perks.abilities.intuition.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.intuition.total_mod" type="text" readonly="" step="0.1" title="@{intuition_mod}" value="{{systemData.perks.abilities.intuition.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{leadership}">
@@ -1285,9 +1302,9 @@
                                 </div>
                                 <button class="perksRoller" name="leadership" data-i18n="leadership system.perks.abilities.leadership.type" value="abilities.leadership">leadership ({{systemData.perks.abilities.leadership.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.leadership.perso" type="text" step="0.1" title="@{leadership_proficiency}" value="{{systemData.perks.abilities.leadership.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.leadership.self_mod" type="text" step="0.1" title="@{leadership_base_mod}" value="{{systemData.perks.abilities.leadership.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.leadership.total_mod" type="text" readonly="" step="0.1" title="@{leadership_mod}" value="{{systemData.perks.abilities.leadership.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.leadership.perso" type="text" step="0.1" title="@{leadership_proficiency}" value="{{systemData.perks.abilities.leadership.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.leadership.self_mod" type="text" step="0.1" title="@{leadership_base_mod}" value="{{systemData.perks.abilities.leadership.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.leadership.total_mod" type="text" readonly="" step="0.1" title="@{leadership_mod}" value="{{systemData.perks.abilities.leadership.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{negociation / persuade}">
@@ -1295,9 +1312,9 @@
                                 </div>
                                 <button class="perksRoller" name="négociation / persuasion" data-i18n="negociation / persuade system.perks.abilities.negociation_persuade.type" value="abilities.negociation_persuade">négociation / persuasion ({{systemData.perks.abilities.negociation_persuade.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.negociation_persuade.perso" type="text" step="0.1" title="@{negociation_persuade_proficiency}" value="{{systemData.perks.abilities.negociation_persuade.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.negociation_persuade.self_mod" type="text" step="0.1" title="@{negociation_persuade_base_mod}" value="{{systemData.perks.abilities.negociation_persuade.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.negociation_persuade.total_mod" type="text" readonly="" step="0.1" title="@{negociation_persuade_mod}" value="{{systemData.perks.abilities.negociation_persuade.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.negociation_persuade.perso" type="text" step="0.1" title="@{negociation_persuade_proficiency}" value="{{systemData.perks.abilities.negociation_persuade.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.negociation_persuade.self_mod" type="text" step="0.1" title="@{negociation_persuade_base_mod}" value="{{systemData.perks.abilities.negociation_persuade.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.negociation_persuade.total_mod" type="text" readonly="" step="0.1" title="@{negociation_persuade_mod}" value="{{systemData.perks.abilities.negociation_persuade.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{resist_distress}">
@@ -1305,9 +1322,9 @@
                                 </div>
                                 <button class="perksRoller" name="résistance à la détresse" data-i18n="resist_distress system.perks.abilities.resist_distress.type" value="abilities.resist_distress">résistance à la détresse ({{systemData.perks.abilities.resist_distress.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.resist_distress.perso" type="text" step="0.1" title="@{resist_distress_proficiency}" value="{{systemData.perks.abilities.resist_distress.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.resist_distress.self_mod" type="text" step="0.1" title="@{resist_distress_base_mod}" value="{{systemData.perks.abilities.resist_distress.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.resist_distress.total_mod" type="text" readonly="" step="0.1" title="@{resist_distress_mod}" value="{{systemData.perks.abilities.resist_distress.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.resist_distress.perso" type="text" step="0.1" title="@{resist_distress_proficiency}" value="{{systemData.perks.abilities.resist_distress.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.resist_distress.self_mod" type="text" step="0.1" title="@{resist_distress_base_mod}" value="{{systemData.perks.abilities.resist_distress.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.resist_distress.total_mod" type="text" readonly="" step="0.1" title="@{resist_distress_mod}" value="{{systemData.perks.abilities.resist_distress.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{resist ko / death}">
@@ -1315,9 +1332,9 @@
                                 </div>
                                 <button class="perksRoller" name="résistance au ko / à la mort" data-i18n="resist ko / death system.perks.abilities.resist_ko_death.type" value="abilities.resist_ko_death">résistance au ko / à la mort ({{systemData.perks.abilities.resist_ko_death.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.resist_ko_death.perso" type="text" step="0.1" title="@{resist_ko_death_proficiency}" value="{{systemData.perks.abilities.resist_ko_death.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.resist_ko_death.self_mod" type="text" step="0.1" title="@{resist_ko_death_base_mod}" value="{{systemData.perks.abilities.resist_ko_death.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.resist_ko_death.total_mod" type="text" readonly="" step="0.1" title="@{resist_ko_death_mod}" value="{{systemData.perks.abilities.resist_ko_death.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.resist_ko_death.perso" type="text" step="0.1" title="@{resist_ko_death_proficiency}" value="{{systemData.perks.abilities.resist_ko_death.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.resist_ko_death.self_mod" type="text" step="0.1" title="@{resist_ko_death_base_mod}" value="{{systemData.perks.abilities.resist_ko_death.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.resist_ko_death.total_mod" type="text" readonly="" step="0.1" title="@{resist_ko_death_mod}" value="{{systemData.perks.abilities.resist_ko_death.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{jump}">
@@ -1325,9 +1342,9 @@
                                 </div>
                                 <button class="perksRoller" name="saut" data-i18n="jump system.perks.abilities.jump.type" value="abilities.jump">saut ({{systemData.perks.abilities.jump.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.jump.perso" type="text" step="0.1" title="@{jump_proficiency}" value="{{systemData.perks.abilities.jump.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.jump.self_mod" type="text" step="0.1" title="@{jump_base_mod}" value="{{systemData.perks.abilities.jump.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.jump.total_mod" type="text" readonly="" step="0.1" title="@{jump_mod}" value="{{systemData.perks.abilities.jump.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.jump.perso" type="text" step="0.1" title="@{jump_proficiency}" value="{{systemData.perks.abilities.jump.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.jump.self_mod" type="text" step="0.1" title="@{jump_base_mod}" value="{{systemData.perks.abilities.jump.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.jump.total_mod" type="text" readonly="" step="0.1" title="@{jump_mod}" value="{{systemData.perks.abilities.jump.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{self_controle}">
@@ -1335,9 +1352,9 @@
                                 </div>
                                 <button class="perksRoller" name="self contrôle" data-i18n="self_controle system.perks.abilities.self_controle.type" value="abilities.self_controle">self contrôle ({{systemData.perks.abilities.self_controle.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.self_controle.perso" type="text" step="0.1" title="@{self_controle_proficiency}" value="{{systemData.perks.abilities.self_controle.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.self_controle.self_mod" type="text" step="0.1" title="@{self_controle_base_mod}" value="{{systemData.perks.abilities.self_controle.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.self_controle.total_mod" type="text" readonly="" step="0.1" title="@{self_controle_mod}" value="{{systemData.perks.abilities.self_controle.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.self_controle.perso" type="text" step="0.1" title="@{self_controle_proficiency}" value="{{systemData.perks.abilities.self_controle.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.self_controle.self_mod" type="text" step="0.1" title="@{self_controle_base_mod}" value="{{systemData.perks.abilities.self_controle.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.self_controle.total_mod" type="text" readonly="" step="0.1" title="@{self_controle_mod}" value="{{systemData.perks.abilities.self_controle.total_mod}}">
                         </div>
                         <div>
                             <label class="attribute roll-label" title="%{lift / push}">
@@ -1345,9 +1362,9 @@
                                 </div>
                                 <button class="perksRoller" name="soulever / pousser" data-i18n="lift_push system.perks.abilities.lift_push.type" value="abilities.lift_push">soulever / pousser ({{systemData.perks.abilities.lift_push.type}})</button>
                             </label>
-                            <input class="number underlined" name="system.perks.abilities.lift_push.perso" type="text" step="0.1" title="@{lift_push_proficiency}" value="{{systemData.perks.abilities.lift_push.perso}}">
-                            <input class="number underlined self_mod" name="system.perks.abilities.lift_push.self_mod" type="text" step="0.1" title="@{lift_push_base_mod}" value="{{systemData.perks.abilities.lift_push.self_mod}}">
-                            <input class="number underlined" name="system.perks.abilities.lift_push.total_mod" type="text" readonly="" step="0.1" title="@{lift_push_mod}" value="{{systemData.perks.abilities.lift_push.total_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.lift_push.perso" type="text" step="0.1" title="@{lift_push_proficiency}" value="{{systemData.perks.abilities.lift_push.perso}}">
+                            <input class="number underlined self_mod" placeholder="0" name="system.perks.abilities.lift_push.self_mod" type="text" step="0.1" title="@{lift_push_base_mod}" value="{{systemData.perks.abilities.lift_push.self_mod}}">
+                            <input class="number underlined" placeholder="0" name="system.perks.abilities.lift_push.total_mod" type="text" readonly="" step="0.1" title="@{lift_push_mod}" value="{{systemData.perks.abilities.lift_push.total_mod}}">
                         </div>
                     </div>
                 </div>
@@ -1368,7 +1385,7 @@
                         </div>
                         <div class="right">
                             <h5>Arme de poing</h5>
-                            <p>{{systemData.perks.skills.handgun.perso}} + {{systemData.perks.skills.handgun.total_mod}}</p>
+                            <p class="statValue" id="skills.handgun"></p>
                         </div>
                     </div>
                     <div class="rectangle">
@@ -1377,7 +1394,7 @@
                         </div>
                         <div class="right">
                             <h5>Artillerie Lourde</h5>
-                            <p>{{systemData.perks.skills.heavy_artillery.perso}} + {{systemData.perks.skills.heavy_artillery.total_mod}}</p>
+                            <p class="statValue" id="skills.heavy_artillery"></p>
                         </div>
                     </div>
                     <div class="rectangle">
@@ -1386,7 +1403,7 @@
                         </div>
                         <div class="right">
                             <h5>Chasse / Fusil de Sniper</h5>
-                            <p>{{systemData.perks.skills.hunting_sniper_rifle.perso}} + {{systemData.perks.skills.hunting_sniper_rifle.total_mod}}</p>
+                            <p class="statValue" id="skills.hunting_sniper_rifle"></p>
                         </div>
                     </div>
                     <div class="rectangle">
@@ -1395,7 +1412,7 @@
                         </div>
                         <div class="right">
                             <h5>Fusil à Pompe</h5>
-                            <p>{{systemData.perks.skills.shotgun.perso}} + {{systemData.perks.skills.shotgun.total_mod}}</p>
+                            <p class="statValue" id="skills.shotgun"></p>
                         </div>
                     </div>
                     <div class="rectangle">
@@ -1404,7 +1421,7 @@
                         </div>
                         <div class="right">
                             <h5>Fusil d'Assault</h5>
-                            <p>{{systemData.perks.skills.assault_rifle.perso}} + {{systemData.perks.skills.assault_rifle.total_mod}}</p>
+                            <p class="statValue" id="skills.assault_rifle"></p>
                         </div>
                     </div>
                     <div class="rectangle">
@@ -1413,7 +1430,7 @@
                         </div>
                         <div class="right">
                             <h5>Mêlée</h5>
-                            <p>{{systemData.perks.skills.melee.perso}} + {{systemData.perks.skills.melee.total_mod}}</p>
+                            <p class="statValue" id="skills.melee"></p>
                         </div>
                     </div>
                     <div class="rectangle">
@@ -1422,7 +1439,7 @@
                         </div>
                         <div class="right">
                             <h5>Mitraillette</h5>
-                            <p>{{systemData.perks.skills.submachine_gun.perso}} + {{systemData.perks.skills.submachine_gun.total_mod}}</p>
+                            <p class="statValue" id="skills.submachine_gun"></p>
                         </div>
                     </div>
                 </div>
@@ -1472,7 +1489,7 @@
                                 <input type="radio" id="item{{item._id}}Aim" name="item{{item._id}}" value="4" class="radio-item-system">
                                 <label for="item{{item._id}}Aim">{{item.system.aim}}</label>
                             </td>
-                            <td>{{item.system.clip_size}}</td>
+                            <td><input type="number" class="magazine" style="width: 1.6em;text-align: right" name="{{item._id}}" value="{{item.system.magazine.actual}}">/{{item.system.magazine.max}}</td>
                             <td>{{item.system.base_damage}}</td>
                             <td>{{item.system.x_damage}}</td>
                             <td>{{item.system.element}}</td>
@@ -1504,6 +1521,44 @@
                         {{/each}}
                     </table>
                 </div>
+            </div>
+            <div class="inventory" id="inventory">
+                <div class="filters">
+                    <label for="showChecked">Afficher seulement ceux équipés</label>
+                    <input type="checkbox" id="showChecked">
+                    <input type="text" id="searchInput" placeholder="Rechercher par texte">
+                </div>
+                <table id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Equipés</th>
+                        <th>Nom</th>
+                        <th>Vendre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each actor.items as |item key|}}
+                    {{#unless (or (eq item.type "arme") (eq item.type "accessoire"))}}
+                    <tr class="item" data-item-id="{{item._id}}">
+                        <td><input type="checkbox" class="isHoldCheckbox" name="{{item._id}}" value="{{item.system.hold}}"></td>
+                        <td>{{item.name}}
+                            {{#if (eq item.type "objet_stackable")}}
+                            <span style="text-transform: none">
+                                (x
+                                <input type="number" name="{{item._id}}" value="{{item.system.owned}}" class="ownedValue" style="width: 1.6em;text-align: center">
+                                )
+                            </span>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <a class="item-delete" title="Vendre l'item"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {{/unless}}
+                    {{/each}}
+                    <!-- Ajoutez d'autres lignes au besoin -->
+                    </tbody>
+                </table>
             </div>
         </section>
         </section>

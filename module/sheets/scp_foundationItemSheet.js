@@ -17,10 +17,13 @@ export default class scp_foundationItemSheet extends ItemSheet{
     }
 
     activateListeners(html) {
-        this.updateOther(html);
+        super.activateListeners(html);
+        if(this.item.type==="arme") {
+            this.updateArme(html);
+        }
     }
 
-    updateOther(html){
+    updateArme(html){
         html.find('input[type="text"]').prop('disabled', true);
         let skill = html.find('#skill')[0];
         let skill_selected = this.item.system.skill;
@@ -35,5 +38,4 @@ export default class scp_foundationItemSheet extends ItemSheet{
         }
         html.find('input[type="text"]').prop('disabled', false);
     }
-
 }

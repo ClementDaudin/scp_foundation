@@ -1,4 +1,4 @@
-<form class="flexcol {{cssClass}}" autocomplete="off">
+<form class="flexcol {{cssClass}} attachment-sheet" autocomplete="off">
     <header class="sheet-header">
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="128" alt="attachment"/>
         <div class="header-fields">
@@ -12,23 +12,20 @@
         <label>Description </label>
         {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
         <div class="attributeValues">
-            <label>Type
-                <input name="system.skill" type="text" value="{{systemData.skill}}" placeholder="Skill">
-            </label>
             <label>Recul
-                <input name="system.effect.recoil" type="text" value="{{systemData.effect.recoil}}" placeholder="Recoil">
+                <input name="system.effect.recoil" type="text" value="{{systemData.effect.recoil}}" placeholder=" Bonus en Recul">
             </label>
             <label>Melee
-                <input name="system.effect.melee" type="number" value="{{systemData.effect.melee}}" placeholder="Melee">
+                <input name="system.effect.melee" type="number" value="{{systemData.effect.melee}}" placeholder="Bonus en Melee">
             </label><label>Hip
-            <input name="system.effect.hip" type="number" value="{{systemData.effect.hip}}" placeholder="Hip">
+            <input name="system.effect.hip" type="number" value="{{systemData.effect.hip}}" placeholder="Bonus en Hip">
         </label><label>Ready
-            <input name="system.effect.ready" type="number" value="{{systemData.effect.ready}}" placeholder="Ready">
+            <input name="system.effect.ready" type="number" value="{{systemData.effect.ready}}" placeholder="Bonus en Ready">
         </label><label>Aim
-            <input name="system.effect.aim" type="number" value="{{systemData.effect.aim}}" placeholder="Aim">
+            <input name="system.effect.aim" type="number" value="{{systemData.effect.aim}}" placeholder="Bonus en aim">
         </label>
             <label>Chargeur
-                <input name="system.effect.clip_size" type="number" value="{{systemData.effect.clip_size}}" placeholder="Clip Size">
+                <input name="system.effect.magazine" type="number" value="{{systemData.effect.magazine}}" placeholder="Bonus du Chargeur">
             </label><label>Price
             <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
         </label>

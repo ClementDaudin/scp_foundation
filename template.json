@@ -6,9 +6,9 @@
       "player":  "",
       "alias": "",
       "gender": "",
-      "weight": 0,
-      "height": "1m00",
-      "age": 0,
+      "weight": "",
+      "height": "",
+      "age": "",
       "hair": "",
       "eyes": "",
       "appearance": "beau",
@@ -99,183 +99,183 @@
       "perks": {
         "knowledges": {
           "anatomy_first_aid": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "ancient_languages": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "architecture": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "astronomy": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "caretaking_nurture": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "computer_hacking": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "cooking": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "demolition": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "fashion_etiquette": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 1,
             "total_mod": 1,
             "type": "chr"
           },
           "gambling_gaming": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dst"
           },
           "general_knowledge": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "history_lore": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "identify_taste_smell": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "per"
           },
           "investigate": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "law_politics": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "mathematics": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "mechanics": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "navigate": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "occulte_scp_lore": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": -2,
             "total_mod": -2,
             "type": "int"
           },
           "psychology": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "religion": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "research_internet": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "science_physics": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "survival_tracking": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "per"
           },
           "technology": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "visual_sign_sign_lang": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
@@ -283,162 +283,162 @@
         },
         "skills": {
           "melee": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "assault_rifle": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "handgun": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "heavy_artillery": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "hunting_sniper_rifle": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "shotgun": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "submachine_gun": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "acting_lie": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "art_music": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "break_free_escape": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "for"
           },
           "catch_throw": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "climb": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "disguise_blend_in": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": -1,
             "total_mod": -1,
             "type": "chr"
           },
           "drive": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "lockpicking": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "pickpocket": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "pilot": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "stealth_hide": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "showmanship": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "swim": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "teaching": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
           },
           "wrestle_disarm": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "writing": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "int"
@@ -446,113 +446,113 @@
         },
         "abilities": {
           "awareness_reaction": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "per"
           },
           "dodge_block": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "animal_ken_tame": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "athletics": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "empathy": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "chr"
           },
           "endurance": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "san"
           },
           "initiative": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": -3,
             "total_mod": -3,
             "type": "int"
           },
           "intimidate_taunt": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": -1,
             "total_mod": -1,
             "type": "chr"
           },
           "intuition": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": -3,
             "total_mod": -3,
             "type": "int"
           },
           "jump": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dex"
           },
           "leadership": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 1,
             "total_mod": 1,
             "type": "chr"
           },
           "lift_push": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "for"
           },
           "negociation_persuade": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 2,
             "total_mod": 2,
             "type": "chr"
           },
           "resist_ko_death": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "dst"
           },
           "resist_distress": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 1,
             "total_mod": 1,
             "type": "vol"
           },
           "self_controle": {
-            "perso": 0,
-            "self_mod": 0,
+            "perso": "",
+            "self_mod": "",
             "bonus_mod": 0,
             "total_mod": 0,
             "type": "vol"
@@ -562,7 +562,7 @@
     }
   },
   "Item": {
-    "types": ["arme", "attachment", "rent", "other"],
+    "types": ["arme", "accessoire", "objet", "objet_stackable", "location"],
     "htmlFields": ["description"],
     "arme": {
       "id": 0,
@@ -573,40 +573,51 @@
         "actual": 0,
         "real": 0
       },
-      "melee": 0,
-      "hip": 0,
-      "ready": 0,
-      "aim": 0,
+      "melee": "",
+      "hip": "",
+      "ready": "",
+      "aim": "",
       "actual_position": 0,
-      "clip_size": "10",
-      "base_damage": "0",
-      "x_damage": "0",
-      "element": "none",
-      "range": "2*",
-      "price": "$200",
+      "magazine": {
+        "actual": 0,
+        "max": ""
+      },
+      "base_damage": "",
+      "x_damage": "",
+      "element": "",
+      "range": "",
+      "price": "",
       "attachments": []
     },
-    "attachment": {
-      "description": "attachment :",
-      "price": "$50",
+    "accessoire": {
+      "description": "",
+      "price": "",
       "effect": {
-        "recoil": 0,
-        "melee": 0,
-        "hip": 0,
-        "ready": 0,
-        "aim": 0,
-        "clip_size": 0
+        "recoil": "",
+        "melee": "",
+        "hip": "",
+        "ready": "",
+        "aim": "",
+        "magazine": ""
       },
       "idArme": ""
     },
-    "rent": {
-      "description": "attachment :",
-      "rent": "$50/day",
-      "price": "$800"
-    },
-    "other": {
+    "objet": {
       "description": "",
-      "price": "$50"
+      "price": "",
+      "hold": false
+    },
+    "objet_stackable": {
+      "description": "",
+      "price": "$",
+      "hold": false,
+      "owned": 1
+    },
+    "location": {
+      "description": "",
+      "rent": "",
+      "price": "",
+      "hold": false
     }
   }
 }

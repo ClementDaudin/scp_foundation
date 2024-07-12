@@ -1,4 +1,4 @@
-<form class="flexcol {{cssClass}}" autocomplete="off">
+<form class="flexcol {{cssClass}} arme-sheet" autocomplete="off">
     <header class="sheet-header">
         <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
         <div class="header-fields">
@@ -39,17 +39,17 @@
                 <input name="system.aim" type="number" value="{{systemData.aim}}" placeholder="Aim">
             </label>
             <label>Chargeur
-                <input name="system.clip_size" type="number" value="{{systemData.clip_size}}" placeholder="Clip Size">
+                <input name="system.magazine.max" type="number" value="{{systemData.magazine.max}}" placeholder="Taille du chargeur">
             </label><label>Base Damage
-            <input name="system.base_damage" type="text" value="{{systemData.base_damage}}" placeholder="Base Damage">
+            <input name="system.base_damage" type="text" value="{{systemData.base_damage}}" placeholder="Base Damage" style="width: 6em">
             </label><label>X Damage
-                <input name="system.x_damage" type="text" value="{{systemData.x_damage}}" placeholder="X Damage">
+                <input name="system.x_damage" type="text" value="{{systemData.x_damage}}" placeholder="X Damage" style="width: 6em">
             </label><label>Element
-                <input name="system.element" type="text" value="{{systemData.element}}" placeholder="Element">
-            </label><label>Range
+                <input name="system.element" type="text" value="{{systemData.element}}" placeholder="Element" style="width: 6em">
+            </label><label>Portée
                 <input name="system.range" type="number" value="{{systemData.range}}" placeholder="Range">
-            </label><label>Price
-                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
+            </label><label>Prix
+                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price" style="width: 5em">
             </label>
         </div>
     </section>

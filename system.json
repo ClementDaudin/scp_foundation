@@ -2,7 +2,7 @@
   "id": "scp_foundation",
   "title" : "SCP Foundation",
   "description" : "Mode de jeu SCP pour La Bonne Gachette",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "compatibility": {
     "minimum": "11",
     "verified": "11"

@@ -8,7 +8,20 @@ Hooks.once("init", () => {
 
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("scp_foundation", scp_foundationActorSheet, {makeDefault: true});
+
+    Combat.prototype.rollInitiative = rollInitiative
+
 })
+
+Hooks.on("ready", async () => {
+    let actorArray = Array.from(game.actors);
+    for (const actor of actorArray) {
+        await actor.update({
+            img: actor.prototypeToken.texture.src // Utilisation de l'image du token de l'acteur
+        });
+    }
+});
+
 Hooks.on("createItem", async (item, itemData) => {
     if(item._stats.lastModifiedBy === game.users.current._id) {
         if (item.parent !== null) {
@@ -98,3 +111,113 @@ Hooks.on("createItem", async (item, itemData) => {
         return true;
     }
 });
+
+export async function rollInitiative (
+    ids,
+    { formula = null, updateTurn = true, messageOptions = {} } = {}
+) {
+    // Iterate over Combatants, performing an initiative roll for each
+    const updates = []
+    for (const [, id] of ids.entries()) {
+        // Get Combatant data (non-strictly)
+        const combatant = this.combatants.get(id)
+
+        const actor = game.actors.get(combatant.actorId);
+
+        // Produce an initiative roll for the Combatant
+        let intel = actor.system.attributes.intelligence
+        let d8Used = intel.d8;
+        let d10Used = intel.d10;
+        let d12Used = intel.d12;
+        let diceFormulae = [];
+        while (d12Used > 0 && diceFormulae.length<4) {
+            diceFormulae.push("1d12");
+            d12Used--;
+        }
+        while (d10Used > 0 && diceFormulae.length<4) {
+            diceFormulae.push("1d10");
+            d10Used--;
+        }
+        while (d8Used > 0 && diceFormulae.length<4) {
+            diceFormulae.push("1d8");
+            d8Used--;
+        }
+
+        let diceResults = [];
+        let diceExplosions = [];
+        for (let formula of diceFormulae) {
+            let roll = new Roll(formula);
+            await roll.evaluate(); // Évalue le résultat du lancer
+            let result = roll.total; // Obtient le total du résultat
+
+            // Stocke le résultat dans le tableau des résultats
+            diceResults.push({
+                formula: formula,
+                result: result
+            });
+        }
+        let resultRoll = 0;
+        diceResults.forEach(diceActu  => {
+            let maxValue = diceActu.formula.toString().substring(2);
+            if(diceActu.result === parseInt(maxValue)){
+                diceExplosions.push(diceActu.formula);
+            }
+            else if (diceActu.result === 1) {
+                resultRoll--;
+            }
+        });
+
+        while(diceExplosions.length > 0){
+            diceExplosions = diceExplosions.filter(item => item !== "1d20");
+            diceExplosions = diceExplosions.map(item => item === "1d12" ? "1d20" : item);
+            diceExplosions = diceExplosions.flatMap((num) => (num === "1d10" ? ["1d12", "1d12"] : num));
+            diceExplosions = diceExplosions.map(item => item === "1d8" ? "1d10" : item);
+            let diceExplosionResult = []
+            let newExplosion = []
+
+            for (const diceActu of diceExplosions) {
+                let roll = new Roll(diceActu);
+                await roll.evaluate(); // Évalue le résultat du lancer
+                let result = roll.total; // Obtient le total du résultat
+
+                diceResults.push({
+                    formula: diceActu,
+                    result: result
+                });
+                diceExplosionResult.push({
+                    formula: diceActu,
+                    result: result
+                });
+            }
+            diceExplosionResult.forEach(diceActu  => {
+                let maxValue = diceActu.formula.toString().substring(2);
+                if(diceActu.result === parseInt(maxValue)){
+                    newExplosion.push(diceActu.formula);
+                }
+                else if (diceActu.result === 1){
+                    resultRoll--;
+                }
+
+            })
+
+            diceExplosions = newExplosion;
+
+        }
+        diceResults.sort((a, b) => b.result - a.result);
+
+        let bestResults = diceResults.slice(0, 2);
+        bestResults.forEach(roll =>{
+            resultRoll = resultRoll - (- roll.result)
+        })
+
+        resultRoll = resultRoll - (- actor.system.perks.abilities.initiative.perso) - (- actor.system.perks.abilities.initiative.total_mod)
+
+        updates.push({ _id: id, initiative: resultRoll })
+    }
+    if (!updates.length) return this
+
+    // Update multiple combatants
+    await this.updateEmbeddedDocuments('Combatant', updates)
+
+    return this
+}

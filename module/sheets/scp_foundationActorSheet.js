@@ -1121,20 +1121,22 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 });
         }
         newMessage.then(async () => {
-            let rerollArray = document.getElementsByClassName("reroll");
-            let rerollButton = rerollArray[rerollArray.length - 1];
-            rerollButton.addEventListener("click", async () => {
-                let reverence = this.actor.system.reverence;
-                if (reverence >= 2) {
-                    this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition)
-                    await this.actor.update({
-                        "system.reverence": reverence - 2
-                    });
-                }else{
-                    ui.notifications.warn(`Vous n'avez pas assez de point de révérence`);
+            if(pnj !== false){
+                let rerollArray = document.getElementsByClassName("reroll");
+                let rerollButton = rerollArray[rerollArray.length - 1];
+                rerollButton.addEventListener("click", async () => {
+                    let reverence = this.actor.system.reverence;
+                    if (reverence >= 2) {
+                        this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition)
+                        await this.actor.update({
+                            "system.reverence": reverence - 2
+                        });
+                    }else{
+                        ui.notifications.warn(`Vous n'avez pas assez de point de révérence`);
 
-                }
-            });
+                    }
+                });
+            }
             let rollDamageArray = document.getElementsByClassName("rollDamage");
             let rollDamageButton = rollDamageArray[rollDamageArray.length - 1];
             rollDamageButton.addEventListener("click", async () => {
@@ -1630,7 +1632,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
                     diceFormulae.push(dice);
                 }
             }else{
-                bonus+=parseInt(splitFormula[index])
+                bonus+=parseFloat(splitFormula[index])
             }
             index++;
         }

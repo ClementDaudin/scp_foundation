@@ -1208,13 +1208,147 @@ input[type="radio"]:checked + .personnel-label {
 .editor, .editor-content {
     min-height: 3em;
 }
+.scp-sheet .editor,.scp-sheet .editor-content {
+    min-height: 20em;
+}
 .prosemirror{
     min-height: 10em;
 }
 
-#diceUse, #exertionUse{
+#diceUse, #exertionUse, #launchTarget{
     color: white;
 }
 #diceUse > option, #exertionUse > option{
     background: rgba(0, 0, 0, 0.8);
+}
+
+.pnj-sheet input{
+    width: auto;
+}
+.pnj-attributes input{
+    width: auto;
+}
+.pnj-sheet div, .pnj-sheet label{
+    margin: 1px;
+}
+.inline-header{
+    display: inline-flex;
+    text-align: center;
+}
+.inline-header .charname{
+    width: 80%;
+}
+.inline-header input{
+    width: 2em;
+}
+
+.pnj-attributes{
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+}
+
+
+.leftPnj{
+    display: grid;
+    text-align: right;
+}
+.rightPnj{
+    display: grid;
+    text-align: right;
+}
+
+.pnj-attributes input{
+    text-align: left;
+}
+
+#pnj-info{
+    display: flex;
+    justify-content: ;: space-between;
+}
+#pnj-info input{
+    width: 3em;
+}
+.container{
+    display: grid;
+    grid-template-rows: auto auto;
+    border: 1px solid black;
+    text-align: center;
+}
+#pnj-hp{
+    border: 2px solid black;
+}
+.stats_pnj label{
+    display: inline-grid;
+    width: 24%;
+    justify-items: center;
+}
+.weaponTable{
+    text-align: center;
+}
+.weaponTable input{
+    width: 90%;
+}
+
+.diceImage{
+    width: 5%;
+}
+
+.diceImage img{
+    width: 80%;
+}
+
+#addWeapon {
+    width: 40px;
+    height: 40px;
+    background-color: dimgray;
+    color: white;
+    border: none;
+    border-radius: 20px 20px 20px 20px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.devastation {
+    display: flex;
+    background-color: dimgray;
+    background: radial-gradient(transparent, 80%, grey), linear-gradient(90deg, dimgray, white, dimgray);
+    border: 2px solid black;
+    justify-content: center;
+}
+
+.devastation input {
+    display: none;
+}
+
+.devastation label {
+    font-size: 3rem;
+    color: transparent;
+    position: relative;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    margin-left: 5px;
+}
+
+.devastation label::before {
+    content: '★';
+    color: grey;
+
+}
+
+
+.devastation input:checked ~ label ~ label::before {
+    color: grey;
+    content: '☆' ;
+}
+
+
+.scpStats{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.scpStats label{
+    margin: 5px;
+    border: 1px solid black;
 }

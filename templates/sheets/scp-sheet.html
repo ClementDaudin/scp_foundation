@@ -1,0 +1,178 @@
+<form class="flexcol {{cssClass}} scp-sheet " autocomplete="off">
+    <header class="sheet-header">
+        <div class="header-fields inline-header">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="Name">
+            </h1>
+            <div>
+                <label>Niveau de puissance
+                    <input name="system.power_lvl" type="number" value="{{systemData.power_lvl}}">
+                </label>
+            </div>
+            <div style="width: 20%">
+                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128"/>
+            </div>
+            <div id="ma_popup" class="popup" style="display: none">
+                <!-- Contenu de la popup -->
+                <div class="popup-content">
+                    <span class="closePopup">&times;</span>
+                    <h2>Lancement des dés</h2>
+                    <div>
+                    <label class="input-label exertionUse" style="display: none">
+                        <span class="h5" data-i18n="exertionUse">Utiliser des points d'exertion ?</span>
+                        <select name="exertionUse" title="@{exertionUse}" id="exertionUse" >
+                            <option value="0">0</option>
+                        </select>
+                    </label>
+                    </div>
+                    <div>
+                    <label class="input-label targetPlayer">
+                        <span class="h5" data-i18n="exertionUse">Cible du lancé</span>
+                        <select name="launchTarget" title="@{launchTarget}" id="launchTarget" >
+                            <option value="Public">Public</option>
+                            <option value="GM">Cachés</option>
+                        </select>
+                    </label>
+                    </div>
+                    <div>
+                    <label class="input-label launchDice">
+                        <span class="h5" data-i18n="lancer">Lancer</span>
+                    </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="sheet-body">
+        <div class="pnj-attributes">
+            <div class="leftPnj">
+                <label class="pnjDice" ><span>Force =</span>
+                    <input type="text" name="system.attributes.strength" value="{{systemData.attributes.strength}}">
+                </label>
+                <label class="pnjDice"><span>Santé =</span>
+                    <input type="text" name="system.attributes.health" value="{{systemData.attributes.health}}">
+                </label>
+                <label class="pnjDice" ><span>Perception =</span>
+                    <input type="text" name="system.attributes.perception" value="{{systemData.attributes.perception}}">
+                </label>
+            </div>
+            <div class="rightPnj">
+                <label class="pnjDice" ><span>Dexterité =</span>
+                    <input type="text" name="system.attributes.dexterity" value="{{systemData.attributes.dexterity}}">
+                </label>
+                <label class="pnjDice" ><span>Intelligence =</span>
+                    <input type="text" name="system.attributes.intelligence" value="{{systemData.attributes.intelligence}}">
+                </label>
+                <label class="pnjDice" ><span name="Volonté">Volonté =</span>
+                    <input type="text" name="system.attributes.willpower" value="{{systemData.attributes.willpower}}">
+                </label>
+            </div>
+
+        </div>
+        <div class="scpStats">
+            <label>Physique
+                <input type="number" name="system.stats.physical" value="{{systemData.stats.physical}}">
+            </label>
+            <label>Mental
+                <input type="number" name="system.stats.mental" value="{{systemData.stats.mental}}">
+            </label>
+            <label>Social
+                <input type="number" name="system.stats.social" value="{{systemData.stats.social}}">
+            </label>
+        </div>
+        <div id="pnj-info">
+            <div style="width: 60%">
+                {{editor descriptionHTML target="system.biography" button=true editable=editable engine="prosemirror"}}
+            </div>
+            <div>
+                <div class="container">
+                    <div id="pnj-hp">
+                        <label>HP :
+                            <input type="number" name="system.hp" value="{{systemData.hp}}">
+                        </label>
+                    </div>
+
+                    <div class="stats_pnj">
+                        <label>Reaction de défense
+                            <input type="number" name="system.reaction_defense" value="{{systemData.reaction_defense}}">
+                        </label>
+                        <label>Vitesse de déplacement
+                            <input type="number" name="system.move_speed" value="{{systemData.move_speed}}">
+                        </label>
+                        <label>Exertion
+                            <input type="number" name="system.exertion" value="{{systemData.exertion}}">
+                        </label>
+                        <label>Actions par tour
+                            <input type="number" name="system.act_per_turn" value="{{systemData.exertion}}">
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <p>points de dévastation</p>
+                    <div class="devastation">
+                        <input type="radio" id="star0" class="devastation_pointTile" name="devastation" value="0">
+                        <label for="star0" title="0 étoile" style="display: none"></label>
+                        <input type="radio" id="star1" class="devastation_pointTile" name="devastation" value="1">
+                        <label for="star1" title="1 étoile"></label>
+                        <input type="radio" id="star2" class="devastation_pointTile" name="devastation" value="2">
+                        <label for="star2" title="2 étoiles"></label>
+                        <input type="radio" id="star3" class="devastation_pointTile" name="devastation" value="3">
+                        <label for="star3" title="3 étoiles"></label>
+                        <input type="radio" id="star4" class="devastation_pointTile" name="devastation" value="4">
+                        <label for="star4" title="4 étoiles"></label>
+                        <input type="radio" id="star5" class="devastation_pointTile" name="devastation" value="5">
+                        <label for="star5" title="5 étoiles"></label>
+
+
+                    </div>
+                </div>
+                <div>
+                    <label> Forces et Faiblesses
+                        <textarea name="system.strength_weakness" style="min-height: 10em">{{systemData.strength_weakness}}</textarea>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="weaponTable">
+            <table>
+                <tr>
+                    <th> </th>
+                    <th>Arme</th>
+                    <th>Dés</th>
+                    <th>Portée</th>
+                    <th>Dégâts</th>
+                    <th> </th>
+                </tr>
+                {{#each actor.system.weapons as |weapon key|}}
+                <tr class="weapon-{{key}}">
+                    <td class="diceImage">
+                        <button name="{{weapon.attack}}" value="{{weapon.to_hit_roll}}${{weapon.damage}}">
+                            <img src="systems/scp_foundation/assets/dices.png" alt="dices" >
+                        </button>
+                    </td>
+                    <td>
+                        <input type="text" class="pnjWeapon" name="attack" value="{{weapon.attack}}">
+                    </td>
+                    <td>
+                        <input type="text" class="pnjWeapon" name="hit_roll" value="{{weapon.to_hit_roll}}">
+                    </td>
+                    <td>
+                        <input type="text" class="pnjWeapon" name="range" value="{{weapon.range}}">
+                    </td>
+                    <td>
+                        <input type="text" class="pnjWeapon" name="damage" value="{{weapon.damage}}">
+                    </td>
+                    <td>
+                        <a class="pnj-delete" title="Supprimer l'arme"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+            <input type="button" value="+" id="addWeapon">
+        </div>
+    </section>
+
+</form>
+

@@ -33,13 +33,16 @@
             <div class="popup-content">
                 <span class="closePopup">&times;</span>
                 <h2>Lancement des dés</h2>
-                <label class="input-label diceUse">
+                <div>
+                    <label class="input-label diceUse">
                     <select name="diceUse" title="@{diceUse}" id="diceUse">
                         <option value="true" data-i18n="oui">Oui</option>
                         <option value="false" data-i18n="non">Non</option>
                     </select><span class="h5" data-i18n="diceUse">Utiliser les meilleurs dés ?</span>
                 </label>
-                <label class="input-label diceToUse" style="display: none">
+                </div>
+                <div>
+                    <label class="input-label diceToUse" style="display: none">
                     <span class="h5" data-i18n="diceToUse">d12 : </span>
                     <select name="diceToUse" class="chooseDice" title="@{d12Selected}" id="d12Selected">
                     </select>
@@ -50,15 +53,31 @@
                     <select name="diceToUse" class="chooseDice" title="@{d8Selected}" id="d8Selected">
                     </select>
                 </label>
-                <label class="input-label exertionUse" style="display: none">
+                </div>
+                <div>
+                    <label class="input-label exertionUse" style="display: none">
                     <span class="h5" data-i18n="exertionUse">Utiliser des points d'exertion ?</span>
                     <select name="exertionUse" title="@{exertionUse}" id="exertionUse" >
                         <option value="0">0</option>
                     </select>
                 </label>
-                <label class="input-label launchDice">
-                    <span class="h5" data-i18n="lancer">Lancer</span>
+                </div>
+                <div>
+                    <label class="input-label targetPlayer">
+                    <span class="h5" data-i18n="exertionUse">Cible du lancé</span>
+                    <select name="launchTarget" title="@{launchTarget}" id="launchTarget" >
+                        <option value="Public">Public</option>
+                        <option value="Perso">Perso</option>
+                        <option value="Hidden">Cachés</option>
+                        <option value="GM">Uniquement pour le MJ</option>
+                    </select>
                 </label>
+                </div>
+                <div style="text-align: center">
+                    <label class="input-label launchDice">
+                        <span class="h5" data-i18n="lancer">Lancer</span>
+                    </label>
+                </div>
             </div>
         </div>
     </header>

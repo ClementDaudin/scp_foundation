@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["character"],
+    "types": ["character", "pnj", "scp"],
     "htmlFields": ["biography"],
     "character": {
       "player":  "",
@@ -559,6 +559,51 @@
           }
         }
       }
+    },
+    "pnj": {
+      "power_lvl": 0,
+      "quote": "",
+      "attributes": {
+        "strength": "",
+        "health": "",
+        "perception": "",
+        "dexterity": "",
+        "intelligence": "",
+        "willpower": ""
+      },
+      "hp": 0,
+      "reaction_defense": 0,
+      "move_speed": 0,
+      "exertion": 0,
+      "stats": {
+        "physical": 0,
+        "mental": 0
+      },
+      "weapons":[]
+    },
+    "scp": {
+      "power_lvl": 0,
+      "strength_weakness": "",
+      "attributes": {
+        "strength": "",
+        "health": "",
+        "perception": "",
+        "dexterity": "",
+        "intelligence": "",
+        "willpower": ""
+      },
+      "hp": 0,
+      "reaction_defense": 0,
+      "move_speed": 0,
+      "exertion": 0,
+      "act_per_turn": 0,
+      "devastation_point": 0,
+      "stats": {
+        "physical": 0,
+        "mental": 0,
+        "social": 0
+      },
+      "weapons":[]
     }
   },
   "Item": {

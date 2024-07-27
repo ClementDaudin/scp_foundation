@@ -13,7 +13,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
     async getData(options){
         this.data = await super.getData(options);
         this.data.systemData = this.data.data.system;
-        this.data.descriptionHTML = await TextEditor.enrichHTML(this.data.systemData.description, {
+        this.data.descriptionHTML = await TextEditor.enrichHTML(this.data.systemData.biography, {
             secrets: this.document.isOwner,
             async: true
         });
@@ -22,295 +22,344 @@ export default class scp_foundationActorSheet extends ActorSheet{
     }
     activateListeners(html) {
         super.activateListeners(html);
-        this.updateDicesTiles(html);
-        this.updateExertionSpan(html);
-        this.updateTiles(html, "exertion");
-        this.updateTiles(html, "reverence");
-        this.updateTiles(html, "merit_point");
-        this.updateOther(html);
-        this.abilitiesBonus(html);
-        window.addEventListener('keydown',function(e) {
-            if (e.keyIdentifier=='U+000A' || e.keyIdentifier=='Enter' || e.keyCode==13) {
-                if (e.target.nodeName=='INPUT' && e.target.type=='text') {
-                    e.preventDefault();
+        if(this.actor.type==="character") {
+            this.updateDicesTiles(html);
+            this.updateExertionSpan(html);
+            this.updateTiles(html, "exertion");
+            this.updateTiles(html, "reverence");
+            this.updateTiles(html, "merit_point");
+            this.updateOther(html);
+            this.abilitiesBonus(html);
+            window.addEventListener('keydown', function (e) {
+                if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+                    if (e.target.nodeName == 'INPUT' && e.target.type == 'text') {
+                        e.preventDefault();
 
-                    return false;
+                        return false;
+                    }
                 }
-            }
-        }, true);
-        console.log(`scp_foundation | Récupération des listeners.`);
+            }, true);
+            console.log(`scp_foundation | Récupération des listeners.`);
 
-        const radiosTable = html.find(".radio-item-system");
-        const radios = Array.from(radiosTable);
-        radios.forEach(radio => {
-            const itemId = radio.getAttribute('name').replace('item', ''); // Récupère l'ID de l'item
-            let arme = this.actor.items.get(itemId);
-            let value = radio.value
-            radio.addEventListener('change', async () => {
-                await arme.update({"system.actual_position": value});
+            const radiosTable = html.find(".radio-item-system");
+            const radios = Array.from(radiosTable);
+            radios.forEach(radio => {
+                const itemId = radio.getAttribute('name').replace('item', ''); // Récupère l'ID de l'item
+                let arme = this.actor.items.get(itemId);
+                let value = radio.value
+                radio.addEventListener('change', async () => {
+                    await arme.update({"system.actual_position": value});
+                });
+                radio.checked = value === arme.system.actual_position;
             });
-            radio.checked = value === arme.system.actual_position;
-        });
-        const personnelTable = html.find(".personnelButton");
-        const personnel = Array.from(personnelTable);
-        personnel.forEach(radio => {
-            radio.addEventListener('change', async () => {
-                await this.actor.update({"system.personnel_class": radio.value});
+            const personnelTable = html.find(".personnelButton");
+            const personnel = Array.from(personnelTable);
+            personnel.forEach(radio => {
+                radio.addEventListener('change', async () => {
+                    await this.actor.update({"system.personnel_class": radio.value});
+                });
+                if (radio.value === this.actor.system.personnel_class) {
+                    radio.checked = true;
+                }
             });
-            if(radio.value === this.actor.system.personnel_class){
-                radio.checked = true;
-            }
-        });
 
-        html.find(".item-delete").click(this._onItemDelete.bind(this));
-        // Sélectionnez le bouton par sa classe ou son ID, ajustez le sélecteur en fonction de votre HTML
-        const diceButton = html.find('.die-purchase');
+            html.find(".item-delete").click(this._onItemDelete.bind(this));
+            // Sélectionnez le bouton par sa classe ou son ID, ajustez le sélecteur en fonction de votre HTML
+            const diceButton = html.find('.die-purchase');
 
-        // Utilisez addEventListener pour attacher un événement onclick au bouton
-        diceButton[0].addEventListener('click', async () => {
-            await this.buyDice(8, html);
-        });
-        diceButton[1].addEventListener('click', async () => {
-            await this.buyDice(10, html);
-        });
-        diceButton[2].addEventListener('click', async () => {
-            await this.buyDice(12, html);
-        });
-        let diceTable = html.find('.diceTile');
-        let diceArray = Array.from(diceTable);
-
-        diceArray.forEach((diceTile) => {
-            diceTile.addEventListener('click', async () => {
-                await this.exchangeDice(diceTile, html);
-            })
-        })
-
-        let exertionTable = html.find('.exertionTile');
-        let exertionArray = Array.from(exertionTable);
-        exertionArray.forEach((exertionTile) => {
-            exertionTile.addEventListener('click', async () => {
-                await this.changeExertion(exertionTile, html);
-            })
-        })
-        let reverenceTable = html.find('.reverenceTile');
-        let reverenceArray = Array.from(reverenceTable);
-        reverenceArray.forEach((reverenceTile) => {
-            reverenceTile.addEventListener('click', async () => {
-                await this.changeReverence(reverenceTile, html);
-            })
-        })
-        let meritTable = html.find('.merit_pointTile');
-        let meritArray = Array.from(meritTable);
-        meritArray.forEach((meritTile) => {
-            meritTile.addEventListener('click', async () => {
-                await this.changeMerit(meritTile, html);
-            })
-        })
-        let rollButtonTable = html.find('.roller');
-        let rollButtonArray = Array.from(rollButtonTable);
-        rollButtonArray.forEach((rollButton) => {
-            rollButton.addEventListener('click', () =>{
-                this.prepareRoll(html, rollButton.name, rollButton.value);
-            })
-        })
-        let perksTable = html.find('.perksRoller');
-        let perksArray = Array.from(perksTable);
-        perksArray.forEach((perksButton) => {
-            perksButton.addEventListener('click', () =>{
-                this.preparePerksRoll(html, perksButton.name, perksButton.value, null, 0);
-            })
-        });
-        let weaponTable = html.find('.weaponRoller');
-        let weaponArray = Array.from(weaponTable);
-        weaponArray.forEach((weaponButton) => {
-            weaponButton.addEventListener('click', () =>{
-                this.prepareAttackRoll(html, weaponButton.name, weaponButton.value);
-            })
-        });
-
-        let popup = html.find('#ma_popup')[0];
-        html.find(".closePopup")[0].addEventListener('click', function() {
-            popup.style.display = 'none';
-            html.find('#diceUse')[0].value = "true";
-            html.find(".diceToUse")[0].style.display = "none";
-            let launchDiceInput = html.find('#launchDice')[0];
-            launchDiceInput.parentNode.removeChild(launchDiceInput);
-
-        });
-        this.dragElement(popup);
-        let buttonsTable = html.find('.popup-content select');
-        let buttonsArray = Array.from(buttonsTable);
-
-        buttonsArray.forEach(function(button) {
-            button.addEventListener('mousedown', function(event) {
-                event.stopPropagation();
+            // Utilisez addEventListener pour attacher un événement onclick au bouton
+            diceButton[0].addEventListener('click', async () => {
+                await this.buyDice(8, html);
             });
-        });
-        html.find("#d12Selected")[0].addEventListener('change',  () =>{
-            this.updateDicesAvailable(html);
-        })
-        html.find("#d10Selected")[0].addEventListener('change',  () =>{
-            this.updateDicesAvailable(html);
-        })
-        html.find("#d8Selected")[0].addEventListener('change', () =>{
-            this.updateDicesAvailable(html);
-        })
+            diceButton[1].addEventListener('click', async () => {
+                await this.buyDice(10, html);
+            });
+            diceButton[2].addEventListener('click', async () => {
+                await this.buyDice(12, html);
+            });
+            let diceTable = html.find('.diceTile');
+            let diceArray = Array.from(diceTable);
 
-        let personnalModuleTable = html.find(".self_mod");
-        let personnalModuleArray =  Array.from(personnalModuleTable);
-        personnalModuleArray.forEach((personnalModule) =>{
-            personnalModule.addEventListener("change", (evt)=>{
-                this.totalModUpdate(evt, personnalModule);
+            diceArray.forEach((diceTile) => {
+                diceTile.addEventListener('click', async () => {
+                    await this.exchangeDice(diceTile, html);
+                })
             })
-        })
-        html.find("#reasoning")[0].addEventListener('change', (evt)=>{
-            this.bonusReasoningUpdate(evt);
-        });
-        html.find("#body_type")[0].addEventListener('change', (evt)=>{
-            this.bonusBodyTypeUpdate(evt, html);
-        });
-        html.find("#appearance")[0].addEventListener('change', (evt)=>{
-            this.bonusAppearanceUpdate(evt);
-        });
-        html.find("#all-radio")[0].addEventListener('click', () =>{
-            html.find("#charactere_data")[0].style.display = "block";
-            html.find("#weapons")[0].style.display = "none";
-            html.find("#inventory")[0].style.display = "none";
-            html.find("#attributes")[0].style.display = "block";
-            localStorage.setItem('page', 'all')
-        })
-        html.find("#attacks-radio")[0].addEventListener('click', () =>{
-            html.find("#charactere_data")[0].style.display = "none";
-            html.find("#weapons")[0].style.display = "block";
-            html.find("#inventory")[0].style.display = "none";
-            html.find("#attributes")[0].style.display = "none";
-            localStorage.setItem('page', 'attack')
-        })
-        html.find("#equipment-radio")[0].addEventListener('click', () =>{
-            html.find("#charactere_data")[0].style.display = "none";
-            html.find("#weapons")[0].style.display = "none";
-            html.find("#inventory")[0].style.display = "block";
-            html.find("#attributes")[0].style.display = "none";
-            localStorage.setItem('page', 'inventory')
-        })
 
-        switch(localStorage.getItem('page')){
-            case "all":
+            let exertionTable = html.find('.exertionTile');
+            let exertionArray = Array.from(exertionTable);
+            exertionArray.forEach((exertionTile) => {
+                exertionTile.addEventListener('click', async () => {
+                    await this.changeExertion(exertionTile, html);
+                })
+            })
+            let reverenceTable = html.find('.reverenceTile');
+            let reverenceArray = Array.from(reverenceTable);
+            reverenceArray.forEach((reverenceTile) => {
+                reverenceTile.addEventListener('click', async () => {
+                    await this.changeReverence(reverenceTile, html);
+                })
+            })
+            let meritTable = html.find('.merit_pointTile');
+            let meritArray = Array.from(meritTable);
+            meritArray.forEach((meritTile) => {
+                meritTile.addEventListener('click', async () => {
+                    await this.changeMerit(meritTile, html);
+                })
+            })
+            let rollButtonTable = html.find('.roller');
+            let rollButtonArray = Array.from(rollButtonTable);
+            rollButtonArray.forEach((rollButton) => {
+                rollButton.addEventListener('click', () => {
+                    this.prepareRoll(html, rollButton.name, rollButton.value);
+                })
+            })
+            let perksTable = html.find('.perksRoller');
+            let perksArray = Array.from(perksTable);
+            perksArray.forEach((perksButton) => {
+                perksButton.addEventListener('click', () => {
+                    this.preparePerksRoll(html, perksButton.name, perksButton.value, null, 0);
+                })
+            });
+            let weaponTable = html.find('.weaponRoller');
+            let weaponArray = Array.from(weaponTable);
+            weaponArray.forEach((weaponButton) => {
+                weaponButton.addEventListener('click', () => {
+                    this.prepareAttackRoll(html, weaponButton.name, weaponButton.value);
+                })
+            });
+
+            let popup = html.find('#ma_popup')[0];
+            html.find(".closePopup")[0].addEventListener('click', function () {
+                popup.style.display = 'none';
+                html.find('#diceUse')[0].value = "true";
+                html.find(".diceToUse")[0].style.display = "none";
+                let launchDiceInput = html.find('.input-label.launchDice')[0];
+
+                const newElement = launchDiceInput.firstElementChild.cloneNode(true);
+                launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
+
+            });
+            this.dragElement(popup);
+            let buttonsTable = html.find('.popup-content select');
+            let buttonsArray = Array.from(buttonsTable);
+
+            buttonsArray.forEach(function (button) {
+                button.addEventListener('mousedown', function (event) {
+                    event.stopPropagation();
+                });
+            });
+            html.find("#d12Selected")[0].addEventListener('change', () => {
+                this.updateDicesAvailable(html);
+            })
+            html.find("#d10Selected")[0].addEventListener('change', () => {
+                this.updateDicesAvailable(html);
+            })
+            html.find("#d8Selected")[0].addEventListener('change', () => {
+                this.updateDicesAvailable(html);
+            })
+
+            let personnalModuleTable = html.find(".self_mod");
+            let personnalModuleArray = Array.from(personnalModuleTable);
+            personnalModuleArray.forEach((personnalModule) => {
+                personnalModule.addEventListener("change", (evt) => {
+                    this.totalModUpdate(evt, personnalModule);
+                })
+            })
+            html.find("#reasoning")[0].addEventListener('change', (evt) => {
+                this.bonusReasoningUpdate(evt);
+            });
+            html.find("#body_type")[0].addEventListener('change', (evt) => {
+                this.bonusBodyTypeUpdate(evt, html);
+            });
+            html.find("#appearance")[0].addEventListener('change', (evt) => {
+                this.bonusAppearanceUpdate(evt);
+            });
+            html.find("#all-radio")[0].addEventListener('click', () => {
                 html.find("#charactere_data")[0].style.display = "block";
                 html.find("#weapons")[0].style.display = "none";
                 html.find("#inventory")[0].style.display = "none";
                 html.find("#attributes")[0].style.display = "block";
-                html.find("#all-radio")[0].checked = true;
-                break;
-            case "attack":
+                localStorage.setItem('page', 'all')
+            })
+            html.find("#attacks-radio")[0].addEventListener('click', () => {
                 html.find("#charactere_data")[0].style.display = "none";
                 html.find("#weapons")[0].style.display = "block";
                 html.find("#inventory")[0].style.display = "none";
                 html.find("#attributes")[0].style.display = "none";
-                html.find("#attacks-radio")[0].checked = true;
-                break;
-            case "inventory":
+                localStorage.setItem('page', 'attack')
+            })
+            html.find("#equipment-radio")[0].addEventListener('click', () => {
                 html.find("#charactere_data")[0].style.display = "none";
                 html.find("#weapons")[0].style.display = "none";
                 html.find("#inventory")[0].style.display = "block";
                 html.find("#attributes")[0].style.display = "none";
-                html.find("#equipment-radio")[0].checked = true;
-                break;
-            default:
-                html.find("#charactere_data")[0].style.display = "block";
-                html.find("#weapons")[0].style.display = "none";
-                html.find("#inventory")[0].style.display = "none";
-                html.find("#attributes")[0].style.display = "block";
-                html.find("#all-radio")[0].checked = true;
-                break;
-        }
+                localStorage.setItem('page', 'inventory')
+            })
 
-        const armesTable = html.find('.arme');
-        const armesArray = Array.from(armesTable);
+            switch (localStorage.getItem('page')) {
+                case "all":
+                    html.find("#charactere_data")[0].style.display = "block";
+                    html.find("#weapons")[0].style.display = "none";
+                    html.find("#inventory")[0].style.display = "none";
+                    html.find("#attributes")[0].style.display = "block";
+                    html.find("#all-radio")[0].checked = true;
+                    break;
+                case "attack":
+                    html.find("#charactere_data")[0].style.display = "none";
+                    html.find("#weapons")[0].style.display = "block";
+                    html.find("#inventory")[0].style.display = "none";
+                    html.find("#attributes")[0].style.display = "none";
+                    html.find("#attacks-radio")[0].checked = true;
+                    break;
+                case "inventory":
+                    html.find("#charactere_data")[0].style.display = "none";
+                    html.find("#weapons")[0].style.display = "none";
+                    html.find("#inventory")[0].style.display = "block";
+                    html.find("#attributes")[0].style.display = "none";
+                    html.find("#equipment-radio")[0].checked = true;
+                    break;
+                default:
+                    html.find("#charactere_data")[0].style.display = "block";
+                    html.find("#weapons")[0].style.display = "none";
+                    html.find("#inventory")[0].style.display = "none";
+                    html.find("#attributes")[0].style.display = "block";
+                    html.find("#all-radio")[0].checked = true;
+                    break;
+            }
 
-        armesArray.forEach(arme => {
-            const toggleButton = arme.querySelector('.toggle-details');
-            const detailsRow = arme.nextElementSibling;
+            const armesTable = html.find('.arme');
+            const armesArray = Array.from(armesTable);
 
-            toggleButton.addEventListener('click', function() {
-                if(detailsRow.style.display === "none"){
-                    detailsRow.style.display = "table-row";
-                }else{
-                    detailsRow.style.display = "none";
-                }
+            armesArray.forEach(arme => {
+                const toggleButton = arme.querySelector('.toggle-details');
+                const detailsRow = arme.nextElementSibling;
+
+                toggleButton.addEventListener('click', function () {
+                    if (detailsRow.style.display === "none") {
+                        detailsRow.style.display = "table-row";
+                    } else {
+                        detailsRow.style.display = "none";
+                    }
+                });
             });
-        });
-        const armesStatsTable = html.find('.statValue');
-        const armesStatsArray = Array.from(armesStatsTable);
+            const armesStatsTable = html.find('.statValue');
+            const armesStatsArray = Array.from(armesStatsTable);
 
-        armesStatsArray.forEach(armeStat => {
-            let fullPerks = armeStat.id.split(".");
+            armesStatsArray.forEach(armeStat => {
+                let fullPerks = armeStat.id.split(".");
 
-            const type = this.actor.system.perks[fullPerks[0]];
-            const skill = type[fullPerks[1]]
-            armeStat.innerHTML = skill["perso"] - (-skill["total_mod"]);
-        });
+                const type = this.actor.system.perks[fullPerks[0]];
+                const skill = type[fullPerks[1]]
+                armeStat.innerHTML = skill["perso"] - (-skill["total_mod"]);
+            });
 
-        const searchInput = html.find('#searchInput')[0];
-        const showChecked = html.find('#showChecked')[0];
-        const checkboxesTable = html.find('.isHoldCheckbox');
-        const ownedValueTable = html.find('.ownedValue');
-        const magazineTable = html.find('.magazine');
-        const checkboxes = Array.from(checkboxesTable)
-        const ownedValue = Array.from(ownedValueTable)
-        const magazineValue = Array.from(magazineTable)
+            const searchInput = html.find('#searchInput')[0];
+            const showChecked = html.find('#showChecked')[0];
+            const checkboxesTable = html.find('.isHoldCheckbox');
+            const ownedValueTable = html.find('.ownedValue');
+            const magazineTable = html.find('.magazine');
+            const checkboxes = Array.from(checkboxesTable)
+            const ownedValue = Array.from(ownedValueTable)
+            const magazineValue = Array.from(magazineTable)
             // Filtrage lors de la saisie dans le champ de recherche
-        searchInput.addEventListener('input', function() {
-            const searchText = searchInput.value.toLowerCase();
-            checkboxes.forEach(function(checkbox) {
-                const row = checkbox.closest('tr');
-                const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+            searchInput.addEventListener('input', function () {
+                const searchText = searchInput.value.toLowerCase();
+                checkboxes.forEach(function (checkbox) {
+                    const row = checkbox.closest('tr');
+                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
             });
-        });
 
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener("click", async () => {
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("click", async () => {
+                    let item = this.actor.items.get(checkbox.name);
+                    await item.update({"system.hold": checkbox.checked})
+                })
                 let item = this.actor.items.get(checkbox.name);
-                await item.update({"system.hold": checkbox.checked})
-            })
-            let item = this.actor.items.get(checkbox.name);
-            checkbox.checked = item.system.hold;
-        });
-        ownedValue.forEach(ownedButton => {
-            ownedButton.addEventListener("change", async () => {
-                let item = this.actor.items.get(ownedButton.name);
-                await item.update({"system.owned": ownedButton.value})
-            })
-        });
-        magazineValue.forEach(magazineButton => {
-            magazineButton.addEventListener("change", async () => {
-                let item = this.actor.items.get(magazineButton.name);
-                await item.update({"system.magazine.actual": magazineButton.value})
-            })
-        });
+                checkbox.checked = item.system.hold;
+            });
+            ownedValue.forEach(ownedButton => {
+                ownedButton.addEventListener("change", async () => {
+                    let item = this.actor.items.get(ownedButton.name);
+                    await item.update({"system.owned": ownedButton.value})
+                })
+            });
+            magazineValue.forEach(magazineButton => {
+                magazineButton.addEventListener("change", async () => {
+                    let item = this.actor.items.get(magazineButton.name);
+                    await item.update({"system.magazine.actual": magazineButton.value})
+                })
+            });
 
 
             // Filtrage pour afficher seulement les éléments cochés
-        showChecked.addEventListener('change', function() {
-            checkboxes.forEach(function(checkbox) {
-                const row = checkbox.closest('tr');
-                if (showChecked.checked && !checkbox.checked) {
-                    row.style.display = 'none';
-                } else {
-                    const searchText = searchInput.value.toLowerCase();
-                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                    if (name.includes(searchText)) {
-                        row.style.display = '';
+            showChecked.addEventListener('change', function () {
+                checkboxes.forEach(function (checkbox) {
+                    const row = checkbox.closest('tr');
+                    if (showChecked.checked && !checkbox.checked) {
+                        row.style.display = 'none';
+                    } else {
+                        const searchText = searchInput.value.toLowerCase();
+                        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                        if (name.includes(searchText)) {
+                            row.style.display = '';
+                        }
                     }
-                }
+                });
             });
-        });
+        }
+        if(this.actor.type === "pnj" || this.actor.type === "scp" ){
+            html.find('#addWeapon')[0].addEventListener("click", () =>{
+                this.add_weapon();
+            });
+            let pnjWeaponList = html.find(".pnjWeapon");
+            let pnjWeapon = Array.from(pnjWeaponList);
+            pnjWeapon.forEach(weapon => {
+                weapon.addEventListener('change', ()=>{
+                    this.updateWeapon(weapon);
+                })
+            })
+            html.find(".pnj-delete").click(this.delete_weapon.bind(this));
+            let diceRollButtonList = html.find(".diceImage");
+            let diceRollAttributeList = html.find(".pnjDice");
+            let diceRollAttributeButton = Array.from(diceRollAttributeList);
+            let diceRollButton = Array.from(diceRollButtonList);
+            diceRollButton.forEach(diceButton =>{
+                diceButton.firstElementChild.addEventListener("click", () =>{
+                    this.preparePnjRoll(html, diceButton.firstElementChild.name, diceButton.firstElementChild.value)
+                });
+            })
+            diceRollAttributeButton.forEach(diceButton =>{
+                diceButton.firstElementChild.addEventListener("click", () =>{
+                    this.preparePnjRoll(html, diceButton.children[0].innerHTML.substring(0, diceButton.children[0].innerHTML.length-2), diceButton.children[1].value)
+                });
+            })
 
+            this.updateTiles(html, "devastation_point");
+            let devastationTable = html.find('.devastation_pointTile');
+            let devastationArray = Array.from(devastationTable);
+            devastationArray.forEach((devastationTile) => {
+                devastationTile.addEventListener('click', async () => {
+                    await this.changeDevastation(devastationTile, html);
+                })
+            })
+            let popup = html.find('#ma_popup')[0];
+
+            html.find(".closePopup")[0].addEventListener('click', function () {
+                popup.style.display = 'none';
+                let launchDiceInput = html.find('.input-label.launchDice')[0];
+
+                const newElement = launchDiceInput.firstElementChild.cloneNode(true);
+                launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
+
+            });
+        }
     }
 
     async buyDice(dice, html){
@@ -439,6 +488,22 @@ export default class scp_foundationActorSheet extends ActorSheet{
             "system.reverence": reverenceClicked.value
         });
         this.updateTiles(html, "reverence");
+        html.find('input[type="text"]').prop('disabled', false);
+
+    }
+    async changeDevastation(devastationClicked, html){
+        html.find('input[type="text"]').prop('disabled', true);
+        if(parseInt(this.actor.system.devastation_point) === parseInt(devastationClicked.value)){
+            await this.actor.update({
+                "system.devastation_point": devastationClicked.value -1
+            });
+        }else{
+            await this.actor.update({
+                "system.devastation_point": devastationClicked.value
+            });
+        }
+
+        this.updateTiles(html, "devastation_point");
         html.find('input[type="text"]').prop('disabled', false);
 
     }
@@ -713,18 +778,13 @@ export default class scp_foundationActorSheet extends ActorSheet{
         else{
             html.find(".exertionUse")[0].style.display="none";
         }
-        let nouveauLaunchDiceInput = document.createElement('input');
-        nouveauLaunchDiceInput.name = 'launchDice';
-        nouveauLaunchDiceInput.title = '@{launchDice}';
-        nouveauLaunchDiceInput.id = 'launchDice';
+
         let labelElement = html.find('.input-label.launchDice')[0];
-        labelElement.appendChild(nouveauLaunchDiceInput);
-        nouveauLaunchDiceInput.addEventListener('click', () =>{
+        labelElement.firstElementChild.addEventListener('click', () =>{
             this.prepareFormulae(html, rollName, type, weapon, bonus);
             html.find("#ma_popup")[0].style.display = 'none';
-            html.find('#diceUse')[0].value = "true";
-            html.find(".diceToUse")[0].style.display = "none";
-            nouveauLaunchDiceInput.parentNode.removeChild(nouveauLaunchDiceInput);
+            const newElement = labelElement.firstElementChild.cloneNode(true);
+            labelElement.replaceChild(newElement, labelElement.firstElementChild);
         })
     }
 
@@ -844,12 +904,14 @@ export default class scp_foundationActorSheet extends ActorSheet{
             bonus-= -1
             exertionUsed--;
         }
-        this.launchRoll(html, rollName, diceFormulae, type, false, weapon, bonus)
+        this.launchRoll(html, rollName, diceFormulae, false, weapon, bonus)
     }
-    async launchRoll(html, rollName, diceFormulae, type, reroll, weapon, bonus, previousPosition = 0){
-        if(weapon !== null && previousPosition !== 0){
+    async launchRoll(html, rollName, diceFormulae, reroll, weapon, bonus, previousPosition = 0, pnj = false){
+            if(weapon !== null && previousPosition !== 0 && pnj === false){
             await weapon.update({'system.actual_position': previousPosition});
         }
+        let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
+        sound.play();
         let diceResults = [];
         let diceExplosions = [];
         let malus = 0;
@@ -1000,7 +1062,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
           <span class="totalLaunch" >`+ (bestResultsValue - (-bonus) - (-malus)) +`</span></span>
         </div>
         <div class="sheet-roll-buttons">`
-        if(!reroll){
+        if(!reroll && !pnj){
             diceRollsHTML +=
 
         `<span class="sheet-reverence-reroll"><input type="button" value="reroll" class="reroll"></span>`
@@ -1008,11 +1070,13 @@ export default class scp_foundationActorSheet extends ActorSheet{
         if(weapon !== null){
             diceRollsHTML +=  `
         <span class="sheet-roll-damage"><input type="button" value="Roll Damage" class="rollDamage"></span>`;
-            previousPosition = weapon.system.actual_position;
-            if(parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <=1) {
-                await weapon.update({'system.actual_position': "0"})
-            }else{
-                await weapon.update({'system.actual_position': ""+Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
+            if(!pnj){
+                previousPosition = weapon.system.actual_position;
+                if(parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <=1) {
+                    await weapon.update({'system.actual_position': "0"})
+                }else{
+                    await weapon.update({'system.actual_position': ""+Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
+                }
             }
         }
         diceRollsHTML +=  `
@@ -1023,17 +1087,46 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let messageContent = `<div>Les résultats des dés lancés sont :<br>${diceRollsHTML}</div>`;
 
         // Crée le message de chat
-        let newMessage = ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            content: messageContent,
-        });
+        let cible = html.find("#launchTarget")[0].value;
+        let newMessage;
+        switch (cible){
+            case "Public":
+                newMessage = ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    content: messageContent,
+                });
+                break;
+            case "Perso":
+                newMessage = ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    content: messageContent,
+                    whisper: [this.actor.id]
+
+                });
+                break;
+            case "Hidden":
+                const whisperTo = ChatMessage.getWhisperRecipients("GM").concat([this.actor.id]);
+
+                newMessage = ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    content: messageContent,
+                    whisper: whisperTo
+                });
+                break;
+            case "GM":
+                newMessage = ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    content: messageContent,
+                    whisper: ChatMessage.getWhisperRecipients("GM")
+                });
+        }
         newMessage.then(async () => {
             let rerollArray = document.getElementsByClassName("reroll");
             let rerollButton = rerollArray[rerollArray.length - 1];
             rerollButton.addEventListener("click", async () => {
                 let reverence = this.actor.system.reverence;
                 if (reverence >= 2) {
-                    this.launchRoll(html, rollName, diceFormulae, type, true, weapon, bonus, previousPosition)
+                    this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition)
                     await this.actor.update({
                         "system.reverence": reverence - 2
                     });
@@ -1045,33 +1138,65 @@ export default class scp_foundationActorSheet extends ActorSheet{
             let rollDamageArray = document.getElementsByClassName("rollDamage");
             let rollDamageButton = rollDamageArray[rollDamageArray.length - 1];
             rollDamageButton.addEventListener("click", async () => {
-                this.rollDamage(html, weapon, previousPosition, rollName);
-                console.log("roll damage");
+                this.rollDamage(html, weapon, previousPosition, rollName, pnj);
             });
         })
     }
 
-    async rollDamage(html, weapon, position, rollName) {
+    async rollDamage(html, weapon, position, rollName, pnj) {
+        let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
+        sound.play();
+        if(pnj){
+            weapon.replace("&", "+");
+            let roll = new Roll(weapon);
+            await roll.evaluate();
+            let damage = roll.total;
+            let
+                damageHTML = `
+                <div class="sheet-template sheet-scp sheet-finished">
+                    <div class="sheet-template-head sheet-element">
+                        <div class="sheet-black-logo">
+                            <div class="sheet-logo"></div>
+                            <div class="sheet-black-diamond"></div>
+                        </div>
+                        <h3 class="sheet-roll_name sheet-color-cond">` + rollName + `</h3>
+                        <h4 class="sheet-character_name sheet-color-cond">
+                            <p>` + this.actor.name + `</p>
+                        </h4>
+                    </div>
+                    <div class="sheet-damage">
+                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="total">Dégâts</h5><span class="sheet-x-damage"><span class="inlinerollresult showtip tipsy-n-right" title="Rolling 0[computed value] = 0">` + damage + `</span></span>
+                    </div>
+                </div>
+        `
+            // Crée le message de chat
+            let messageContent = `<div>${damageHTML}</div>`;
 
-        let baseDamageRoll = new Roll(weapon.system.base_damage);
-        await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
-        let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
-        let xFormula = "(" + weapon.system.x_damage + ")";
-        if(position === "1"){
-            let currentMeleeMult = html.find("#meleeMult")[0].value;
-            xFormula = xFormula + "*" + currentMeleeMult;
+            ChatMessage.create({
+                speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                content: messageContent,
+                whisper: ChatMessage.getWhisperRecipients("GM")
+            });
         }
-        else{
-            let currentProjMult = html.find("#projMult")[0].value;
-            xFormula = xFormula + "*" + currentProjMult;
-        }
-        let xDamageRoll = new Roll(xFormula);
-        await xDamageRoll.evaluate(); // Évalue le résultat du lancer
-        let xDamage = xDamageRoll.total; // Obtient le total du résultat
-        let totalDamage = baseDamage - (- xDamage);
+        else {
+            let baseDamageRoll = new Roll(weapon.system.base_damage);
+            await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
+            let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
+            let xFormula = "(" + weapon.system.x_damage + ")";
+            if (position === "1") {
+                let currentMeleeMult = html.find("#meleeMult")[0].value;
+                xFormula = xFormula + "*" + currentMeleeMult;
+            } else {
+                let currentProjMult = html.find("#projMult")[0].value;
+                xFormula = xFormula + "*" + currentProjMult;
+            }
+            let xDamageRoll = new Roll(xFormula);
+            await xDamageRoll.evaluate(); // Évalue le résultat du lancer
+            let xDamage = xDamageRoll.total; // Obtient le total du résultat
+            let totalDamage = baseDamage - (-xDamage);
 
             let
-        damageHTML = `
+                damageHTML = `
                 <div class="sheet-template sheet-scp level-` + this.actor.system.security_level + ` sheet-finished">
                     <div class="sheet-template-head sheet-element">
                         <div class="sheet-black-logo">
@@ -1085,19 +1210,20 @@ export default class scp_foundationActorSheet extends ActorSheet{
                         <h5 class="sheet-element">` + weapon.system.element + `</h5>
                     </div>
                     <div class="sheet-damage">
-                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span class="sheet-base-damage"><span class="showtip" title="Rolling 7d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>7</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>3</span>+<span class=&quot;basicdiceroll&quot;>5</span>)">`+ baseDamage + `</span></span>
+                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span class="sheet-base-damage"><span class="showtip" title="Rolling 7d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>7</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>3</span>+<span class=&quot;basicdiceroll&quot;>5</span>)">` + baseDamage + `</span></span>
                         <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span class="sheet-x-damage"><span class="inlinerollresult showtip tipsy-n-right importantroll" title="<img src=&quot;/images/quantumrollwhite.png&quot; class=&quot;inlineqroll&quot;> Rolling 2d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critfail &quot;>1</span>)">` + xDamage + `</span></span>
                         <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5><span class="sheet-total-damage"><span class="inlinerollresult showtip tipsy-n-right" title="Rolling 0[computed value] = 0">` + totalDamage + `</span></span>
                     </div>
                 </div>
         `
-        // Crée le message de chat
-        let messageContent = `<div>${damageHTML}</div>`;
+            // Crée le message de chat
+            let messageContent = `<div>${damageHTML}</div>`;
 
-        ChatMessage.create({
-            speaker: ChatMessage.getSpeaker({actor: this.actor}),
-            content: messageContent,
-        });
+            ChatMessage.create({
+                speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                content: messageContent,
+            });
+        }
 
     }
     async totalModUpdate(evt, perkSelected) {
@@ -1360,5 +1486,162 @@ export default class scp_foundationActorSheet extends ActorSheet{
             }
             await arme.update(updateArme);
         })
+    }
+    async add_weapon(){
+        let weapon = {
+            "attack": "",
+            "to_hit_roll": "",
+            "range": "",
+            "damage": ""
+        }
+        let weaponsList = this.actor.system.weapons || [];
+        weaponsList.push(weapon);
+        await this.actor.update({"system.weapons": weaponsList});
+
+    }
+    async delete_weapon(elem){
+        let parent = elem.currentTarget.parentNode.parentNode;
+        let id = parent.className.split("-")[1];
+
+        let weaponsList = this.actor.system.weapons || [];
+        let finalWeaponList = [];
+        let i = 0;
+        weaponsList.forEach(weapon =>{
+            if(i !== parseInt(id)) {
+                finalWeaponList.push(weapon);
+            }
+            i++;
+        })
+        await this.actor.update({"system.weapons": finalWeaponList});
+
+    }
+    async updateWeapon(updatedElement){
+        let parent = updatedElement.parentNode.parentNode;
+        let id = parent.className.split("-")[1];
+        let weaponsList = this.actor.system.weapons || [];
+        let weapon = weaponsList[parseInt(id)];
+        switch (updatedElement.name){
+            case "attack":
+                weapon.attack = updatedElement.value;
+                break;
+            case "hit_roll":
+                weapon.to_hit_roll = updatedElement.value;
+                break;
+            case "range":
+                weapon.range = updatedElement.value;
+                break;
+            case "damage":
+                weapon.damage = updatedElement.value;
+        }
+        weaponsList[parseInt(id)] = weapon;
+
+        await this.actor.update({"system.weapons": weaponsList});
+
+    }
+    preparePnjRoll(html, rollName, result){
+        let popup = html.find("#ma_popup")[0];
+        let content = html[0];
+        const contentHeight = content.clientHeight;
+        const scrollTop = content.scrollTop;
+
+        const newPosition = scrollTop + (contentHeight / 2);
+
+        popup.style.top = `${newPosition}px`
+
+        const windowHeight = window.innerHeight;
+
+// Calcul de la position de défilement actuelle
+        const scrollY = window.scrollY || window.pageYOffset;
+//        popup.style.top = "25%";
+        popup.style.display = "block";
+        let selectExertion = html.find("#exertionUse")[0];
+
+        while (selectExertion.options.length > 1) {
+            selectExertion.remove(1);
+        }
+
+        html.find(".exertionUse")[0].style.display="block";
+
+        for(let exertionNumber = 1; exertionNumber<=this.actor.system.exertion; exertionNumber++){
+            var option = document.createElement("option");
+            option.value = exertionNumber;
+            option.text = exertionNumber;
+            selectExertion.appendChild(option);
+        }
+
+        let labelElement = html.find('.input-label.launchDice')[0];
+        labelElement.firstElementChild.addEventListener('click', () =>{
+            this.preparePnjFormula(html, rollName, result);
+            html.find("#ma_popup")[0].style.display = 'none';
+            const newElement = labelElement.firstElementChild.cloneNode(true);
+            labelElement.replaceChild(newElement, labelElement.firstElementChild);
+        })
+    }
+
+    async preparePnjFormula(html, rollName, result){
+        let sortResult = result.split("$");
+        let defaultFormula = sortResult[0];
+        let damage;
+        if(sortResult.length>1){
+            damage = sortResult[1];
+        }else{
+            damage = null;
+        }
+        let delimiters = ["&", "+"];
+        let regex = new RegExp(delimiters.map(delimiter => `\\${delimiter}`).join('|'), 'g');
+        let newDelimiters = ["d", "D"];
+        let newRegex = new RegExp(newDelimiters.join('|'));
+        let splitFormula = defaultFormula.split(regex);
+        let diceFormulae = [];
+        let bonus = 0;
+        let index = 0;
+        while (index < splitFormula.length) {
+            if(splitFormula[index].includes("Force")){
+                splitFormula.push(...this.actor.system.attributes.strength.split(regex))
+            }
+            else if(splitFormula[index].includes("Santé")){
+                splitFormula.push(...this.actor.system.attributes.health.split(regex))
+            }
+            else if(splitFormula[index].includes("Perception")){
+                splitFormula.push(...this.actor.system.attributes.perception.split(regex))
+            }
+            else if(splitFormula[index].includes("Intelligence")){
+                splitFormula.push(...this.actor.system.attributes.intelligence.split(regex))
+            }
+            else if(splitFormula[index].includes("Volonté")){
+                splitFormula.push(...this.actor.system.attributes.willpower.split(regex))
+            }
+            else if(splitFormula[index].includes("Dexterité")){
+                splitFormula.push(...this.actor.system.attributes.dexterity.split(regex))
+            }
+            else if(splitFormula[index].includes("Physique")){
+                splitFormula.push(...this.actor.system.stats.physical.split(regex))
+            }
+            else if(splitFormula[index].includes("Mental")){
+                splitFormula.push(...this.actor.system.stats.mental.split(regex))
+            }
+            else if(splitFormula[index].includes("Social")){
+                splitFormula.push(...this.actor.system.stats.social.split(regex))
+            }
+            else if(splitFormula[index].includes('d') || splitFormula[index].includes("D")){
+                let formulaeDetail = splitFormula[index].split(newRegex);
+                for(let i =0; i<parseInt(formulaeDetail[0]); i++){
+                    let dice = "1d"+formulaeDetail[1];
+                    diceFormulae.push(dice);
+                }
+            }else{
+                bonus+=parseInt(splitFormula[index])
+            }
+            index++;
+        }
+
+        let exertionUsed = parseInt(html.find('#exertionUse')[0].value);
+        while(exertionUsed > 0){
+            diceFormulae.push("1d12");
+            bonus+= 1
+            exertionUsed--;
+        }
+        this.launchRoll(html, rollName, diceFormulae, false, damage, bonus, 0, true)
+
     }
 }

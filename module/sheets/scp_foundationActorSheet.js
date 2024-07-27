@@ -258,16 +258,18 @@ export default class scp_foundationActorSheet extends ActorSheet{
             const showChecked = html.find('#showChecked')[0];
             const checkboxesTable = html.find('.isHoldCheckbox');
             const ownedValueTable = html.find('.ownedValue');
+            const weaponValueTable = html.find('.nameUpdate');
             const magazineTable = html.find('.magazine');
             const checkboxes = Array.from(checkboxesTable)
             const ownedValue = Array.from(ownedValueTable)
+            const weaponNameValue = Array.from(weaponValueTable)
             const magazineValue = Array.from(magazineTable)
             // Filtrage lors de la saisie dans le champ de recherche
             searchInput.addEventListener('input', function () {
                 const searchText = searchInput.value.toLowerCase();
                 checkboxes.forEach(function (checkbox) {
                     const row = checkbox.closest('tr');
-                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    const name = row.querySelector('td:nth-child(2)').firstElementChild.name.toLowerCase();
                     if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
                         row.style.display = '';
                     } else {
@@ -288,6 +290,12 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 ownedButton.addEventListener("change", async () => {
                     let item = this.actor.items.get(ownedButton.name);
                     await item.update({"system.owned": ownedButton.value})
+                })
+            });
+            weaponNameValue.forEach(weaponName => {
+                weaponName.addEventListener("change", async () => {
+                    let item = this.actor.items.get(weaponName.name);
+                    await item.update({"name": weaponName.value})
                 })
             });
             magazineValue.forEach(magazineButton => {
@@ -646,26 +654,38 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let bonus = 0;
         switch (weapon.system.actual_position){
             case "0":
+            case 0:
+                if(skill ==="catch_throw" || skill ==="demolition"){
+                    break;
+                }
                 ui.notifications.warn(`L'objet n'est pas utilisable`);
                 return;
                 break;
             case "1":
+            case 1:
                 bonus = weapon.system.melee;
                 break;
             case "2":
+            case 2:
                 bonus = weapon.system.hip;
                 break;
             case "3":
+            case 3:
                 bonus = weapon.system.ready;
                 break;
             case "4":
+            case 4:
                 bonus = weapon.system.aim;
                 break;
             default:
                 ui.notifications.warn(`Une erreur innatendue est survenue. le statut "${weapon.system.actual_position}" n'existe pas.`);
                 break;
+        };
+        if(skill === "demolition"){
+            skill = "knowledges."+skill;
+        }else{
+            skill = "skills."+skill;
         }
-        skill = "skills."+skill;
         console.log(rollName);
         console.log(bonus);
         console.log(skill);

@@ -1,16 +1,17 @@
-export default class scp_foundationActorSheet extends ActorSheet{
+export default class scp_foundationActorSheet extends ActorSheet {
 
     constructor(...args) {
         super(...args);
         this.data = null; // Variable pour stocker les données récupérées une seule fois
     }
-    get template(){
+
+    get template() {
         console.log(`scp_foundation | Récupération du fichier html ${this.actor.type}-sheet.`);
 
         return `systems/scp_foundation/templates/sheets/${this.actor.type}-sheet.html`;
     }
 
-    async getData(options){
+    async getData(options) {
         this.data = await super.getData(options);
         this.data.systemData = this.data.data.system;
         this.data.descriptionHTML = await TextEditor.enrichHTML(this.data.systemData.biography, {
@@ -20,9 +21,10 @@ export default class scp_foundationActorSheet extends ActorSheet{
         console.log(this.data);
         return this.data;
     }
+
     activateListeners(html) {
         super.activateListeners(html);
-        if(this.actor.type==="character") {
+        if (this.actor.type === "character") {
             this.updateDicesTiles(html);
             this.updateExertionSpan(html);
             this.updateTiles(html, "exertion");
@@ -64,6 +66,9 @@ export default class scp_foundationActorSheet extends ActorSheet{
             });
 
             html.find(".item-delete").click(this._onItemDelete.bind(this));
+            html.find(".sortAlpha")[0].addEventListener('click', ()=>{
+                this.sortItems();
+            });
             // Sélectionnez le bouton par sa classe ou son ID, ajustez le sélecteur en fonction de votre HTML
             const diceButton = html.find('.die-purchase');
 
@@ -269,7 +274,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 const searchText = searchInput.value.toLowerCase();
                 checkboxes.forEach(function (checkbox) {
                     const row = checkbox.closest('tr');
-                    const name = row.querySelector('td:nth-child(2)').firstElementChild.name.toLowerCase();
+                    const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
                     if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
                         row.style.display = '';
                     } else {
@@ -304,10 +309,11 @@ export default class scp_foundationActorSheet extends ActorSheet{
                     await item.update({"system.magazine.actual": magazineButton.value})
                 })
             });
-
+            showChecked.checked = localStorage.getItem('isChecked')==="true";
 
             // Filtrage pour afficher seulement les éléments cochés
             showChecked.addEventListener('change', function () {
+                localStorage.setItem('isChecked', showChecked.checked);
                 checkboxes.forEach(function (checkbox) {
                     const row = checkbox.closest('tr');
                     if (showChecked.checked && !checkbox.checked) {
@@ -320,16 +326,29 @@ export default class scp_foundationActorSheet extends ActorSheet{
                         }
                     }
                 });
+            })
+            checkboxes.forEach(function (checkbox) {
+                const row = checkbox.closest('tr');
+                if (showChecked.checked && !checkbox.checked) {
+                    row.style.display = 'none';
+                } else {
+                    const searchText = searchInput.value.toLowerCase();
+                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (name.includes(searchText)) {
+                        row.style.display = '';
+                    }
+                }
             });
+
         }
-        if(this.actor.type === "pnj" || this.actor.type === "scp" ){
-            html.find('#addWeapon')[0].addEventListener("click", () =>{
+        if (this.actor.type === "pnj" || this.actor.type === "scp") {
+            html.find('#addWeapon')[0].addEventListener("click", () => {
                 this.add_weapon();
             });
             let pnjWeaponList = html.find(".pnjWeapon");
             let pnjWeapon = Array.from(pnjWeaponList);
             pnjWeapon.forEach(weapon => {
-                weapon.addEventListener('change', ()=>{
+                weapon.addEventListener('change', () => {
                     this.updateWeapon(weapon);
                 })
             })
@@ -338,14 +357,14 @@ export default class scp_foundationActorSheet extends ActorSheet{
             let diceRollAttributeList = html.find(".pnjDice");
             let diceRollAttributeButton = Array.from(diceRollAttributeList);
             let diceRollButton = Array.from(diceRollButtonList);
-            diceRollButton.forEach(diceButton =>{
-                diceButton.firstElementChild.addEventListener("click", () =>{
+            diceRollButton.forEach(diceButton => {
+                diceButton.firstElementChild.addEventListener("click", () => {
                     this.preparePnjRoll(html, diceButton.firstElementChild.name, diceButton.firstElementChild.value)
                 });
             })
-            diceRollAttributeButton.forEach(diceButton =>{
-                diceButton.firstElementChild.addEventListener("click", () =>{
-                    this.preparePnjRoll(html, diceButton.children[0].innerHTML.substring(0, diceButton.children[0].innerHTML.length-2), diceButton.children[1].value)
+            diceRollAttributeButton.forEach(diceButton => {
+                diceButton.firstElementChild.addEventListener("click", () => {
+                    this.preparePnjRoll(html, diceButton.children[0].innerHTML.substring(0, diceButton.children[0].innerHTML.length - 2), diceButton.children[1].value)
                 });
             })
 
@@ -370,32 +389,32 @@ export default class scp_foundationActorSheet extends ActorSheet{
         }
     }
 
-    async buyDice(dice, html){
+    async buyDice(dice, html) {
         html.find('input[type="text"]').prop('disabled', true); //avoid experience reset
         let d8 = this.actor.system.attributes.stock.d8;
         let d10 = this.actor.system.attributes.stock.d10;
         let d12 = this.actor.system.attributes.stock.d12;
         let experience = this.actor.system.experience
-        switch (dice){
+        switch (dice) {
             case 8:
-                if(experience >=100){
+                if (experience >= 100) {
                     console.log("achat d8");
                     experience -= 100;
-                    d8 +=1;
+                    d8 += 1;
                 }
                 break;
             case 10:
-                if(experience >=200){
+                if (experience >= 200) {
                     console.log("achat d10");
                     experience -= 200;
-                    d10 +=1;
+                    d10 += 1;
                 }
                 break;
             case 12:
-                if(experience >=500){
+                if (experience >= 500) {
                     console.log("achat d12");
                     experience -= 500;
-                    d12 +=1;
+                    d12 += 1;
                 }
                 break;
         }
@@ -408,7 +427,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
         // Après avoir effectué les modifications via les boutons, réactivez les événements de saisie
         html.find('input[type="text"]').prop('disabled', false);
     }
-    async exchangeDice(diceClicked, html){
+
+    async exchangeDice(diceClicked, html) {
         html.find('input[type="text"]').prop('disabled', true);
         let diceElements = diceClicked.name.split("_");
         let diceNumber = diceElements[2];
@@ -418,32 +438,32 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let nbActuDiceVal = nbActuDice[diceNumber];
         let nbRequis = diceValue - nbActuDiceVal;
         let stock = this.actor.system.attributes.stock[diceNumber];
-        let isOk = nbRequis<=stock;
+        let isOk = nbRequis <= stock;
         let differenceInDice = 0;
 
-        switch (diceNumber){
+        switch (diceNumber) {
             case "d8":
-                differenceInDice = (diceValue - nbActuDice["d8"])*3;
+                differenceInDice = (diceValue - nbActuDice["d8"]) * 3;
                 break;
             case "d10":
-                differenceInDice = (diceValue - nbActuDice["d10"])*6;
-                isOk = isOk && nbActuDice["d8"]>=2*diceValue;
+                differenceInDice = (diceValue - nbActuDice["d10"]) * 6;
+                isOk = isOk && nbActuDice["d8"] >= 2 * diceValue;
                 break;
             case "d12":
-                differenceInDice = (diceValue - nbActuDice["d12"])*16;
-                isOk = isOk && nbActuDice["d10"]>=2*diceValue;
+                differenceInDice = (diceValue - nbActuDice["d12"]) * 16;
+                isOk = isOk && nbActuDice["d10"] >= 2 * diceValue;
                 break;
         }
-        if(isOk){
+        if (isOk) {
             let diceNumberStockAttribute = "system.attributes.stock." + diceNumber;
             let diceTypeNumberAttribute = "system.attributes." + diceType + "." + diceNumber;
             let stockLeft = stock - nbRequis;
             let updateData = {};
             updateData[diceNumberStockAttribute] = stockLeft;
             updateData[diceTypeNumberAttribute] = diceValue;
-            if(diceType === "health"){
+            if (diceType === "health") {
                 let actualHP = this.actor.system.hp.max;
-                actualHP = actualHP -(-differenceInDice);
+                actualHP = actualHP - (-differenceInDice);
                 updateData["system.hp.max"] = actualHP;
             }
 
@@ -457,8 +477,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
     }
 
 
-
-    updateDicesTiles(html){
+    updateDicesTiles(html) {
         let diceTable = html.find('.diceTile');
         let diceArray = Array.from(diceTable);
         diceArray.forEach((diceTile) => {
@@ -469,18 +488,18 @@ export default class scp_foundationActorSheet extends ActorSheet{
             let nbActuDice = this.actor.system.attributes[diceType];
             let nbActuDiceVal = nbActuDice[diceNumber];
 
-            if(parseInt(diceValue) <= parseInt(nbActuDiceVal)){
+            if (parseInt(diceValue) <= parseInt(nbActuDiceVal)) {
                 diceTile.checked = true;
-            }
-            else{
+            } else {
                 diceTile.checked = false;
             }
         })
     }
-    async changeExertion(exertionClicked, html){
+
+    async changeExertion(exertionClicked, html) {
         html.find('input[type="text"]').prop('disabled', true);
         let nbMax = this.actor.system.exertion.max;
-        if(parseInt(exertionClicked.value) <= parseInt(nbMax)){
+        if (parseInt(exertionClicked.value) <= parseInt(nbMax)) {
             await this.actor.update({
                 "system.exertion.actual": exertionClicked.value
             });
@@ -490,8 +509,9 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
 
     }
-    async changeReverence(reverenceClicked, html){
-       html.find('input[type="text"]').prop('disabled', true);
+
+    async changeReverence(reverenceClicked, html) {
+        html.find('input[type="text"]').prop('disabled', true);
         await this.actor.update({
             "system.reverence": reverenceClicked.value
         });
@@ -499,13 +519,14 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
 
     }
-    async changeDevastation(devastationClicked, html){
+
+    async changeDevastation(devastationClicked, html) {
         html.find('input[type="text"]').prop('disabled', true);
-        if(parseInt(this.actor.system.devastation_point) === parseInt(devastationClicked.value)){
+        if (parseInt(this.actor.system.devastation_point) === parseInt(devastationClicked.value)) {
             await this.actor.update({
-                "system.devastation_point": devastationClicked.value -1
+                "system.devastation_point": devastationClicked.value - 1
             });
-        }else{
+        } else {
             await this.actor.update({
                 "system.devastation_point": devastationClicked.value
             });
@@ -515,8 +536,9 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
 
     }
-    async changeMerit(meritClicked, html){
-       html.find('input[type="text"]').prop('disabled', true);
+
+    async changeMerit(meritClicked, html) {
+        html.find('input[type="text"]').prop('disabled', true);
         await this.actor.update({
             "system.merit_point": meritClicked.value
         });
@@ -524,37 +546,38 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
 
     }
-    updateTiles(html, type){
+
+    updateTiles(html, type) {
         let tilesTable = html.find('.' + type + 'Tile');
         let tilesArray = Array.from(tilesTable);
         let nbTiles = 0;
-        if(type === "exertion"){
+        if (type === "exertion") {
             nbTiles = this.actor.system.exertion.actual;
-        }else{
+        } else {
             nbTiles = this.actor.system[type];
         }
         tilesArray.forEach((tile) => {
             let tileValue = tile.value;
-            if(parseInt(tileValue) <= parseInt(nbTiles)){
+            if (parseInt(tileValue) <= parseInt(nbTiles)) {
                 tile.checked = true;
-            }
-            else{
+            } else {
                 tile.checked = false;
             }
         })
     }
-    updateExertionSpan(html){
+
+    updateExertionSpan(html) {
         let exertionSpan = html.find('.exertionMax');
         let exertionArray = Array.from(exertionSpan);
-        let nbMax = this.actor.system.exertion.max-(-1); //avoid concatenation
-        for(let i = nbMax; i<8; i++){
-            let exertionSpan = html.find('#exertionMax'+i);
+        let nbMax = this.actor.system.exertion.max - (-1); //avoid concatenation
+        for (let i = nbMax; i < 8; i++) {
+            let exertionSpan = html.find('#exertionMax' + i);
             exertionSpan.css('background-color', 'white');
 
         }
     }
 
-    async diceBonus(html){
+    async diceBonus(html) {
         html.find('input[type="text"]').prop('disabled', true);
         let strength = this.actor.system.attributes.strength;
         let perception = this.actor.system.attributes.perception;
@@ -562,15 +585,15 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let intelligence = this.actor.system.attributes.intelligence;
         let willpower = this.actor.system.attributes.willpower;
         let awareness = this.actor.system.perks.abilities.awareness_reaction.perso - (-this.actor.system.perks.abilities.awareness_reaction.total_mod);
-        let meleeValue = Math.floor(strength.d10/2) -(- strength.d10%2) -(- strength.d12)+1;
+        let meleeValue = Math.floor(strength.d10 / 2) - (-strength.d10 % 2) - (-strength.d12) + 1;
         let recoil = strength.d12;
-        let projectionValue = Math.floor(perception.d10/2) -(- perception.d10%2) -(- perception.d12)+1;
-        let reactDef = perception.d10 -(- dexterity.d12) -(- intelligence.d10) - (- awareness) - (- this.actor.system.reaction_defense.bonus);
-        let moveValue = 2 -(- dexterity.d12);
-        let modAvailable = intelligence.d10/2
+        let projectionValue = Math.floor(perception.d10 / 2) - (-perception.d10 % 2) - (-perception.d12) + 1;
+        let reactDef = perception.d10 - (-dexterity.d12) - (-intelligence.d10) - (-awareness) - (-this.actor.system.reaction_defense.bonus);
+        let moveValue = 2 - (-dexterity.d12);
+        let modAvailable = intelligence.d10 / 2
         let exertionMax = 1 - (-willpower.d10);
         let self_controle = this.actor.system.perks.abilities.self_controle.perso - (-this.actor.system.perks.abilities.self_controle.total_mod);
-        let cognitive_value = exertionMax - (- this.actor.system.cognitive_resistance.bonus) - (- self_controle) ;
+        let cognitive_value = exertionMax - (-this.actor.system.cognitive_resistance.bonus) - (-self_controle);
         let updateBonus = {};
         updateBonus["system.melee_multiplier.bonus"] = meleeValue;
         updateBonus["system.projection_multiplier.bonus"] = projectionValue;
@@ -588,7 +611,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
 
     }
 
-    async abilitiesBonus(html){
+    async abilitiesBonus(html) {
         html.find('input[type="text"]').prop('disabled', true);
         let perception = this.actor.system.attributes.perception;
         let dexterity = this.actor.system.attributes.dexterity;
@@ -596,11 +619,11 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let willpower = this.actor.system.attributes.willpower;
         let awareness = this.actor.system.perks.abilities.awareness_reaction.perso - (-this.actor.system.perks.abilities.awareness_reaction.total_mod);
 
-        let reactDef = perception.d10 -(- dexterity.d12) -(- intelligence.d10) - (- awareness) - (- this.actor.system.reaction_defense.bonus);
+        let reactDef = perception.d10 - (-dexterity.d12) - (-intelligence.d10) - (-awareness) - (-this.actor.system.reaction_defense.bonus);
 
         let exertionMax = 1 - (-willpower.d10);
         let self_controle = this.actor.system.perks.abilities.self_controle.perso - (-this.actor.system.perks.abilities.self_controle.total_mod);
-        let cognitive_value = exertionMax - (- this.actor.system.cognitive_resistance.bonus) - (- self_controle) ;
+        let cognitive_value = exertionMax - (-this.actor.system.cognitive_resistance.bonus) - (-self_controle);
         let updateBonus = {};
 
         updateBonus["system.reaction_defense.value"] = reactDef;
@@ -611,7 +634,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
 
     }
-    updateOther(html){
+
+    updateOther(html) {
         html.find('input[type="text"]').prop('disabled', true);
         let appearance = html.find('#appearance')[0];
         let body_type = html.find('#body_type')[0];
@@ -647,15 +671,15 @@ export default class scp_foundationActorSheet extends ActorSheet{
         html.find('input[type="text"]').prop('disabled', false);
     }
 
-    prepareAttackRoll(html, rollName, weaponId){
+    prepareAttackRoll(html, rollName, weaponId) {
         let weapon = this.actor.items.get(weaponId);
         console.log(weapon)
         let skill = weapon.system.skill
         let bonus = 0;
-        switch (weapon.system.actual_position){
+        switch (weapon.system.actual_position) {
             case "0":
             case 0:
-                if(skill ==="catch_throw" || skill ==="demolition"){
+                if (skill === "catch_throw" || skill === "demolition") {
                     break;
                 }
                 ui.notifications.warn(`L'objet n'est pas utilisable`);
@@ -680,23 +704,25 @@ export default class scp_foundationActorSheet extends ActorSheet{
             default:
                 ui.notifications.warn(`Une erreur innatendue est survenue. le statut "${weapon.system.actual_position}" n'existe pas.`);
                 break;
-        };
-        if(skill === "demolition"){
-            skill = "knowledges."+skill;
-        }else{
-            skill = "skills."+skill;
+        }
+        ;
+        if (skill === "demolition") {
+            skill = "knowledges." + skill;
+        } else {
+            skill = "skills." + skill;
         }
         console.log(rollName);
         console.log(bonus);
         console.log(skill);
         this.preparePerksRoll(html, rollName, skill, weapon, bonus);
     }
-    preparePerksRoll(html, rollName, perks, weapon, bonus){
+
+    preparePerksRoll(html, rollName, perks, weapon, bonus) {
         let fullPerks = perks.split(".");
         let category = this.actor.system.perks[fullPerks[0]];
         let myPerk = category[fullPerks[1]];
         bonus -= -(myPerk.perso - (-myPerk.total_mod));
-        switch (myPerk.type){
+        switch (myPerk.type) {
             case "for":
                 this.prepareRoll(html, rollName, "strength", weapon, bonus);
                 break;
@@ -725,7 +751,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
 
     }
 
-    prepareRoll(html, rollName, type, weapon = null, bonus=0){
+    prepareRoll(html, rollName, type, weapon = null, bonus = 0) {
         let Dices = this.actor.system.attributes[type];
         let popup = html.find("#ma_popup")[0];
         let content = html[0];
@@ -746,11 +772,11 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let selectd12 = html.find("#d12Selected")[0];
         let selectd10 = html.find("#d10Selected")[0];
         let selectd8 = html.find("#d8Selected")[0];
-        html.find('#diceUse')[0].addEventListener('change', function (){
-            if(html.find('#diceUse')[0].value === "true"){
+        html.find('#diceUse')[0].addEventListener('change', function () {
+            if (html.find('#diceUse')[0].value === "true") {
                 html.find(".diceToUse")[0].style.display = "none";
 
-            }else{
+            } else {
                 html.find(".diceToUse")[0].style.display = "block";
             }
         })
@@ -766,41 +792,40 @@ export default class scp_foundationActorSheet extends ActorSheet{
         while (selectd8.options.length > 0) {
             selectd8.remove(0);
         }
-        for(let i = 0; i<=Math.min(4, Dices.d12); i++){
+        for (let i = 0; i <= Math.min(4, Dices.d12); i++) {
             var option = document.createElement("option");
             option.value = i;
             option.text = i;
             selectd12.appendChild(option);
         }
-        for(let i = 0; i<=Math.min(4, Dices.d10); i++){
+        for (let i = 0; i <= Math.min(4, Dices.d10); i++) {
             var option = document.createElement("option");
             option.value = i;
             option.text = i;
             selectd10.appendChild(option);
         }
-        for(let i = 0; i<=Math.min(4, Dices.d8); i++){
+        for (let i = 0; i <= Math.min(4, Dices.d8); i++) {
             var option = document.createElement("option");
             option.value = i;
             option.text = i;
             selectd8.appendChild(option);
         }
 
-        if(["strength", "dexterity", "health", "willpower"].includes(type)){
-            html.find(".exertionUse")[0].style.display="block";
+        if (["strength", "dexterity", "health", "willpower"].includes(type)) {
+            html.find(".exertionUse")[0].style.display = "block";
 
-            for(let exertionNumber = 1; exertionNumber<=this.actor.system.exertion.actual; exertionNumber++){
+            for (let exertionNumber = 1; exertionNumber <= this.actor.system.exertion.actual; exertionNumber++) {
                 var option = document.createElement("option");
                 option.value = exertionNumber;
                 option.text = exertionNumber;
                 selectExertion.appendChild(option);
             }
-        }
-        else{
-            html.find(".exertionUse")[0].style.display="none";
+        } else {
+            html.find(".exertionUse")[0].style.display = "none";
         }
 
         let labelElement = html.find('.input-label.launchDice')[0];
-        labelElement.firstElementChild.addEventListener('click', () =>{
+        labelElement.firstElementChild.addEventListener('click', () => {
             this.prepareFormulae(html, rollName, type, weapon, bonus);
             html.find("#ma_popup")[0].style.display = 'none';
             const newElement = labelElement.firstElementChild.cloneNode(true);
@@ -808,22 +833,21 @@ export default class scp_foundationActorSheet extends ActorSheet{
         })
     }
 
-    updateDicesAvailable(html){
+    updateDicesAvailable(html) {
         console.log("updateDicesAvailable");
         let selectd12 = html.find("#d12Selected")[0];
         let selectd10 = html.find("#d10Selected")[0];
         let selectd8 = html.find("#d8Selected")[0];
-        let nbDicesSelected = selectd12.value - (-selectd10.value) - (- selectd8.value);
+        let nbDicesSelected = selectd12.value - (-selectd10.value) - (-selectd8.value);
         let arrayDices = [selectd12, selectd10, selectd8];
         arrayDices.forEach(selectDice => {
 
             for (let option of selectDice.options) {
                 console.log(option.value);
-                if(option.value > selectDice.value){
-                    if(option.value - (-nbDicesSelected) - selectDice.value <=4){
+                if (option.value > selectDice.value) {
+                    if (option.value - (-nbDicesSelected) - selectDice.value <= 4) {
                         option.style.display = "block";
-                    }
-                    else{
+                    } else {
                         option.style.display = "none";
                     }
 
@@ -876,7 +900,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
     async prepareFormulae(html, rollName, type, weapon, bonus) {
         let isBestDicesUsed = html.find('#diceUse')[0].value;
         let exertionUsed = parseInt(html.find('#exertionUse')[0].value);
-        await this.actor.update({"system.exertion.actual" : parseInt(this.actor.system.exertion.actual) - exertionUsed})
+        await this.actor.update({"system.exertion.actual": parseInt(this.actor.system.exertion.actual) - exertionUsed})
         let Dices = this.actor.system.attributes[type];
         let maxD8 = Dices.d8;
         let maxD10 = Dices.d10;
@@ -919,15 +943,16 @@ export default class scp_foundationActorSheet extends ActorSheet{
             diceFormulae.push("1d12");
             d12Used--;
         }
-        while(exertionUsed > 0){
+        while (exertionUsed > 0) {
             diceFormulae.push("1d12");
-            bonus-= -1
+            bonus -= -1
             exertionUsed--;
         }
         this.launchRoll(html, rollName, diceFormulae, false, weapon, bonus)
     }
-    async launchRoll(html, rollName, diceFormulae, reroll, weapon, bonus, previousPosition = 0, pnj = false){
-            if(weapon !== null && previousPosition !== 0 && pnj === false){
+
+    async launchRoll(html, rollName, diceFormulae, reroll, weapon, bonus, previousPosition = 0, pnj = false) {
+        if (weapon !== null && previousPosition !== 0 && pnj === false) {
             await weapon.update({'system.actual_position': previousPosition});
         }
         let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
@@ -935,8 +960,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let diceResults = [];
         let diceExplosions = [];
         let malus = 0;
-        if(reroll){
-            rollName = "Reroll : "+rollName;
+        if (reroll) {
+            rollName = "Reroll : " + rollName;
         }
         // Lancez les dés et stockez les résultats
         for (let formula of diceFormulae) {
@@ -953,15 +978,15 @@ export default class scp_foundationActorSheet extends ActorSheet{
 
         // Construit une chaîne de texte pour afficher les dés et les résultats
         let diceRollsHTML = `
-        <div class="sheet-template sheet-scp level-` + this.actor.system.security_level+` sheet-finished">
+        <div class="sheet-template sheet-scp level-` + this.actor.system.security_level + ` sheet-finished">
             <div class="sheet-template-head">
                 <div class="sheet-black-logo">
                     <div class="sheet-logo"></div>
                     <div class="sheet-black-diamond"></div>
                 </div>
-                <h3 class="sheet-roll_name sheet-color-cond">`+ rollName + `</h3>
+                <h3 class="sheet-roll_name sheet-color-cond">` + rollName + `</h3>
                 <h4 class="sheet-character_name sheet-color-cond">
-                    <p>`+this.actor.name+`</p>
+                    <p>` + this.actor.name + `</p>
                 </h4>
             </div>
             <div class="sheet-roll-content dice-tooltip">
@@ -969,29 +994,28 @@ export default class scp_foundationActorSheet extends ActorSheet{
                     <h5 class="sheet-color-cond" data-i18n="initial roll">initial roll</h5>
                     <div class="sheet-result-values">
         `;
-        diceResults.forEach(diceActu  => {
-            let myClass = "roll die "+diceActu.formula.substring(1);
-            if(diceActu.result === parseInt(diceActu.formula.substring(2))){
+        diceResults.forEach(diceActu => {
+            let myClass = "roll die " + diceActu.formula.substring(1);
+            if (diceActu.result === parseInt(diceActu.formula.substring(2))) {
                 myClass = myClass + " max";
                 diceExplosions.push(diceActu.formula);
-            }
-            else if (diceActu.result === 1){
+            } else if (diceActu.result === 1) {
                 myClass = myClass + " min";
                 malus--;
             }
             diceRollsHTML = diceRollsHTML +
-                `<span class="`+ myClass + `">`+ diceActu.result +`</span>`
+                `<span class="` + myClass + `">` + diceActu.result + `</span>`
         })
         diceRollsHTML = diceRollsHTML + `
                     </div>
                 </div>
         </div> `
-        if(diceExplosions.length > 0){
+        if (diceExplosions.length > 0) {
             diceRollsHTML = diceRollsHTML + `
             <h5 class="sheet-color-cond" data-i18n="explosions">explosions</h5>
             `;
         }
-        while(diceExplosions.length > 0){
+        while (diceExplosions.length > 0) {
             diceExplosions = diceExplosions.filter(item => item !== "1d20");
             diceExplosions = diceExplosions.map(item => item === "1d12" ? "1d20" : item);
             diceExplosions = diceExplosions.flatMap((num) => (num === "1d10" ? ["1d12", "1d12"] : num));
@@ -1021,18 +1045,17 @@ export default class scp_foundationActorSheet extends ActorSheet{
             `;
 
 
-            diceExplosionResult.forEach(diceActu  => {
-                let myClass = "roll die "+diceActu.formula.substring(1);
-                if(diceActu.result === parseInt(diceActu.formula.substring(2))){
+            diceExplosionResult.forEach(diceActu => {
+                let myClass = "roll die " + diceActu.formula.substring(1);
+                if (diceActu.result === parseInt(diceActu.formula.substring(2))) {
                     myClass = myClass + " max";
                     newExplosion.push(diceActu.formula);
-                }
-                else if (diceActu.result === 1){
+                } else if (diceActu.result === 1) {
                     myClass = myClass + " min";
                     malus--;
                 }
                 diceRollsHTML = diceRollsHTML +
-                    `<span class="`+ myClass + `">`+ diceActu.result +`</span>`
+                    `<span class="` + myClass + `">` + diceActu.result + `</span>`
 
             })
 
@@ -1056,16 +1079,15 @@ export default class scp_foundationActorSheet extends ActorSheet{
         // Gardez les deux meilleurs résultats
         let bestResults = diceResults.slice(0, 2);
         let bestResultsValue = 0;
-        bestResults.forEach(diceActu  => {
-            let myClass = "roll die "+diceActu.formula.substring(1);
-            if(diceActu.result === parseInt(diceActu.formula.substring(2))){
+        bestResults.forEach(diceActu => {
+            let myClass = "roll die " + diceActu.formula.substring(1);
+            if (diceActu.result === parseInt(diceActu.formula.substring(2))) {
                 myClass = myClass + " max";
-            }
-            else if (diceActu.result === 1){
+            } else if (diceActu.result === 1) {
                 myClass = myClass + " min";
             }
             diceRollsHTML = diceRollsHTML +
-                `<span class="`+ myClass + `">`+ diceActu.result +`</span>`;
+                `<span class="` + myClass + `">` + diceActu.result + `</span>`;
             bestResultsValue = bestResultsValue - (-diceActu.result);
         })
         diceRollsHTML = diceRollsHTML + `
@@ -1076,30 +1098,30 @@ export default class scp_foundationActorSheet extends ActorSheet{
            <span class="bonus">` + bonus + `</span>
            </span>
            <span class="sheet-ones">
-            <span class="malus">`+ malus +`</span></span>
+            <span class="malus">` + malus + `</span></span>
           <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5>
           <span class="sheet-total-value">
-          <span class="totalLaunch" >`+ (bestResultsValue - (-bonus) - (-malus)) +`</span></span>
+          <span class="totalLaunch" >` + (bestResultsValue - (-bonus) - (-malus)) + `</span></span>
         </div>
         <div class="sheet-roll-buttons">`
-        if(!reroll && !pnj){
+        if (!reroll && !pnj) {
             diceRollsHTML +=
 
-        `<span class="sheet-reverence-reroll"><input type="button" value="reroll" class="reroll"></span>`
+                `<span class="sheet-reverence-reroll"><input type="button" value="reroll" class="reroll"></span>`
         }
-        if(weapon !== null){
-            diceRollsHTML +=  `
+        if (weapon !== null) {
+            diceRollsHTML += `
         <span class="sheet-roll-damage"><input type="button" value="Roll Damage" class="rollDamage"></span>`;
-            if(!pnj){
+            if (!pnj) {
                 previousPosition = weapon.system.actual_position;
-                if(parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <=1) {
+                if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
                     await weapon.update({'system.actual_position': "0"})
-                }else{
-                    await weapon.update({'system.actual_position': ""+Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
+                } else {
+                    await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
                 }
             }
         }
-        diceRollsHTML +=  `
+        diceRollsHTML += `
         </div>  
       </div>
         `
@@ -1109,16 +1131,16 @@ export default class scp_foundationActorSheet extends ActorSheet{
         // Crée le message de chat
         let cible = html.find("#launchTarget")[0].value;
         let newMessage;
-        switch (cible){
+        switch (cible) {
             case "Public":
                 newMessage = ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
                     content: messageContent,
                 });
                 break;
             case "Perso":
                 newMessage = ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
                     content: messageContent,
                     whisper: [this.actor.id]
 
@@ -1128,20 +1150,20 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 const whisperTo = ChatMessage.getWhisperRecipients("GM").concat([this.actor.id]);
 
                 newMessage = ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
                     content: messageContent,
                     whisper: whisperTo
                 });
                 break;
             case "GM":
                 newMessage = ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
                     content: messageContent,
                     whisper: ChatMessage.getWhisperRecipients("GM")
                 });
         }
         newMessage.then(async () => {
-            if(pnj !== false){
+            if (pnj !== false) {
                 let rerollArray = document.getElementsByClassName("reroll");
                 let rerollButton = rerollArray[rerollArray.length - 1];
                 rerollButton.addEventListener("click", async () => {
@@ -1151,7 +1173,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
                         await this.actor.update({
                             "system.reverence": reverence - 2
                         });
-                    }else{
+                    } else {
                         ui.notifications.warn(`Vous n'avez pas assez de point de révérence`);
 
                     }
@@ -1168,7 +1190,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
     async rollDamage(html, weapon, position, rollName, pnj) {
         let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
         sound.play();
-        if(pnj){
+        if (pnj) {
             weapon.replace("&", "+");
             let roll = new Roll(weapon);
             await roll.evaluate();
@@ -1199,8 +1221,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 content: messageContent,
                 whisper: ChatMessage.getWhisperRecipients("GM")
             });
-        }
-        else {
+        } else {
             let baseDamageRoll = new Roll(weapon.system.base_damage);
             await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
             let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
@@ -1248,65 +1269,65 @@ export default class scp_foundationActorSheet extends ActorSheet{
         }
 
     }
+
     async totalModUpdate(evt, perkSelected) {
         let perksName = perkSelected.name
         let perksNameTable = perksName.split(".");
-        let perksType = this.actor.system.perks[perksNameTable[perksNameTable.length-3]];
-        let perksChanging = perksType[perksNameTable[perksNameTable.length-2]];
-        let perkToUpdate = "system.perks."+perksNameTable[perksNameTable.length-3]+"."+perksNameTable[perksNameTable.length-2]+".total_mod";
+        let perksType = this.actor.system.perks[perksNameTable[perksNameTable.length - 3]];
+        let perksChanging = perksType[perksNameTable[perksNameTable.length - 2]];
+        let perkToUpdate = "system.perks." + perksNameTable[perksNameTable.length - 3] + "." + perksNameTable[perksNameTable.length - 2] + ".total_mod";
         let updateBonus = {};
-        updateBonus[perkToUpdate] = evt.target.value - (- perksChanging.bonus_mod);
+        updateBonus[perkToUpdate] = evt.target.value - (-perksChanging.bonus_mod);
         await this.actor.update(updateBonus);
     }
-    async bonusAppearanceUpdate(evt){
+
+    async bonusAppearanceUpdate(evt) {
         let updateBonus = {};
 
         let appearance = evt.target.value;
         let reasoning = this.actor.system.reasoning;
 
-        let negociate = 0, fashion = 0, leadership = 0, resist_distress = 0, intimidate = 0, disguise = 0, showmanship = 0;
+        let negociate = 0, fashion = 0, leadership = 0, resist_distress = 0, intimidate = 0, disguise = 0,
+            showmanship = 0;
         switch (appearance) {
             case "beau":
-                negociate+=2;
-                fashion+=1;
-                leadership+=1;
-                resist_distress-=2;
-                intimidate-=1;
-                disguise-=1;
+                negociate += 2;
+                fashion += 1;
+                leadership += 1;
+                resist_distress -= 2;
+                intimidate -= 1;
+                disguise -= 1;
                 break;
             case "attractif":
-                negociate+=1;
-                fashion+=1;
-                intimidate-=1;
-                disguise-=1;
+                negociate += 1;
+                fashion += 1;
+                intimidate -= 1;
+                disguise -= 1;
                 break;
             case "moyenne":
-                disguise+=2;
+                disguise += 2;
                 break;
             case "étrange":
-                intimidate+=1;
-                showmanship+=1
-                disguise-=2;
+                intimidate += 1;
+                showmanship += 1
+                disguise -= 2;
                 break;
             case "effrayant":
-                intimidate+=2;
-                disguise+=1;
-                resist_distress+=1;
-                fashion-=2;
-                negociate-=2;
+                intimidate += 2;
+                disguise += 1;
+                resist_distress += 1;
+                fashion -= 2;
+                negociate -= 2;
                 break;
         }
-        if (reasoning === "naif"){
-            resist_distress+=3;
-        }
-        else if(reasoning === "sceptique"){
-            resist_distress+=2;
-        }
-        else if(reasoning === "ouvert d'esprit"){
-            resist_distress-=1;
-        }
-        else if(reasoning === "fou"){
-            resist_distress-=2;
+        if (reasoning === "naif") {
+            resist_distress += 3;
+        } else if (reasoning === "sceptique") {
+            resist_distress += 2;
+        } else if (reasoning === "ouvert d'esprit") {
+            resist_distress -= 1;
+        } else if (reasoning === "fou") {
+            resist_distress -= 2;
         }
 
         updateBonus["system.perks.abilities.negociation_persuade.bonus_mod"] = negociate;
@@ -1325,7 +1346,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
         updateBonus["system.perks.skills.showmanship.total_mod"] = this.actor.system.perks.skills.showmanship.self_mod - (-showmanship);
         await this.actor.update(updateBonus);
     }
-    async bonusReasoningUpdate(evt){
+
+    async bonusReasoningUpdate(evt) {
         let updateBonus = {};
         let reasoning = evt.target.value;
         let appearance = this.actor.system.appearance;
@@ -1336,17 +1358,17 @@ export default class scp_foundationActorSheet extends ActorSheet{
         console.log(reasoning);
         switch (reasoning) {
             case "naif":
-                resist_distress+=3;
-                initiative-=3;
-                intuition-=3;
-                occulte_scp_lore-=2;
+                resist_distress += 3;
+                initiative -= 3;
+                intuition -= 3;
+                occulte_scp_lore -= 2;
                 updateCD -= -(15 - bonusCD);
                 bonusCD = 15;
                 break;
             case "sceptique":
-                resist_distress+=2;
-                initiative-=2;
-                intuition-=2;
+                resist_distress += 2;
+                initiative -= 2;
+                intuition -= 2;
                 updateCD -= -(12 - bonusCD);
                 bonusCD = 12;
                 break;
@@ -1355,29 +1377,28 @@ export default class scp_foundationActorSheet extends ActorSheet{
                 bonusCD = 9;
                 break;
             case "open-minded":
-                resist_distress-=1;
-                initiative+=2;
-                intuition+=2;
+                resist_distress -= 1;
+                initiative += 2;
+                intuition += 2;
                 updateCD -= -(6 - bonusCD);
                 bonusCD = 6;
                 break;
             case "fou":
-                resist_distress-=2;
-                initiative+=3;
-                intuition+=3;
-                occulte_scp_lore+=2;
+                resist_distress -= 2;
+                initiative += 3;
+                intuition += 3;
+                occulte_scp_lore += 2;
                 updateCD -= -(3 - bonusCD);
                 bonusCD = 3;
                 break;
         }
 
-        if (appearance === "beau"){
+        if (appearance === "beau") {
             console.log(resist_distress);
-            resist_distress-=2;
-        }
-        else if(appearance === "effrayant"){
+            resist_distress -= 2;
+        } else if (appearance === "effrayant") {
             console.log(resist_distress);
-            resist_distress+=1;
+            resist_distress += 1;
         }
         updateBonus["system.perks.abilities.resist_distress.bonus_mod"] = resist_distress;
         updateBonus["system.perks.abilities.resist_distress.total_mod"] = this.actor.system.perks.abilities.resist_distress.self_mod - (-resist_distress);
@@ -1391,7 +1412,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
         updateBonus["system.cognitive_resistance.bonus"] = bonusCD;
         await this.actor.update(updateBonus);
     }
-    async bonusBodyTypeUpdate(evt, html){
+
+    async bonusBodyTypeUpdate(evt, html) {
         html.find('input[type="text"]').prop('disabled', true);
 
         let updateBonus = {};
@@ -1470,7 +1492,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         this.actor.deleteEmbeddedDocuments("Item", [item._id]);
     }
 
-    static async _updateRecoil(actorSelect){
+    static async _updateRecoil(actorSelect) {
         const armes = actorSelect.items.filter(item => item.type === "arme");
         armes.map(async arme => {
             let updateArme = {};
@@ -1509,7 +1531,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
             await arme.update(updateArme);
         })
     }
-    async add_weapon(){
+
+    async add_weapon() {
         let weapon = {
             "attack": "",
             "to_hit_roll": "",
@@ -1521,15 +1544,16 @@ export default class scp_foundationActorSheet extends ActorSheet{
         await this.actor.update({"system.weapons": weaponsList});
 
     }
-    async delete_weapon(elem){
+
+    async delete_weapon(elem) {
         let parent = elem.currentTarget.parentNode.parentNode;
         let id = parent.className.split("-")[1];
 
         let weaponsList = this.actor.system.weapons || [];
         let finalWeaponList = [];
         let i = 0;
-        weaponsList.forEach(weapon =>{
-            if(i !== parseInt(id)) {
+        weaponsList.forEach(weapon => {
+            if (i !== parseInt(id)) {
                 finalWeaponList.push(weapon);
             }
             i++;
@@ -1537,12 +1561,13 @@ export default class scp_foundationActorSheet extends ActorSheet{
         await this.actor.update({"system.weapons": finalWeaponList});
 
     }
-    async updateWeapon(updatedElement){
+
+    async updateWeapon(updatedElement) {
         let parent = updatedElement.parentNode.parentNode;
         let id = parent.className.split("-")[1];
         let weaponsList = this.actor.system.weapons || [];
         let weapon = weaponsList[parseInt(id)];
-        switch (updatedElement.name){
+        switch (updatedElement.name) {
             case "attack":
                 weapon.attack = updatedElement.value;
                 break;
@@ -1560,7 +1585,8 @@ export default class scp_foundationActorSheet extends ActorSheet{
         await this.actor.update({"system.weapons": weaponsList});
 
     }
-    preparePnjRoll(html, rollName, result){
+
+    preparePnjRoll(html, rollName, result) {
         let popup = html.find("#ma_popup")[0];
         let content = html[0];
         const contentHeight = content.clientHeight;
@@ -1582,9 +1608,9 @@ export default class scp_foundationActorSheet extends ActorSheet{
             selectExertion.remove(1);
         }
 
-        html.find(".exertionUse")[0].style.display="block";
+        html.find(".exertionUse")[0].style.display = "block";
 
-        for(let exertionNumber = 1; exertionNumber<=this.actor.system.exertion; exertionNumber++){
+        for (let exertionNumber = 1; exertionNumber <= this.actor.system.exertion; exertionNumber++) {
             var option = document.createElement("option");
             option.value = exertionNumber;
             option.text = exertionNumber;
@@ -1592,7 +1618,7 @@ export default class scp_foundationActorSheet extends ActorSheet{
         }
 
         let labelElement = html.find('.input-label.launchDice')[0];
-        labelElement.firstElementChild.addEventListener('click', () =>{
+        labelElement.firstElementChild.addEventListener('click', () => {
             this.preparePnjFormula(html, rollName, result);
             html.find("#ma_popup")[0].style.display = 'none';
             const newElement = labelElement.firstElementChild.cloneNode(true);
@@ -1600,13 +1626,13 @@ export default class scp_foundationActorSheet extends ActorSheet{
         })
     }
 
-    async preparePnjFormula(html, rollName, result){
+    async preparePnjFormula(html, rollName, result) {
         let sortResult = result.split("$");
         let defaultFormula = sortResult[0];
         let damage;
-        if(sortResult.length>1){
+        if (sortResult.length > 1) {
             damage = sortResult[1];
-        }else{
+        } else {
             damage = null;
         }
         let delimiters = ["&", "+"];
@@ -1618,52 +1644,64 @@ export default class scp_foundationActorSheet extends ActorSheet{
         let bonus = 0;
         let index = 0;
         while (index < splitFormula.length) {
-            if(splitFormula[index].includes("Force")){
+            if (splitFormula[index].includes("Force")) {
                 splitFormula.push(...this.actor.system.attributes.strength.split(regex))
-            }
-            else if(splitFormula[index].includes("Santé")){
+            } else if (splitFormula[index].includes("Santé")) {
                 splitFormula.push(...this.actor.system.attributes.health.split(regex))
-            }
-            else if(splitFormula[index].includes("Perception")){
+            } else if (splitFormula[index].includes("Perception")) {
                 splitFormula.push(...this.actor.system.attributes.perception.split(regex))
-            }
-            else if(splitFormula[index].includes("Intelligence")){
+            } else if (splitFormula[index].includes("Intelligence")) {
                 splitFormula.push(...this.actor.system.attributes.intelligence.split(regex))
-            }
-            else if(splitFormula[index].includes("Volonté")){
+            } else if (splitFormula[index].includes("Volonté")) {
                 splitFormula.push(...this.actor.system.attributes.willpower.split(regex))
-            }
-            else if(splitFormula[index].includes("Dexterité")){
+            } else if (splitFormula[index].includes("Dexterité")) {
                 splitFormula.push(...this.actor.system.attributes.dexterity.split(regex))
-            }
-            else if(splitFormula[index].includes("Physique")){
+            } else if (splitFormula[index].includes("Physique")) {
                 splitFormula.push(...this.actor.system.stats.physical.split(regex))
-            }
-            else if(splitFormula[index].includes("Mental")){
+            } else if (splitFormula[index].includes("Mental")) {
                 splitFormula.push(...this.actor.system.stats.mental.split(regex))
-            }
-            else if(splitFormula[index].includes("Social")){
+            } else if (splitFormula[index].includes("Social")) {
                 splitFormula.push(...this.actor.system.stats.social.split(regex))
-            }
-            else if(splitFormula[index].includes('d') || splitFormula[index].includes("D")){
+            } else if (splitFormula[index].includes('d') || splitFormula[index].includes("D")) {
                 let formulaeDetail = splitFormula[index].split(newRegex);
-                for(let i =0; i<parseInt(formulaeDetail[0]); i++){
-                    let dice = "1d"+formulaeDetail[1];
+                for (let i = 0; i < parseInt(formulaeDetail[0]); i++) {
+                    let dice = "1d" + formulaeDetail[1];
                     diceFormulae.push(dice);
                 }
-            }else{
-                bonus+=parseFloat(splitFormula[index])
+            } else {
+                bonus += parseFloat(splitFormula[index])
             }
             index++;
         }
 
         let exertionUsed = parseInt(html.find('#exertionUse')[0].value);
-        while(exertionUsed > 0){
+        while (exertionUsed > 0) {
             diceFormulae.push("1d12");
-            bonus+= 1
+            bonus += 1
             exertionUsed--;
         }
         this.launchRoll(html, rollName, diceFormulae, false, damage, bonus, 0, true)
 
+    }
+
+    // Fonction pour trier les items par nom
+    async sortItems() {
+        let items = this.actor.items.contents;
+
+        // Trier les items par nom
+        items.sort((a, b) => a.name.localeCompare(b.name));
+        let listId = items.map(item => item.id);
+        await this.actor.deleteEmbeddedDocuments("Item", listId);
+
+        // Ajouter les items triés à l'acteur
+        await this.actor.createEmbeddedDocuments("Item", items.map(item => ({
+            _id: item.id,
+            ...item.toObject() // Conserver les autres attributs des items
+        })));
+
+        //this.actor.deleteEmbeddedDocuments("Item", item.system.attachments);
+
+        // Recréez la liste d'items triés
+        //await this.actor.update({"items": items})
     }
 }

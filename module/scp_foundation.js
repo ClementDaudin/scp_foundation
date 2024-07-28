@@ -15,6 +15,8 @@ Hooks.once("init", () => {
 
 Hooks.on("ready", async () => {
     let actorArray = Array.from(game.actors);
+    addAttributeToAllItems();
+
     for (const actor of actorArray) {
         await actor.update({
             img: actor.prototypeToken.texture.src // Utilisation de l'image du token de l'acteur
@@ -220,4 +222,60 @@ export async function rollInitiative (
     await this.updateEmbeddedDocuments('Combatant', updates)
 
     return this
+}
+
+async function addAttributeToAllItems() {
+    // Obtenir tous les acteurs
+    let actors = game.actors.contents;
+    let items = game.items.contents;
+    // Parcourir chaque acteur
+    for (let actor of actors) {
+        let updates = [];
+
+        // Récupérer tous les items de l'acteur
+        let items = actor.items.contents;
+
+        // Préparer les mises à jour pour les items
+        for (let item of items) {
+            // Vérifier si le nouvel attribut est déjà présent
+            if(item.type === "accessoire" || item.type === "arme") {
+                if (!item.system.hasOwnProperty('hold')) {
+                    updates.push({
+                        _id: item.id,
+                        "system.hold": true // Ajouter le nouvel attribut avec une valeur par défaut
+                    });
+                }
+            }
+        }
+
+        // Mettre à jour les items dans l'acteur
+        if (updates.length > 0) {
+            await actor.updateEmbeddedDocuments("Item", updates);
+            console.log(`Mise à jour de ${updates.length} items pour l'acteur ${actor.name}.`);
+        }
+    }
+    // Parcourir chaque item
+    for (let item of items) {
+        let updates = [];
+
+        // Préparer les mises à jour pour les items
+        for (let item of items) {
+            // Vérifier si le nouvel attribut est déjà présent
+            if(item.type === "accessoire" || item.type === "arme"){
+                if (!item.system.hold) {
+                    updates.push({
+                        _id: item.id,
+                        "system.hold": true // Ajouter le nouvel attribut avec une valeur par défaut
+                    });
+                }
+            }
+
+        }
+
+        // Mettre à jour les items dans l'acteur
+        if (updates.length > 0) {
+            await Item.updateDocuments(updates);
+            console.log(`Mise à jour de ${updates.length} items avec le nouvel attribut.`);
+        }
+    }
 }

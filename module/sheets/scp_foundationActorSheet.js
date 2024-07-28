@@ -66,7 +66,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
             });
 
             html.find(".item-delete").click(this._onItemDelete.bind(this));
-            html.find(".sortAlpha")[0].addEventListener('click', ()=>{
+            html.find(".sortAlpha")[0].addEventListener('click', () => {
                 this.sortItems();
             });
             // Sélectionnez le bouton par sa classe ou son ID, ajustez le sélecteur en fonction de votre HTML
@@ -216,6 +216,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     html.find("#inventory")[0].style.display = "none";
                     html.find("#attributes")[0].style.display = "none";
                     html.find("#attacks-radio")[0].checked = true;
+                    document.fonts.ready.then(()=>{
+                        this.synchronizeTableColumnWidths();
+                    });
                     break;
                 case "inventory":
                     html.find("#charactere_data")[0].style.display = "none";
@@ -287,6 +290,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 checkbox.addEventListener("click", async () => {
                     let item = this.actor.items.get(checkbox.name);
                     await item.update({"system.hold": checkbox.checked})
+                    if(item.type === "accessoire"){
+                        this.updateAccessoire(item, checkbox.checked);
+                    }
                 })
                 let item = this.actor.items.get(checkbox.name);
                 checkbox.checked = item.system.hold;
@@ -309,7 +315,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     await item.update({"system.magazine.actual": magazineButton.value})
                 })
             });
-            showChecked.checked = localStorage.getItem('isChecked')==="true";
+            showChecked.checked = localStorage.getItem('isChecked') === "true";
 
             // Filtrage pour afficher seulement les éléments cochés
             showChecked.addEventListener('change', function () {
@@ -605,7 +611,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
         updateBonus["system.cognitive_resistance.value"] = cognitive_value;
 
         await this.actor.update(updateBonus);
-        await this._updateRecoil();
+        await this._updateRecoil(this.actor);
 
         html.find('input[type="text"]').prop('disabled', false);
 
@@ -1481,15 +1487,41 @@ export default class scp_foundationActorSheet extends ActorSheet {
             let attachmentsList = selectedWeapon.system.attachments || [];
             attachmentsList = attachmentsList.filter(attachment => attachment !== item._id);
             await selectedWeapon.update({"system.attachments": attachmentsList});
+            if(item.system.hold === true){
+                updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
+                updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
+                updateArme["system.ready"] = selectedWeapon.system.ready - item.system.effect.ready;
+                updateArme["system.aim"] = selectedWeapon.system.aim - item.system.effect.aim;
+                updateArme["system.magazine.max"] = selectedWeapon.system.magazine.max - item.system.effect.magazine;
+            }
+
+            await selectedWeapon.update(updateArme);
+            await this._updateRecoil(this.actor);
+        }
+        this.actor.deleteEmbeddedDocuments("Item", [item._id]);
+    }
+
+    async updateAccessoire(item, hold){
+        let selectedWeapon = this.actor.items.get(item.system.idArme);
+        let updateArme = {};
+        if(hold){
+            updateArme["system.melee"] = selectedWeapon.system.melee - (- item.system.effect.melee);
+            updateArme["system.hip"] = selectedWeapon.system.hip - (- item.system.effect.hip);
+            updateArme["system.ready"] = selectedWeapon.system.ready - (- item.system.effect.ready);
+            updateArme["system.aim"] = selectedWeapon.system.aim - (- item.system.effect.aim);
+            updateArme["system.magazine.max"] = selectedWeapon.system.magazine.max - (- item.system.effect.magazine);
+        }else{
+
             updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
             updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
             updateArme["system.ready"] = selectedWeapon.system.ready - item.system.effect.ready;
             updateArme["system.aim"] = selectedWeapon.system.aim - item.system.effect.aim;
             updateArme["system.magazine.max"] = selectedWeapon.system.magazine.max - item.system.effect.magazine;
-            await selectedWeapon.update(updateArme);
-            await this._updateRecoil(this.actor);
+
         }
-        this.actor.deleteEmbeddedDocuments("Item", [item._id]);
+        await selectedWeapon.update(updateArme);
+        await this._updateRecoil(this.actor);
+
     }
 
     static async _updateRecoil(actorSelect) {
@@ -1501,27 +1533,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
             let attachmentsList = arme.system.attachments;
             attachmentsList.map(attachmentId => {
                 let attachment = actorSelect.items.get(attachmentId)
-                recoil -= -attachment.system.effect.recoil;
-            })
-            if (recoil < 0) {
-                updateArme["system.recoil.actual"] = 0;
-            } else {
-                updateArme["system.recoil.actual"] = recoil;
-            }
-            await arme.update(updateArme);
-        })
-    }
-
-    async _updateRecoil() {
-        const armes = this.actor.items.filter(item => item.type === "arme");
-        armes.map(async arme => {
-            let updateArme = {};
-            let recoil = arme.system.recoil.base;
-            recoil -= this.actor.system.recoil;
-            let attachmentsList = arme.system.attachments;
-            attachmentsList.map(attachmentId => {
-                let attachment = this.actor.items.get(attachmentId)
-                recoil -= -attachment.system.effect.recoil;
+                if(attachment.system.hold){
+                    recoil -= -attachment.system.effect.recoil;
+                }
             })
             if (recoil < 0) {
                 updateArme["system.recoil.actual"] = 0;
@@ -1698,10 +1712,29 @@ export default class scp_foundationActorSheet extends ActorSheet {
             _id: item.id,
             ...item.toObject() // Conserver les autres attributs des items
         })));
+    }
 
-        //this.actor.deleteEmbeddedDocuments("Item", item.system.attachments);
+    synchronizeTableColumnWidths() {
+        // Sélectionner la table principale et la table des pièces jointes
+        const itemTables = document.querySelectorAll('#tableArmes');
+        const attachmentTables = document.querySelectorAll('.item-details');
 
-        // Recréez la liste d'items triés
-        //await this.actor.update({"items": items})
+        itemTables.forEach((itemTable, index) => {
+            attachmentTables.forEach((attachmentTable) =>{
+                if (!attachmentTable) return;
+
+                // Sélectionner les en-têtes de colonnes
+                const itemHeaders = itemTable.querySelectorAll('thead th');
+                const attachmentHeaders = attachmentTable.querySelectorAll('tr td');
+
+                // Synchroniser les largeurs des colonnes
+                itemHeaders.forEach((itemHeader, columnIndex) => {
+                    if (attachmentHeaders[columnIndex]) {
+                        attachmentHeaders[columnIndex].style.width = getComputedStyle(itemHeader).width;
+                    }
+                });
+            });
+
+        });
     }
 }

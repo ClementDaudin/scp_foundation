@@ -1464,8 +1464,9 @@
                 </div>
                 <div id="listeArmes">
                     <table id="tableArmes">
-                        <tr>
-                            <th></th>
+                        <thead>
+                            <th>Equipé</th>
+                            <th style="width: 6%"></th>
                             <th>Arme</th>
                             <th>Type</th>
                             <th>Recul</th>
@@ -1479,10 +1480,11 @@
                             <th>Element</th>
                             <th>Portée</th>
                             <th>Vendre</th>
-                        </tr>
+                        </thead>
                         {{#each actor.items as |item key|}}
                         {{#if (eq item.type "arme")}}
                         <tr class="item arme" data-item-id="{{item._id}}">
+                            <td><input type="checkbox" class="isHoldCheckbox" name="{{item._id}}" value="{{item.system.hold}}"></td>
                             <td><img src="{{item.img}}" class="toggle-details" title="{{item.name}}" height="32" width="32"/> </td>
                             <td><label class="roll-label" title="%{weapon}">
                                 <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span>
@@ -1518,26 +1520,27 @@
                             </td>
                         </tr>
                         <tr class="attachments" style="display: none">
-                            <td colspan="14">
+                            <td colspan="15">
                                 <!-- Contenu du tableau de détails -->
                                 <table class="item-details">
                         {{#each actor.items as |attachment key|}}
                             {{#each item.system.attachments as |attachmentId key|}}
                                 {{#if (eq attachment._id attachmentId)}}
                                     <tr class="item" data-item-id="{{attachmentId}}">
-                                        <td style="width:6.5%"><img src="{{attachment.img}}" class="toggle-details" title="{{attachment.name}}" height="32" width="32"/> </td>
-                                        <td style="width:8%">{{attachment.name}}</td>
-                                        <td style="width:10%"></td>
-                                        <td style="width:7%">{{attachment.system.effect.recoil}}</td>
-                                        <td style="width:7%">{{attachment.system.effect.melee}}</td>
-                                        <td style="width:4%">{{attachment.system.effect.hip}}</td>
-                                        <td style="width:7%">{{attachment.system.effect.ready}}</td>
-                                        <td style="width:4.5%">{{attachment.system.effect.aim}} </td>
-                                        <td style="width:11%">{{attachment.system.effect.magazine}}</td>
-                                        <td style="width:5.5%">&nbsp;</td>
-                                        <td style="width:4.5%">&nbsp;</td>
-                                        <td style="width:9%">&nbsp;</td>
-                                        <td style="width:8%">&nbsp;</td>
+                                        <td><input type="checkbox" class="isHoldCheckbox" name="{{attachment._id}}" value="{{attachment.system.hold}}"></td>
+                                        <td><img src="{{attachment.img}}" class="toggle-details" title="{{attachment.name}}" height="32" width="32"/> </td>
+                                        <td>{{attachment.name}}</td>
+                                        <td></td>
+                                        <td>{{attachment.system.effect.recoil}}</td>
+                                        <td>{{attachment.system.effect.melee}}</td>
+                                        <td>{{attachment.system.effect.hip}}</td>
+                                        <td>{{attachment.system.effect.ready}}</td>
+                                        <td>{{attachment.system.effect.aim}} </td>
+                                        <td>{{attachment.system.effect.magazine}}</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
                                         <td>
                                             <a class="item-delete" title="Vendre l'item"><i class="fas fa-trash"></i></a>
                                         </td>

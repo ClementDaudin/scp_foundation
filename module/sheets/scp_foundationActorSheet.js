@@ -1169,7 +1169,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 });
         }
         newMessage.then(async () => {
-            if (pnj !== false) {
+            if (pnj !== true) {
                 let rerollArray = document.getElementsByClassName("reroll");
                 let rerollButton = rerollArray[rerollArray.length - 1];
                 rerollButton.addEventListener("click", async () => {

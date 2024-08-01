@@ -3,6 +3,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     constructor(...args) {
         super(...args);
         this.data = null; // Variable pour stocker les données récupérées une seule fois
+        this.currentHtml = null;
     }
 
     get template() {
@@ -23,6 +24,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     activateListeners(html) {
+        this.currentHtml = html;
         super.activateListeners(html);
         if (this.actor.type === "character") {
             this.updateDicesTiles(html);
@@ -1113,14 +1115,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
         if (weapon !== null) {
             diceRollsHTML += `
         <span class="sheet-roll-damage"><input type="button" value="Roll Damage" class="rollDamage"></span>`;
-            if (!pnj) {
-                previousPosition = weapon.system.actual_position;
-                if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
-                    await weapon.update({'system.actual_position': "0"})
-                } else {
-                    await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
-                }
-            }
         }
         diceRollsHTML += `
         </div>  
@@ -1186,29 +1180,40 @@ export default class scp_foundationActorSheet extends ActorSheet {
             }
             let rollDamageArray = document.getElementsByClassName("rollDamage");
             let rollDamageButton = rollDamageArray[rollDamageArray.length - 1];
-            if(!pnj && weapon !== null){
-                if (weapon.system.skill === "catch_throw" || weapon.system.skill === "demolition" || weapon.system.skill === "shotgun"){
+            if (!pnj && weapon !== null) {
+                if (weapon.system.skill === "catch_throw" || weapon.system.skill === "demolition" || weapon.system.skill === "shotgun") {
                     rollDamageButton.addEventListener("click", async () => {
                         this.prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
                     });
-                }else{
+                } else {
                     rollDamageButton.addEventListener("click", async () => {
                         this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
                     });
                 }
-            }else{
+            } else {
                 rollDamageButton.addEventListener("click", async () => {
                     this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
                 });
             }
-        })
+        }).then(async () => {
+                if (weapon !== null && !pnj) {
+                    previousPosition = weapon.system.actual_position;
+                    if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
+                        await weapon.update({'system.actual_position': "0"})
+                    } else {
+                        await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
+                    }
+                }
+            }
+        );
     }
 
     async prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo = null){
         //popup indiquant le nombre de dés à retirer
         //roll damage sans ces dés
-        let popup = html.find("#rollDamage")[0];
-        let content = html[0];
+        console.log(this.currentHtml[0].clientHeight);
+        let popup = this.currentHtml.find("#rollDamage")[0];
+        let content = this.currentHtml[0];
         const contentHeight = content.clientHeight;
         const scrollTop = content.scrollTop;
 
@@ -1218,16 +1223,16 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         popup.style.display = "block";
 
-        html.find(".closeDamagePopup")[0].addEventListener('click', function () {
+        this.currentHtml.find(".closeDamagePopup")[0].addEventListener('click', function () {
             popup.style.display = 'none';
-            let launchDiceInput = html.find('.input-label.launchDamageDice')[0];
+            let launchDiceInput = this.currentHtml.find('.input-label.launchDamageDice')[0];
 
             const newElement = launchDiceInput.firstElementChild.cloneNode(true);
             launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
 
         });
 
-        let nbDiceToRemove = html.find("#deleteDice")[0];
+        let nbDiceToRemove = this.currentHtml.find("#deleteDice")[0];
 
         while (nbDiceToRemove.options.length > 1) {
             nbDiceToRemove.remove(1);
@@ -1241,11 +1246,11 @@ export default class scp_foundationActorSheet extends ActorSheet {
             option.text = nbDiceToRemoveValue;
             nbDiceToRemove.appendChild(option);
         }
-        let labelElement = html.find('.input-label.launchDamageDice')[0];
+        let labelElement = this.currentHtml.find('.input-label.launchDamageDice')[0];
         labelElement.firstElementChild.addEventListener('click', () => {
-            let nbLaunch = nbDices[0] - html.find("#deleteDice")[0].value
-            this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo, nbLaunch + "d"+nbDices[1]);
-            html.find("#rollDamage")[0].style.display = 'none';
+            let nbLaunch = nbDices[0] - this.currentHtml.find("#deleteDice")[0].value
+            this.rollDamage(this.currentHtml, weapon, previousPosition, rollName, pnj, whisperTo, nbLaunch + "d"+nbDices[1]);
+            this.currentHtml.find("#rollDamage")[0].style.display = 'none';
             const newElement = labelElement.firstElementChild.cloneNode(true);
             labelElement.replaceChild(newElement, labelElement.firstElementChild);
         })
@@ -1808,8 +1813,8 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         // Ajouter les items triés à l'acteur
         await this.actor.createEmbeddedDocuments("Item", filteredItems.map(item => ({
-            _id: filteredItems.id,
-            ...filteredItems.toObject() // Conserver les autres attributs des items
+            _id: item.id,
+            ...item.toObject() // Conserver les autres attributs des items
         })));
     }
 

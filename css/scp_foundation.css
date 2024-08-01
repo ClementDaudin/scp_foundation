@@ -763,7 +763,7 @@ input[type="radio"]:checked + .personnel-label {
 }
 
 /* Styles pour le bouton de fermeture */
-.closePopup {
+.closePopup, .closeDamagePopup {
     position: absolute;
     top: 5px;
     right: 10px;
@@ -1215,7 +1215,7 @@ input[type="radio"]:checked + .personnel-label {
     min-height: 10em;
 }
 
-#diceUse, #exertionUse, #launchTarget{
+#diceUse, #exertionUse, #launchTarget, #deleteDice{
     color: white;
 }
 #diceUse > option, #exertionUse > option{

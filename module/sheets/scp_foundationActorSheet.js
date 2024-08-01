@@ -768,11 +768,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         popup.style.top = `${newPosition}px`
 
-        const windowHeight = window.innerHeight;
-
-// Calcul de la position de défilement actuelle
-        const scrollY = window.scrollY || window.pageYOffset;
-//        popup.style.top = "25%";
         popup.style.display = "block";
         let selectExertion = html.find("#exertionUse")[0];
         let selectd12 = html.find("#d12Selected")[0];
@@ -1137,6 +1132,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
         // Crée le message de chat
         let cible = html.find("#launchTarget")[0].value;
         let newMessage;
+        let whisperTo = null;
         switch (cible) {
             case "Public":
                 newMessage = ChatMessage.create({
@@ -1145,15 +1141,16 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 });
                 break;
             case "Perso":
+                whisperTo = [this.actor.id];
                 newMessage = ChatMessage.create({
                     speaker: ChatMessage.getSpeaker({actor: this.actor}),
                     content: messageContent,
-                    whisper: [this.actor.id]
+                    whisper: whisperTo
 
                 });
                 break;
             case "Hidden":
-                const whisperTo = ChatMessage.getWhisperRecipients("GM").concat([this.actor.id]);
+                whisperTo = ChatMessage.getWhisperRecipients("GM").concat([this.actor.id]);
 
                 newMessage = ChatMessage.create({
                     speaker: ChatMessage.getSpeaker({actor: this.actor}),
@@ -1162,11 +1159,13 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 });
                 break;
             case "GM":
+                whisperTo = ChatMessage.getWhisperRecipients("GM");
                 newMessage = ChatMessage.create({
                     speaker: ChatMessage.getSpeaker({actor: this.actor}),
                     content: messageContent,
-                    whisper: ChatMessage.getWhisperRecipients("GM")
+                    whisper: whisperTo
                 });
+                break;
         }
         newMessage.then(async () => {
             if (pnj !== true) {
@@ -1175,7 +1174,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 rerollButton.addEventListener("click", async () => {
                     let reverence = this.actor.system.reverence;
                     if (reverence >= 2) {
-                        this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition)
+                        await this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition)
                         await this.actor.update({
                             "system.reverence": reverence - 2
                         });
@@ -1187,13 +1186,73 @@ export default class scp_foundationActorSheet extends ActorSheet {
             }
             let rollDamageArray = document.getElementsByClassName("rollDamage");
             let rollDamageButton = rollDamageArray[rollDamageArray.length - 1];
-            rollDamageButton.addEventListener("click", async () => {
-                this.rollDamage(html, weapon, previousPosition, rollName, pnj);
-            });
+            if(!pnj && weapon !== null){
+                if (weapon.system.skill === "catch_throw" || weapon.system.skill === "demolition" || weapon.system.skill === "shotgun"){
+                    rollDamageButton.addEventListener("click", async () => {
+                        this.prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
+                    });
+                }else{
+                    rollDamageButton.addEventListener("click", async () => {
+                        this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
+                    });
+                }
+            }else{
+                rollDamageButton.addEventListener("click", async () => {
+                    this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
+                });
+            }
         })
     }
 
-    async rollDamage(html, weapon, position, rollName, pnj) {
+    async prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo = null){
+        //popup indiquant le nombre de dés à retirer
+        //roll damage sans ces dés
+        let popup = html.find("#rollDamage")[0];
+        let content = html[0];
+        const contentHeight = content.clientHeight;
+        const scrollTop = content.scrollTop;
+
+        const newPosition = scrollTop + (contentHeight / 2);
+
+        popup.style.top = `${newPosition}px`
+
+        popup.style.display = "block";
+
+        html.find(".closeDamagePopup")[0].addEventListener('click', function () {
+            popup.style.display = 'none';
+            let launchDiceInput = html.find('.input-label.launchDamageDice')[0];
+
+            const newElement = launchDiceInput.firstElementChild.cloneNode(true);
+            launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
+
+        });
+
+        let nbDiceToRemove = html.find("#deleteDice")[0];
+
+        while (nbDiceToRemove.options.length > 1) {
+            nbDiceToRemove.remove(1);
+        }
+        let delimiters = ["d", "D"];
+        let regex = new RegExp(delimiters.join('|'));
+        let nbDices = weapon.system.base_damage.split(regex);
+        for (let nbDiceToRemoveValue = 1; nbDiceToRemoveValue <= parseInt(nbDices[0]); nbDiceToRemoveValue++) {
+            var option = document.createElement("option");
+            option.value = nbDiceToRemoveValue;
+            option.text = nbDiceToRemoveValue;
+            nbDiceToRemove.appendChild(option);
+        }
+        let labelElement = html.find('.input-label.launchDamageDice')[0];
+        labelElement.firstElementChild.addEventListener('click', () => {
+            let nbLaunch = nbDices[0] - html.find("#deleteDice")[0].value
+            this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo, nbLaunch + "d"+nbDices[1]);
+            html.find("#rollDamage")[0].style.display = 'none';
+            const newElement = labelElement.firstElementChild.cloneNode(true);
+            labelElement.replaceChild(newElement, labelElement.firstElementChild);
+        })
+    }
+
+
+    async rollDamage(html, weapon, position, rollName, pnj, whisperTo= null, baseDamageValue = null) {
         let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
         sound.play();
         if (pnj) {
@@ -1221,14 +1280,25 @@ export default class scp_foundationActorSheet extends ActorSheet {
         `
             // Crée le message de chat
             let messageContent = `<div>${damageHTML}</div>`;
-
-            ChatMessage.create({
-                speaker: ChatMessage.getSpeaker({actor: this.actor}),
-                content: messageContent,
-                whisper: ChatMessage.getWhisperRecipients("GM")
-            });
+            if(whisperTo === null){
+                ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                    content: messageContent
+                });
+            }else{
+                ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                    content: messageContent,
+                    whisper: whisperTo
+                });
+            }
         } else {
-            let baseDamageRoll = new Roll(weapon.system.base_damage);
+            let baseDamageRoll;
+            if(baseDamageValue === null){
+                baseDamageRoll = new Roll(weapon.system.base_damage);
+            }else{
+                baseDamageRoll = new Roll(baseDamageValue);
+            }
             await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
             let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
             let xFormula = "(" + weapon.system.x_damage + ")";
@@ -1259,19 +1329,27 @@ export default class scp_foundationActorSheet extends ActorSheet {
                         <h5 class="sheet-element">` + weapon.system.element + `</h5>
                     </div>
                     <div class="sheet-damage">
-                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span class="sheet-base-damage"><span class="showtip" title="Rolling 7d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>7</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll&quot;>3</span>+<span class=&quot;basicdiceroll&quot;>5</span>)">` + baseDamage + `</span></span>
-                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span class="sheet-x-damage"><span class="inlinerollresult showtip tipsy-n-right importantroll" title="<img src=&quot;/images/quantumrollwhite.png&quot; class=&quot;inlineqroll&quot;> Rolling 2d8 = (<span class=&quot;basicdiceroll critsuccess &quot;>8</span>+<span class=&quot;basicdiceroll critfail &quot;>1</span>)">` + xDamage + `</span></span>
-                        <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5><span class="sheet-total-damage"><span class="inlinerollresult showtip tipsy-n-right" title="Rolling 0[computed value] = 0">` + totalDamage + `</span></span>
+                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span class="sheet-base-damage">` + baseDamage + `</span>
+                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span class="sheet-x-damage">` + xDamage + `</span>
+                        <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5><span class="sheet-total-damage">` + totalDamage + `</span>
                     </div>
                 </div>
         `
             // Crée le message de chat
             let messageContent = `<div>${damageHTML}</div>`;
 
-            ChatMessage.create({
-                speaker: ChatMessage.getSpeaker({actor: this.actor}),
-                content: messageContent,
-            });
+            if (whisperTo === null) {
+                ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                    content: messageContent
+                });
+            } else {
+                ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                    content: messageContent,
+                    whisper: whisperTo
+                });
+            }
         }
 
     }
@@ -1610,11 +1688,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         popup.style.top = `${newPosition}px`
 
-        const windowHeight = window.innerHeight;
 
-// Calcul de la position de défilement actuelle
-        const scrollY = window.scrollY || window.pageYOffset;
-//        popup.style.top = "25%";
         popup.style.display = "block";
         let selectExertion = html.find("#exertionUse")[0];
 
@@ -1638,6 +1712,14 @@ export default class scp_foundationActorSheet extends ActorSheet {
             const newElement = labelElement.firstElementChild.cloneNode(true);
             labelElement.replaceChild(newElement, labelElement.firstElementChild);
         })
+        html.find(".closePopup")[0].addEventListener('click', function () {
+            popup.style.display = 'none';
+            let launchDiceInput = html.find('.input-label.launchDice')[0];
+
+            const newElement = launchDiceInput.firstElementChild.cloneNode(true);
+            launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
+
+        });
     }
 
     async preparePnjFormula(html, rollName, result) {
@@ -1654,36 +1736,52 @@ export default class scp_foundationActorSheet extends ActorSheet {
         let newDelimiters = ["d", "D"];
         let newRegex = new RegExp(newDelimiters.join('|'));
         let splitFormula = defaultFormula.split(regex);
+        let preparedFormula = [];
+        splitFormula.forEach(formula => {
+            let res = formula.split("-").map(element => element.trim());
+            preparedFormula.push(res[0]);
+            for(let i = 1; i< res.length; i++) {
+                preparedFormula.push("-"+res[i]);
+            }
+        })
         let diceFormulae = [];
         let bonus = 0;
         let index = 0;
-        while (index < splitFormula.length) {
-            if (splitFormula[index].includes("Force")) {
-                splitFormula.push(...this.actor.system.attributes.strength.split(regex))
-            } else if (splitFormula[index].includes("Santé")) {
-                splitFormula.push(...this.actor.system.attributes.health.split(regex))
-            } else if (splitFormula[index].includes("Perception")) {
-                splitFormula.push(...this.actor.system.attributes.perception.split(regex))
-            } else if (splitFormula[index].includes("Intelligence")) {
-                splitFormula.push(...this.actor.system.attributes.intelligence.split(regex))
-            } else if (splitFormula[index].includes("Volonté")) {
-                splitFormula.push(...this.actor.system.attributes.willpower.split(regex))
-            } else if (splitFormula[index].includes("Dexterité")) {
-                splitFormula.push(...this.actor.system.attributes.dexterity.split(regex))
-            } else if (splitFormula[index].includes("Physique")) {
-                splitFormula.push(...this.actor.system.stats.physical.split(regex))
-            } else if (splitFormula[index].includes("Mental")) {
-                splitFormula.push(...this.actor.system.stats.mental.split(regex))
-            } else if (splitFormula[index].includes("Social")) {
-                splitFormula.push(...this.actor.system.stats.social.split(regex))
-            } else if (splitFormula[index].includes('d') || splitFormula[index].includes("D")) {
-                let formulaeDetail = splitFormula[index].split(newRegex);
-                for (let i = 0; i < parseInt(formulaeDetail[0]); i++) {
-                    let dice = "1d" + formulaeDetail[1];
-                    diceFormulae.push(dice);
+        while (index < preparedFormula.length) {
+            if (preparedFormula[index].includes("Force")) {
+                preparedFormula.push(...this.actor.system.attributes.strength.split(regex))
+            } else if (preparedFormula[index].includes("Santé")) {
+                preparedFormula.push(...this.actor.system.attributes.health.split(regex))
+            } else if (preparedFormula[index].includes("Perception")) {
+                preparedFormula.push(...this.actor.system.attributes.perception.split(regex))
+            } else if (preparedFormula[index].includes("Intelligence")) {
+                preparedFormula.push(...this.actor.system.attributes.intelligence.split(regex))
+            } else if (preparedFormula[index].includes("Volonté")) {
+                preparedFormula.push(...this.actor.system.attributes.willpower.split(regex))
+            } else if (preparedFormula[index].includes("Dexterité")) {
+                preparedFormula.push(...this.actor.system.attributes.dexterity.split(regex))
+            } else if (preparedFormula[index].includes("Physique")) {
+                preparedFormula.push(...this.actor.system.stats.physical.split(regex))
+            } else if (preparedFormula[index].includes("Mental")) {
+                preparedFormula.push(...this.actor.system.stats.mental.split(regex))
+            } else if (preparedFormula[index].includes("Social")) {
+                preparedFormula.push(...this.actor.system.stats.social.split(regex))
+            } else if (preparedFormula[index].includes('d') || preparedFormula[index].includes("D")) {
+                let formulaeDetail = preparedFormula[index].split(newRegex);
+                if(parseInt(formulaeDetail[0])>0){
+                    for (let i = 0; i < parseInt(formulaeDetail[0]); i++) {
+                        let dice = "1d" + formulaeDetail[1];
+                        diceFormulae.push(dice);
+                    }
+                }else{
+                    for (let i = 0; i > parseInt(formulaeDetail[0]); i--) {
+                        let dice = "-1d" + formulaeDetail[1];
+                        diceFormulae.push(dice);
+                    }
                 }
+
             } else {
-                bonus += parseFloat(splitFormula[index])
+                bonus += parseFloat(preparedFormula[index])
             }
             index++;
         }
@@ -1701,16 +1799,17 @@ export default class scp_foundationActorSheet extends ActorSheet {
     // Fonction pour trier les items par nom
     async sortItems() {
         let items = this.actor.items.contents;
+        let filteredItems = items.filter(item => !(item.type === "arme" || item.type === "accessoire"));
 
         // Trier les items par nom
-        items.sort((a, b) => a.name.localeCompare(b.name));
-        let listId = items.map(item => item.id);
+        filteredItems.sort((a, b) => a.name.localeCompare(b.name));
+        let listId = filteredItems.map(filteredItems => filteredItems.id);
         await this.actor.deleteEmbeddedDocuments("Item", listId);
 
         // Ajouter les items triés à l'acteur
-        await this.actor.createEmbeddedDocuments("Item", items.map(item => ({
-            _id: item.id,
-            ...item.toObject() // Conserver les autres attributs des items
+        await this.actor.createEmbeddedDocuments("Item", filteredItems.map(item => ({
+            _id: filteredItems.id,
+            ...filteredItems.toObject() // Conserver les autres attributs des items
         })));
     }
 

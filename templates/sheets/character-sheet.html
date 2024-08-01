@@ -69,12 +69,32 @@
                         <option value="Public">Public</option>
                         <option value="Perso">Perso</option>
                         <option value="Hidden">Cachés</option>
-                        <option value="GM">Uniquement pour le MJ</option>
+                        <!--<option value="GM">Uniquement pour le MJ</option>-->
                     </select>
                 </label>
                 </div>
                 <div style="text-align: center">
                     <label class="input-label launchDice">
+                        <span class="h5" data-i18n="lancer">Lancer</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="rollDamage" class="popup" style="display: none">
+            <!-- Contenu de la popup -->
+            <div class="popup-content">
+                <span class="closeDamagePopup">&times;</span>
+                <h2>Lancement des dégâts</h2>
+                <div>
+                    <label class="input-label diceToDelete">
+                    <span class="h5" data-i18n="diceToUse">Nombre de dés à retirer</span>
+                    <select name="diceToDelete" class="chooseDice" title="@{diceToDelete}" id="deleteDice">
+                        <option value="0">0</option>
+                    </select>
+                </label>
+                </div>
+                <div style="text-align: center">
+                    <label class="input-label launchDamageDice">
                         <span class="h5" data-i18n="lancer">Lancer</span>
                     </label>
                 </div>

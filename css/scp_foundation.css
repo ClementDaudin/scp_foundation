@@ -957,6 +957,7 @@ input[type="radio"]:checked + .personnel-label {
     align-items: center;
     display: grid;
     color: black;
+    height: auto;
 }
 .message-content .sheet-scp .sheet-roll-buttons {
     display: flex;
@@ -1218,7 +1219,7 @@ input[type="radio"]:checked + .personnel-label {
 #diceUse, #exertionUse, #launchTarget, #deleteDice{
     color: white;
 }
-#diceUse > option, #exertionUse > option{
+#diceUse > option, #exertionUse > option, #launchTarget > option{
     background: rgba(0, 0, 0, 0.8);
 }
 

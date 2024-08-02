@@ -105,7 +105,9 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body level-{{systemData.security_level}}">
         <div id="section-tabs">
-            <input class="hidden" name="attr_section" type="radio" value="all" id="all-radio" checked="" title="@{section}">
+            <input class="hidden" name="attr_section" type="radio" value="presentation" checked="" id="presentation-radio" title="@{section}">
+            <label class="presentation-radio section-control h5" for="presentation-radio" data-i18n="presentation">Présentation</label>
+            <input class="hidden" name="attr_section" type="radio" value="all" id="all-radio"  title="@{section}">
             <label class="all-radio section-control h5" for="all-radio" data-i18n="all">Général</label>
             <input class="hidden" name="attr_section" type="radio" value="attacks" id="attacks-radio" title="@{section}">
             <label class="attacks-radio section-control h5" for="attacks-radio" data-i18n="attacks">Armurerie</label>
@@ -1617,7 +1619,11 @@
                 </table>
             </div>
         </section>
-        </section>
+        <div id="presentation" class="presentation">
+            <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" alt=""/>
+        </div>
+
+    </section>
 
     </section>
 </form>

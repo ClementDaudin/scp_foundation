@@ -183,58 +183,84 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 this.bonusAppearanceUpdate(evt);
             });
             html.find("#all-radio")[0].addEventListener('click', () => {
+                html.find("#main")[0].style.display = "block";
                 html.find("#charactere_data")[0].style.display = "block";
                 html.find("#weapons")[0].style.display = "none";
                 html.find("#inventory")[0].style.display = "none";
+                html.find("#presentation")[0].style.display = "none";
                 html.find("#attributes")[0].style.display = "block";
                 localStorage.setItem('page', 'all')
             })
             html.find("#attacks-radio")[0].addEventListener('click', () => {
+                html.find("#main")[0].style.display = "block";
                 html.find("#charactere_data")[0].style.display = "none";
                 html.find("#weapons")[0].style.display = "block";
                 html.find("#inventory")[0].style.display = "none";
+                html.find("#presentation")[0].style.display = "none";
                 html.find("#attributes")[0].style.display = "none";
                 localStorage.setItem('page', 'attack')
             })
             html.find("#equipment-radio")[0].addEventListener('click', () => {
+                html.find("#main")[0].style.display = "block";
                 html.find("#charactere_data")[0].style.display = "none";
                 html.find("#weapons")[0].style.display = "none";
                 html.find("#inventory")[0].style.display = "block";
+                html.find("#presentation")[0].style.display = "none";
                 html.find("#attributes")[0].style.display = "none";
                 localStorage.setItem('page', 'inventory')
             })
+            html.find("#presentation-radio")[0].addEventListener('click', () => {
+                html.find("#charactere_data")[0].style.display = "none";
+                html.find("#weapons")[0].style.display = "none";
+                html.find("#inventory")[0].style.display = "none";
+                html.find("#presentation")[0].style.display = "block";
+                html.find("#attributes")[0].style.display = "none";
+                html.find("#main")[0].style.display = "none";
+                localStorage.setItem('page', 'presentation')
+            })
+            if(!this.actor.isOwner){
+                localStorage.setItem('page', 'presentation');
+            }
 
             switch (localStorage.getItem('page')) {
                 case "all":
+                    html.find("#main")[0].style.display = "block";
                     html.find("#charactere_data")[0].style.display = "block";
                     html.find("#weapons")[0].style.display = "none";
                     html.find("#inventory")[0].style.display = "none";
                     html.find("#attributes")[0].style.display = "block";
+                    html.find("#presentation")[0].style.display = "none";
                     html.find("#all-radio")[0].checked = true;
                     break;
                 case "attack":
+                    html.find("#main")[0].style.display = "block";
                     html.find("#charactere_data")[0].style.display = "none";
                     html.find("#weapons")[0].style.display = "block";
                     html.find("#inventory")[0].style.display = "none";
                     html.find("#attributes")[0].style.display = "none";
                     html.find("#attacks-radio")[0].checked = true;
+                    html.find("#presentation")[0].style.display = "none";
                     document.fonts.ready.then(()=>{
                         this.synchronizeTableColumnWidths();
                     });
                     break;
                 case "inventory":
+                    html.find("#main")[0].style.display = "block";
                     html.find("#charactere_data")[0].style.display = "none";
                     html.find("#weapons")[0].style.display = "none";
                     html.find("#inventory")[0].style.display = "block";
                     html.find("#attributes")[0].style.display = "none";
                     html.find("#equipment-radio")[0].checked = true;
+                    html.find("#presentation")[0].style.display = "none";
                     break;
                 default:
-                    html.find("#charactere_data")[0].style.display = "block";
+                    html.find("#charactere_data")[0].style.display = "none";
                     html.find("#weapons")[0].style.display = "none";
                     html.find("#inventory")[0].style.display = "none";
-                    html.find("#attributes")[0].style.display = "block";
-                    html.find("#all-radio")[0].checked = true;
+                    html.find("#presentation")[0].style.display = "block";
+                    html.find("#attributes")[0].style.display = "none";
+                    html.find("#main")[0].style.display = "none";
+                    html.find("#presentation")[0].checked = true;
                     break;
             }
 

@@ -16,13 +16,13 @@ Hooks.once("init", () => {
 Hooks.on("ready", async () => {
     let actorArray = Array.from(game.actors);
     addAttributeToAllItems();
-
+/*
     for (const actor of actorArray) {
         await actor.update({
             img: actor.prototypeToken.texture.src // Utilisation de l'image du token de l'acteur
         });
     }
-});
+*/});
 
 Hooks.on("createItem", async (item, itemData) => {
     if(item._stats.lastModifiedBy === game.users.current._id) {

@@ -4,12 +4,12 @@
             <h1 class="charname">
                 <input name="name" type="text" value="{{actor.name}}" placeholder="Name">
             </h1>
-            <div>
+            <div id="power_lvl">
                 <label>Niveau de puissance
                     <input name="system.power_lvl" type="number" value="{{systemData.power_lvl}}">
                 </label>
             </div>
-            <div style="width: 20%">
+            <div style="width: 20%" id="owner">
                 <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128"/>
             </div>
             <div id="ma_popup" class="popup" style="display: none">
@@ -45,6 +45,9 @@
     </header>
 
     <section class="sheet-body">
+        <div style="width: 20%; display: none" id="notOwner">
+            <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128"/>
+        </div>
         <div class="pnj-attributes">
             <div class="leftPnj">
                 <label class="pnjDice" ><span>Force =</span>
@@ -86,7 +89,7 @@
                 {{editor descriptionHTML target="system.biography" button=true editable=editable engine="prosemirror"}}
             </div>
             <div>
-                <div class="container">
+                <div class="container pnj-stats">
                     <div id="pnj-hp">
                         <label>HP :
                             <input type="number" name="system.hp" value="{{systemData.hp}}">
@@ -108,7 +111,7 @@
                         </label>
                     </div>
                 </div>
-                <div>
+                <div id="devastation">
                     <p>points de dévastation</p>
                     <div class="devastation">
                         <input type="radio" id="star0" class="devastation_pointTile" name="devastation" value="0">
@@ -127,7 +130,7 @@
 
                     </div>
                 </div>
-                <div>
+                <div id="strength_weakness">
                     <label> Forces et Faiblesses
                         <textarea name="system.strength_weakness" style="min-height: 10em">{{systemData.strength_weakness}}</textarea>
                     </label>

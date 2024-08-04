@@ -1596,7 +1596,7 @@
                     <tbody>
                     {{#each actor.items as |item key|}}
                     {{#unless (or (eq item.type "arme") (eq item.type "accessoire"))}}
-                    <tr class="item" data-item-id="{{item._id}}">
+                    <tr class="item inventory_item" data-item-id="{{item._id}}">
                         <td><input type="checkbox" class="isHoldCheckbox" name="{{item._id}}" value="{{item.system.hold}}"></td>
                         <td>
                             <input type="text" class="nameUpdate" name="{{item._id}}" value="{{item.name}}" style="width: 80%">
@@ -1621,9 +1621,8 @@
         </section>
         <div id="presentation" class="presentation">
             <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" alt=""/>
+            <p>{{systemData.biography}}</p>
         </div>
-
-    </section>
 
     </section>
 </form>

@@ -4,7 +4,7 @@
             <h1 class="charname">
                 <input name="name" type="text" value="{{actor.name}}" placeholder="Name">
             </h1>
-            <div>
+            <div id="power_lvl">
                 <label>Niveau de puissance
                     <input name="system.power_lvl" type="number" value="{{systemData.power_lvl}}">
                 </label>
@@ -84,7 +84,7 @@
                     </label>
                 </div>
             </div>
-            <div class="container">
+            <div class="container pnj-stats">
                 <div id="pnj-hp">
                     <label>HP :
                         <input type="number" name="system.hp" value="{{systemData.hp}}">

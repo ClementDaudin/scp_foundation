@@ -213,7 +213,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 html.find("#charactere_data")[0].style.display = "none";
                 html.find("#weapons")[0].style.display = "none";
                 html.find("#inventory")[0].style.display = "none";
-                html.find("#presentation")[0].style.display = "block";
+                html.find("#presentation")[0].style.display = "flex";
                 html.find("#attributes")[0].style.display = "none";
                 html.find("#main")[0].style.display = "none";
                 localStorage.setItem('page', 'presentation')
@@ -257,7 +257,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     html.find("#charactere_data")[0].style.display = "none";
                     html.find("#weapons")[0].style.display = "none";
                     html.find("#inventory")[0].style.display = "none";
-                    html.find("#presentation")[0].style.display = "block";
+                    html.find("#presentation")[0].style.display = "flex";
                     html.find("#attributes")[0].style.display = "none";
                     html.find("#main")[0].style.display = "none";
                     html.find("#presentation")[0].checked = true;
@@ -305,12 +305,15 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 const searchText = searchInput.value.toLowerCase();
                 checkboxes.forEach(function (checkbox) {
                     const row = checkbox.closest('tr');
-                    const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
-                    if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
+                    if(row.classList.contains("inventory_item")){
+                        const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
+                        if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
                     }
+
                 });
             });
 
@@ -376,50 +379,69 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         }
         if (this.actor.type === "pnj" || this.actor.type === "scp") {
-            html.find('#addWeapon')[0].addEventListener("click", () => {
-                this.add_weapon();
-            });
-            let pnjWeaponList = html.find(".pnjWeapon");
-            let pnjWeapon = Array.from(pnjWeaponList);
-            pnjWeapon.forEach(weapon => {
-                weapon.addEventListener('change', () => {
-                    this.updateWeapon(weapon);
-                })
-            })
-            html.find(".pnj-delete").click(this.delete_weapon.bind(this));
-            let diceRollButtonList = html.find(".diceImage");
-            let diceRollAttributeList = html.find(".pnjDice");
-            let diceRollAttributeButton = Array.from(diceRollAttributeList);
-            let diceRollButton = Array.from(diceRollButtonList);
-            diceRollButton.forEach(diceButton => {
-                diceButton.firstElementChild.addEventListener("click", () => {
-                    this.preparePnjRoll(html, diceButton.firstElementChild.name, diceButton.firstElementChild.value)
+
+            if(!this.document.isOwner && this.actor.type === "pnj"){
+                html.find("#power_lvl")[0].style.display="none";
+                html.find(".pnj-attributes")[0].style.display="none";
+                html.find(".pnj-stats")[0].style.display="none";
+                html.find(".weaponTable")[0].style.display="none";
+                html.find(".container")[0].style.display="none";
+            }
+            else if(!this.document.isOwner && this.actor.type === "scp"){
+                html.find("#power_lvl")[0].style.display="none";
+                html.find(".pnj-attributes")[0].style.display="none";
+                html.find(".scpStats")[0].style.display="none";
+                html.find(".pnj-stats")[0].style.display="none";
+                html.find(".weaponTable")[0].style.display="none";
+                html.find("#strength_weakness")[0].style.display="none";
+                html.find("#devastation")[0].style.display="none";
+                html.find("#notOwner")[0].style.display="block";
+                html.find("#owner")[0].style.display="none";
+            }else{
+                html.find('#addWeapon')[0].addEventListener("click", () => {
+                    this.add_weapon();
                 });
-            })
-            diceRollAttributeButton.forEach(diceButton => {
-                diceButton.firstElementChild.addEventListener("click", () => {
-                    this.preparePnjRoll(html, diceButton.children[0].innerHTML.substring(0, diceButton.children[0].innerHTML.length - 2), diceButton.children[1].value)
-                });
-            })
-
-            this.updateTiles(html, "devastation_point");
-            let devastationTable = html.find('.devastation_pointTile');
-            let devastationArray = Array.from(devastationTable);
-            devastationArray.forEach((devastationTile) => {
-                devastationTile.addEventListener('click', async () => {
-                    await this.changeDevastation(devastationTile, html);
+                let pnjWeaponList = html.find(".pnjWeapon");
+                let pnjWeapon = Array.from(pnjWeaponList);
+                pnjWeapon.forEach(weapon => {
+                    weapon.addEventListener('change', () => {
+                        this.updateWeapon(weapon);
+                    })
                 })
-            })
-            let popup = html.find('#ma_popup')[0];
+                html.find(".pnj-delete").click(this.delete_weapon.bind(this));
+                let diceRollButtonList = html.find(".diceImage");
+                let diceRollAttributeList = html.find(".pnjDice");
+                let diceRollAttributeButton = Array.from(diceRollAttributeList);
+                let diceRollButton = Array.from(diceRollButtonList);
+                diceRollButton.forEach(diceButton => {
+                    diceButton.firstElementChild.addEventListener("click", () => {
+                        this.preparePnjRoll(html, diceButton.firstElementChild.name, diceButton.firstElementChild.value)
+                    });
+                })
+                diceRollAttributeButton.forEach(diceButton => {
+                    diceButton.firstElementChild.addEventListener("click", () => {
+                    });
+                })
 
-            html.find(".closePopup")[0].addEventListener('click', function () {
-                popup.style.display = 'none';
-                let launchDiceInput = html.find('.input-label.launchDice')[0];
+                this.updateTiles(html, "devastation_point");
+                let devastationTable = html.find('.devastation_pointTile');
+                let devastationArray = Array.from(devastationTable);
+                devastationArray.forEach((devastationTile) => {
+                    devastationTile.addEventListener('click', async () => {
+                        await this.changeDevastation(devastationTile, html);
+                    })
+                })
+                let popup = html.find('#ma_popup')[0];
 
-                const newElement = launchDiceInput.firstElementChild.cloneNode(true);
-                launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
+                html.find(".closePopup")[0].addEventListener('click', function () {
+                    popup.style.display = 'none';
+                    let launchDiceInput = html.find('.input-label.launchDice')[0];
 
-            });
+                    const newElement = launchDiceInput.firstElementChild.cloneNode(true);
+                    launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
+
+                });
+            }
         }
     }
 
@@ -1723,9 +1745,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
         popup.style.display = "block";
         let selectExertion = html.find("#exertionUse")[0];
 
-        while (selectExertion.options.length > 1) {
-            selectExertion.remove(1);
-        }
 
         html.find(".exertionUse")[0].style.display = "block";
 

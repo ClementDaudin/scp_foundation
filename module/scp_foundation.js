@@ -19,9 +19,15 @@ Hooks.on('updateActor', (actor, updateData, options, userId) => {
     const sheet = game.actors.get(actor.id)?.sheet;
     const html = sheet.currentHtml;
     scrollPosition = html[0].scrollTop;
+    localStorage.setItem("scroll", "0");
+
 });
 Hooks.on('renderActorSheet', (sheet, html, data) => {
+    if(localStorage.getItem("scroll") !=="0"){
+        scrollPosition = parseFloat(localStorage.getItem("scroll"));
+    }
     html[0].scrollTop = scrollPosition;
+    localStorage.setItem("scroll", "0");
 });
 
 Hooks.on("ready", async () => {

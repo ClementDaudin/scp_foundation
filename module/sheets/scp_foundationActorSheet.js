@@ -53,6 +53,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 let value = radio.value
                 radio.addEventListener('change', async () => {
                     await arme.update({"system.actual_position": value});
+                    localStorage.setItem("scroll", html[0].scrollTop)
                 });
                 radio.checked = value === arme.system.actual_position;
             });
@@ -321,6 +322,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 checkbox.addEventListener("click", async () => {
                     let item = this.actor.items.get(checkbox.name);
                     await item.update({"system.hold": checkbox.checked})
+                    localStorage.setItem("scroll", html[0].scrollTop)
                     if(item.type === "accessoire"){
                         this.updateAccessoire(item, checkbox.checked);
                     }
@@ -332,18 +334,21 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 ownedButton.addEventListener("change", async () => {
                     let item = this.actor.items.get(ownedButton.name);
                     await item.update({"system.owned": ownedButton.value})
+                    localStorage.setItem("scroll", html[0].scrollTop)
                 })
             });
             weaponNameValue.forEach(weaponName => {
                 weaponName.addEventListener("change", async () => {
                     let item = this.actor.items.get(weaponName.name);
                     await item.update({"name": weaponName.value})
+                    localStorage.setItem("scroll", html[0].scrollTop)
                 })
             });
             magazineValue.forEach(magazineButton => {
                 magazineButton.addEventListener("change", async () => {
                     let item = this.actor.items.get(magazineButton.name);
                     await item.update({"system.magazine.actual": magazineButton.value})
+                    localStorage.setItem("scroll", html[0].scrollTop)
                 })
             });
             showChecked.checked = localStorage.getItem('isChecked') === "true";
@@ -1005,6 +1010,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     async launchRoll(html, rollName, diceFormulae, reroll, weapon, bonus, previousPosition = 0, pnj = false) {
         if (weapon !== null && previousPosition !== 0 && pnj === false) {
             await weapon.update({'system.actual_position': previousPosition});
+            localStorage.setItem("scroll", html[0].scrollTop)
         }
         let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
         sound.play();
@@ -1248,8 +1254,10 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     previousPosition = weapon.system.actual_position;
                     if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
                         await weapon.update({'system.actual_position': "0"})
+                        localStorage.setItem("scroll", html[0].scrollTop)
                     } else {
                         await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
+                        localStorage.setItem("scroll", html[0].scrollTop)
                     }
                 }
             }
@@ -1618,6 +1626,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
             let attachmentsList = selectedWeapon.system.attachments || [];
             attachmentsList = attachmentsList.filter(attachment => attachment !== item._id);
             await selectedWeapon.update({"system.attachments": attachmentsList});
+            localStorage.setItem("scroll", html[0].scrollTop)
             if(item.system.hold === true){
                 updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
                 updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;

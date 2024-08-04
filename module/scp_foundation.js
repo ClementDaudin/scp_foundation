@@ -1,5 +1,7 @@
 import scp_foundationItemSheet from "./sheets/scp_foundationItemSheet.js";
 import scp_foundationActorSheet from "./sheets/scp_foundationActorSheet.js";
+
+let scrollPosition = 0;
 Hooks.once("init", () => {
     console.log("scp_foundation | Initialisation du système");
 
@@ -12,6 +14,15 @@ Hooks.once("init", () => {
     Combat.prototype.rollInitiative = rollInitiative
 
 })
+// Restaurer la position de défilement avec un délai
+Hooks.on('updateActor', (actor, updateData, options, userId) => {
+    const sheet = game.actors.get(actor.id)?.sheet;
+    const html = sheet.currentHtml;
+    scrollPosition = html[0].scrollTop;
+});
+Hooks.on('renderActorSheet', (sheet, html, data) => {
+    html[0].scrollTop = scrollPosition;
+});
 
 Hooks.on("ready", async () => {
     let actorArray = Array.from(game.actors);

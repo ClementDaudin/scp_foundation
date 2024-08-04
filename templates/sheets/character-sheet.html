@@ -1,6 +1,9 @@
 <form class="flexcol {{cssClass}} sheet-rolltemplate-scp" autocomplete="off">
     <header class="sheet-header">
         <div class="header-fields">
+            <h1 class="charname_user" style="display: none">
+                {{actor.name}}
+            </h1>
             <div id="summary" class="level-{{systemData.security_level}}"><span class="character_name h4 " name="attr_character_name" title="@{character_name}">{{actor.name}}</span><span class="alias h5" name="attr_alias" title="@{alias}">{{systemData.alias}}</span>
                 <div class="ability-summary strength">
                     <h4 data-i18n="str" class="perks">STR</h4><span class="die-num" name="attr_strength_d8" title="@{strength_d8}">{{systemData.attributes.strength.d8}}</span><span class="die-size" data-i18n="d8">d8s</span><span class="die-num" name="attr_strength_d10" title="@{strength_d10}">{{systemData.attributes.strength.d10}}</span><span class="die-size" data-i18n="d10">d10s</span><span class="die-num" name="attr_strength_d12" title="@{strength_d12}">{{systemData.attributes.strength.d12}}</span><span class="die-size" data-i18n="d12">d12s</span>
@@ -1621,7 +1624,7 @@
         </section>
         <div id="presentation" class="presentation">
             <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" alt=""/>
-            <p>{{systemData.biography}}</p>
+            <textarea readonly>{{systemData.biography}}</textarea>
         </div>
 
     </section>

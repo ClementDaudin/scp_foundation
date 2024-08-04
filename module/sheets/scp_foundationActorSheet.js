@@ -27,6 +27,11 @@ export default class scp_foundationActorSheet extends ActorSheet {
         this.currentHtml = html;
         super.activateListeners(html);
         if (this.actor.type === "character") {
+            if(!this.actor.isOwner){
+                html.find("#summary")[0].style.display="none";
+                html.find("#section-tabs")[0].style.display="none";
+                html.find(".charname_user")[0].style.display="block";
+            }
             this.updateDicesTiles(html);
             this.updateExertionSpan(html);
             this.updateTiles(html, "exertion");

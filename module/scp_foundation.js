@@ -145,22 +145,61 @@ export async function rollInitiative (
 
         // Produce an initiative roll for the Combatant
         let intel = actor.system.attributes.intelligence
-        let d8Used = intel.d8;
-        let d10Used = intel.d10;
-        let d12Used = intel.d12;
         let diceFormulae = [];
-        while (d12Used > 0 && diceFormulae.length<4) {
-            diceFormulae.push("1d12");
-            d12Used--;
+        let resultRoll = 0;
+        if(actor.type === "character"){
+            let d8Used = intel.d8;
+            let d10Used = intel.d10;
+            let d12Used = intel.d12;
+            while (d12Used > 0 && diceFormulae.length<4) {
+                diceFormulae.push("1d12");
+                d12Used--;
+            }
+            while (d10Used > 0 && diceFormulae.length<4) {
+                diceFormulae.push("1d10");
+                d10Used--;
+            }
+            while (d8Used > 0 && diceFormulae.length<4) {
+                diceFormulae.push("1d8");
+                d8Used--;
+            }
+        }else{
+            let delimiters = ["&", "+"];
+            let regex = new RegExp(delimiters.map(delimiter => `\\${delimiter}`).join('|'), 'g');
+            let newDelimiters = ["d", "D"];
+            let newRegex = new RegExp(newDelimiters.join('|'));
+            let splitFormula = intel.split(regex);
+            let preparedFormula = [];
+            splitFormula.forEach(formula => {
+                let res = formula.split("-").map(element => element.trim());
+                preparedFormula.push(res[0]);
+                for(let i = 1; i< res.length; i++) {
+                    preparedFormula.push("-"+res[i]);
+                }
+            });
+            let index = 0;
+            while (index < preparedFormula.length) {
+                if (preparedFormula[index].includes('d') || preparedFormula[index].includes("D")) {
+                    let formulaeDetail = preparedFormula[index].split(newRegex);
+                    if(parseInt(formulaeDetail[0])>0){
+                        for (let i = 0; i < parseInt(formulaeDetail[0]); i++) {
+                            let dice = "1d" + formulaeDetail[1];
+                            diceFormulae.push(dice);
+                        }
+                    }else{
+                        for (let i = 0; i > parseInt(formulaeDetail[0]); i--) {
+                            let dice = "-1d" + formulaeDetail[1];
+                            diceFormulae.push(dice);
+                        }
+                    }
+
+                } else {
+                    resultRoll += parseFloat(preparedFormula[index])
+                }
+                index++;
+            }
         }
-        while (d10Used > 0 && diceFormulae.length<4) {
-            diceFormulae.push("1d10");
-            d10Used--;
-        }
-        while (d8Used > 0 && diceFormulae.length<4) {
-            diceFormulae.push("1d8");
-            d8Used--;
-        }
+
 
         let diceResults = [];
         let diceExplosions = [];
@@ -175,7 +214,6 @@ export async function rollInitiative (
                 result: result
             });
         }
-        let resultRoll = 0;
         diceResults.forEach(diceActu  => {
             let maxValue = diceActu.formula.toString().substring(2);
             if(diceActu.result === parseInt(maxValue)){
@@ -228,9 +266,11 @@ export async function rollInitiative (
         bestResults.forEach(roll =>{
             resultRoll = resultRoll - (- roll.result)
         })
-
-        resultRoll = resultRoll - (- actor.system.perks.abilities.initiative.perso) - (- actor.system.perks.abilities.initiative.total_mod)
-
+        if(actor.type === "character"){
+            resultRoll = resultRoll - (- actor.system.perks.abilities.initiative.perso) - (- actor.system.perks.abilities.initiative.total_mod)
+        }
+        let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
+        sound.play();
         updates.push({ _id: id, initiative: resultRoll })
     }
     if (!updates.length) return this

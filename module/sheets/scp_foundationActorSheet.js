@@ -81,14 +81,14 @@ export default class scp_foundationActorSheet extends ActorSheet {
             const diceButton = html.find('.die-purchase');
 
             // Utilisez addEventListener pour attacher un événement onclick au bouton
-            diceButton[0].addEventListener('click', async () => {
-                await this.buyDice(8, html);
+            diceButton[0].addEventListener('click', async (event) => {
+                await this.buyDice(8, html, event);
             });
-            diceButton[1].addEventListener('click', async () => {
-                await this.buyDice(10, html);
+            diceButton[1].addEventListener('click', async (event) => {
+                await this.buyDice(10, html, event);
             });
-            diceButton[2].addEventListener('click', async () => {
-                await this.buyDice(12, html);
+            diceButton[2].addEventListener('click', async (event) => {
+                await this.buyDice(12, html, event);
             });
             let diceTable = html.find('.diceTile');
             let diceArray = Array.from(diceTable);
@@ -430,6 +430,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 })
                 diceRollAttributeButton.forEach(diceButton => {
                     diceButton.firstElementChild.addEventListener("click", () => {
+                        this.preparePnjRoll(html, diceButton.firstElementChild.id, diceButton.children[1].value);
                     });
                 })
 
@@ -455,34 +456,61 @@ export default class scp_foundationActorSheet extends ActorSheet {
         }
     }
 
-    async buyDice(dice, html) {
+    async buyDice(dice, html, event) {
         html.find('input[type="text"]').prop('disabled', true); //avoid experience reset
         let d8 = this.actor.system.attributes.stock.d8;
         let d10 = this.actor.system.attributes.stock.d10;
         let d12 = this.actor.system.attributes.stock.d12;
         let experience = this.actor.system.experience
-        switch (dice) {
-            case 8:
-                if (experience >= 100) {
-                    console.log("achat d8");
-                    experience -= 100;
-                    d8 += 1;
-                }
-                break;
-            case 10:
-                if (experience >= 200) {
-                    console.log("achat d10");
-                    experience -= 200;
-                    d10 += 1;
-                }
-                break;
-            case 12:
-                if (experience >= 500) {
-                    console.log("achat d12");
-                    experience -= 500;
-                    d12 += 1;
-                }
-                break;
+        if(event.altKey){
+            switch (dice){
+                case 8:
+                    if (d8 >= 1) {
+                        console.log("Vente d8");
+                        experience -= -100;
+                        d8 -= 1;
+                    }
+                    break;
+                case 10:
+                    if (d10 >= 1) {
+                        console.log("Vente d10");
+                        experience -= -200;
+                        d10 -= 1;
+                    }
+                    break;
+                case 12:
+                    if (d12 >= 1) {
+                        console.log("Vente d12");
+                        experience -= -500;
+                        d12 -= 1;
+                    }
+                    break;
+            }
+
+        }else{
+            switch (dice) {
+                case 8:
+                    if (experience >= 100) {
+                        console.log("achat d8");
+                        experience -= 100;
+                        d8 += 1;
+                    }
+                    break;
+                case 10:
+                    if (experience >= 200) {
+                        console.log("achat d10");
+                        experience -= 200;
+                        d10 += 1;
+                    }
+                    break;
+                case 12:
+                    if (experience >= 500) {
+                        console.log("achat d12");
+                        experience -= 500;
+                        d12 += 1;
+                    }
+                    break;
+            }
         }
         await this.actor.update({
             "system.attributes.stock.d8": d8,

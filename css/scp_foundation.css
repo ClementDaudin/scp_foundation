@@ -1075,7 +1075,9 @@ input[type="radio"]:checked + .personnel-label {
 .rectangle .right h5 {
     white-space: normal;
 }
-
+#listeArmes, #dataTable{
+    margin-left: 28px;
+}
 #listeArmes input[type="radio"]:checked + label {
     border-width: 1px 3px;
     border-style: solid;

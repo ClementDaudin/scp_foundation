@@ -1354,6 +1354,20 @@ export default class scp_foundationActorSheet extends ActorSheet {
             let roll = new Roll(weapon);
             await roll.evaluate();
             let damage = roll.total;
+            let listOfResults = roll.dice;
+            let DicesDetails = "(";
+            listOfResults.forEach(resultSection =>{
+                resultSection.results.forEach(valueOfDice =>{
+                    DicesDetails+= valueOfDice.result.toString() + " + ";
+                })
+            })
+            DicesDetails = DicesDetails.substring(0, DicesDetails.length-3);
+            weapon.split("+").forEach(elem =>{
+                if(!elem.toLowerCase().includes("d")){
+                    DicesDetails+= " + " + elem;
+                }
+            })
+            DicesDetails+= ")";
             let
                 damageHTML = `
                 <div class="sheet-template sheet-scp sheet-finished">
@@ -1368,7 +1382,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                         </h4>
                     </div>
                     <div class="sheet-damage">
-                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="total">Dégâts</h5><span class="sheet-x-damage"><span class="inlinerollresult showtip tipsy-n-right" title="Rolling 0[computed value] = 0">` + damage + `</span></span>
+                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="total">Dégâts</h5><span class="sheet-x-damage"><span class="inlinerollresult showtip tipsy-n-right" title="${DicesDetails}">` + damage + `</span></span>
                     </div>
                 </div>
         `
@@ -1418,7 +1432,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
             baseDicesDetails = baseDicesDetails.substring(0, baseDicesDetails.length-3);
             weapon.system.base_damage.split("+").forEach(elem =>{
                 if(!elem.toLowerCase().includes("d")){
-                    baseDicesDetails+= elem;
+                    baseDicesDetails+= " + " + elem;
                 }
             })
             baseDicesDetails+= ")";

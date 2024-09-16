@@ -1396,18 +1396,47 @@ export default class scp_foundationActorSheet extends ActorSheet {
             await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
             let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
             let xFormula = "(" + weapon.system.x_damage + ")";
+            let currentMult = 0;
             if (position === "1") {
-                let currentMeleeMult = html.find("#meleeMult")[0].value;
-                xFormula = xFormula + "*" + currentMeleeMult;
+                currentMult = html.find("#meleeMult")[0].value;
             } else {
-                let currentProjMult = html.find("#projMult")[0].value;
-                xFormula = xFormula + "*" + currentProjMult;
+                currentMult = html.find("#projMult")[0].value;
             }
+            xFormula = xFormula + "*" + currentMult;
             let xDamageRoll = new Roll(xFormula);
             await xDamageRoll.evaluate(); // Évalue le résultat du lancer
             let xDamage = xDamageRoll.total; // Obtient le total du résultat
             let totalDamage = baseDamage - (-xDamage);
-
+            let listOfResults = baseDamageRoll.dice;
+            let listOfXResults = xDamageRoll.dice;
+            let baseDicesDetails = "(";
+            listOfResults.forEach(resultSection =>{
+                resultSection.results.forEach(valueOfDice =>{
+                    baseDicesDetails+= valueOfDice.result.toString() + " + ";
+                })
+            })
+            baseDicesDetails = baseDicesDetails.substring(0, baseDicesDetails.length-3);
+            weapon.system.base_damage.split("+").forEach(elem =>{
+                if(!elem.toLowerCase().includes("d")){
+                    baseDicesDetails+= elem;
+                }
+            })
+            baseDicesDetails+= ")";
+            let xDicesDetails = "(";
+            listOfXResults.forEach(resultSection =>{
+                resultSection.results.forEach(valueOfDice =>{
+                    xDicesDetails+= valueOfDice.result.toString() + " + ";
+                })
+            })
+            xDicesDetails = xDicesDetails.substring(0, xDicesDetails.length-3);
+            weapon.system.x_damage.split("+").forEach(elem =>{
+                if(!elem.toLowerCase().includes("d")){
+                    xDicesDetails+= " + " + elem;
+                }
+            })
+            xDicesDetails+= ") * " + currentMult;
+            console.log(baseDamageRoll);
+            console.log(xDamageRoll);
             let
                 damageHTML = `
                 <div class="sheet-template sheet-scp level-` + this.actor.system.security_level + ` sheet-finished">
@@ -1423,8 +1452,8 @@ export default class scp_foundationActorSheet extends ActorSheet {
                         <h5 class="sheet-element">` + weapon.system.element + `</h5>
                     </div>
                     <div class="sheet-damage">
-                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span class="sheet-base-damage">` + baseDamage + `</span>
-                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span class="sheet-x-damage">` + xDamage + `</span>
+                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span title="${baseDicesDetails}" class="sheet-base-damage">` + baseDamage + `</span>
+                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span title="${xDicesDetails}" class="sheet-x-damage">` + xDamage + `</span>
                         <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5><span class="sheet-total-damage">` + totalDamage + `</span>
                     </div>
                 </div>

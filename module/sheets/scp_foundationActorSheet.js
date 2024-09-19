@@ -699,7 +699,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
         updateBonus["system.cognitive_resistance.value"] = cognitive_value;
 
         await this.actor.update(updateBonus);
-        await this._updateRecoil(this.actor);
+        await scp_foundationActorSheet._updateRecoil(this.actor);
 
         html.find('input[type="text"]').prop('disabled', false);
 
@@ -1409,14 +1409,16 @@ export default class scp_foundationActorSheet extends ActorSheet {
             }
             await baseDamageRoll.evaluate(); // Évalue le résultat du lancer
             let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
-            let xFormula = "(" + weapon.system.x_damage + ")";
             let currentMult = 0;
             if (position === "1") {
                 currentMult = html.find("#meleeMult")[0].value;
             } else {
                 currentMult = html.find("#projMult")[0].value;
             }
-            xFormula = xFormula + "*" + currentMult;
+            let xFormula = weapon.system.x_damage;
+            for(let nb = 1; nb<currentMult; nb++){
+                xFormula += "+" + weapon.system.x_damage
+            }
             let xDamageRoll = new Roll(xFormula);
             await xDamageRoll.evaluate(); // Évalue le résultat du lancer
             let xDamage = xDamageRoll.total; // Obtient le total du résultat
@@ -1443,14 +1445,12 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 })
             })
             xDicesDetails = xDicesDetails.substring(0, xDicesDetails.length-3);
+            xDicesDetails+= ")";
             weapon.system.x_damage.split("+").forEach(elem =>{
                 if(!elem.toLowerCase().includes("d")){
-                    xDicesDetails+= " + " + elem;
+                    xDicesDetails+= " + " + elem + "*" + currentMult;
                 }
             })
-            xDicesDetails+= ") * " + currentMult;
-            console.log(baseDamageRoll);
-            console.log(xDamageRoll);
             let
                 damageHTML = `
                 <div class="sheet-template sheet-scp level-` + this.actor.system.security_level + ` sheet-finished">
@@ -1702,7 +1702,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
             let attachmentsList = selectedWeapon.system.attachments || [];
             attachmentsList = attachmentsList.filter(attachment => attachment !== item._id);
             await selectedWeapon.update({"system.attachments": attachmentsList});
-            localStorage.setItem("scroll", html[0].scrollTop)
             if(item.system.hold === true){
                 updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
                 updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
@@ -1712,7 +1711,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
             }
 
             await selectedWeapon.update(updateArme);
-            await this._updateRecoil(this.actor);
+            await scp_foundationActorSheet._updateRecoil(this.actor);
         }
         this.actor.deleteEmbeddedDocuments("Item", [item._id]);
     }
@@ -1736,7 +1735,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         }
         await selectedWeapon.update(updateArme);
-        await this._updateRecoil(this.actor);
+        await scp_foundationActorSheet._updateRecoil(this.actor);
 
     }
 

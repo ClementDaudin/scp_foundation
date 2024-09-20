@@ -299,7 +299,8 @@ export default class scp_foundationActorSheet extends ActorSheet {
             });
 
             const searchInput = html.find('#searchInput')[0];
-            const showChecked = html.find('#showChecked')[0];
+            const showChecked = html.find('.showChecked')[0];
+            const showCheckedBis = html.find('.showChecked')[1];
             const checkboxesTable = html.find('.isHoldCheckbox');
             const ownedValueTable = html.find('.ownedValue');
             const weaponValueTable = html.find('.nameUpdate');
@@ -359,18 +360,44 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 })
             });
             showChecked.checked = localStorage.getItem('isChecked') === "true";
+            showCheckedBis.checked = localStorage.getItem('isChecked') === "true";
 
             // Filtrage pour afficher seulement les éléments cochés
             showChecked.addEventListener('change', function () {
                 localStorage.setItem('isChecked', showChecked.checked);
+                showCheckedBis.checked = showChecked.checked;
                 checkboxes.forEach(function (checkbox) {
                     const row = checkbox.closest('tr');
                     if (showChecked.checked && !checkbox.checked) {
                         row.style.display = 'none';
                     } else {
                         const searchText = searchInput.value.toLowerCase();
-                        const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                        if (name.includes(searchText)) {
+                        if(row.classList.contains("inventory_item")) {
+                            const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
+                            if (name.includes(searchText)) {
+                                row.style.display = '';
+                            }
+                        }else{
+                            row.style.display = '';
+                        }
+                    }
+                });
+            })// Filtrage pour afficher seulement les éléments cochés
+            showCheckedBis.addEventListener('change', function () {
+                localStorage.setItem('isChecked', showCheckedBis.checked);
+                showChecked.checked = showCheckedBis.checked;
+                checkboxes.forEach(function (checkbox) {
+                    const row = checkbox.closest('tr');
+                    if (showCheckedBis.checked && !checkbox.checked) {
+                        row.style.display = 'none';
+                    } else {
+                        const searchText = searchInput.value.toLowerCase();
+                        if(row.classList.contains("inventory_item")) {
+                            const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
+                            if (name.includes(searchText)) {
+                                row.style.display = '';
+                            }
+                        }else{
                             row.style.display = '';
                         }
                     }

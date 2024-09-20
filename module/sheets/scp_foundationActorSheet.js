@@ -32,8 +32,8 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 html.find("#section-tabs")[0].style.display="none";
                 html.find(".charname_user")[0].style.display="block";
             }
-            html.find("#meleeMult")[0].value = this.actor.system.melee_multiplier.bonus;
-            html.find("#projMult")[0].value = this.actor.system.projection_multiplier.bonus;
+           // html.find("#meleeMult")[0].value = this.actor.system.melee_multiplier.bonus;
+           // html.find("#projMult")[0].value = this.actor.system.projection_multiplier.bonus;
             this.updateDicesTiles(html);
             this.updateExertionSpan(html);
             this.updateTiles(html, "exertion");
@@ -768,8 +768,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     prepareAttackRoll(html, rollName, weaponId) {
-        html.find("#meleeMult")[0].value = this.actor.system.melee_multiplier.bonus;
-        html.find("#projMult")[0].value = this.actor.system.projection_multiplier.bonus;
         let weapon = this.actor.items.get(weaponId);
         console.log(weapon)
         let skill = weapon.system.skill
@@ -809,9 +807,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
         } else {
             skill = "skills." + skill;
         }
-        console.log(rollName);
-        console.log(bonus);
-        console.log(skill);
         this.preparePerksRoll(html, rollName, skill, weapon, bonus);
     }
 
@@ -1418,9 +1413,11 @@ export default class scp_foundationActorSheet extends ActorSheet {
             let baseDamage = baseDamageRoll.total; // Obtient le total du résultat
             let currentMult = 0;
             if (position === "1") {
-                currentMult = html.find("#meleeMult")[0].value;
+                currentMult = this.actor.system.melee_multiplier.perso;
+               // currentMult = html.find("#meleeMult")[0].value;
             } else {
-                currentMult = html.find("#projMult")[0].value;
+               // currentMult = html.find("#projMult")[0].value;
+                currentMult = this.actor.system.projection_multiplier.perso;
             }
             let xFormula = weapon.system.x_damage;
             if(weapon.system.x_damage === ""){
@@ -1497,6 +1494,10 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     whisper: whisperTo
                 });
             }
+            let updateBonus = {};
+            updateBonus["system.melee_multiplier.perso"] = this.actor.system.melee_multiplier.bonus;
+            updateBonus["system.projection_multiplier.perso"] = this.actor.system.projection_multiplier.bonus;
+            await this.actor.update(updateBonus);
         }
 
     }

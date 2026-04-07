@@ -1,12 +1,5 @@
 <form class="flexcol {{cssClass}} attachment-sheet" autocomplete="off">
-    <header class="sheet-header">
-        <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="128" alt="attachment"/>
-        <div class="header-fields">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="Name">
-            </h1>
-        </div>
-    </header>
+    {{> "systems/scp_foundation/templates/partials/item-header.html"}}
 
     <section class="sheet-body">
         <label>Description </label>

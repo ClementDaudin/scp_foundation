@@ -2,8 +2,26 @@ import scp_foundationItemSheet from "./sheets/scp_foundationItemSheet.js";
 import scp_foundationActorSheet from "./sheets/scp_foundationActorSheet.js";
 
 let scrollPosition = 0;
-Hooks.once("init", () => {
+Hooks.once("init", async () => {
     console.log("scp_foundation | Initialisation du système");
+
+    // Helper pour boucler de 0 à n (utilisé par les partials fill-track)
+    Handlebars.registerHelper('times', function(n, options) {
+        let result = '';
+        const data = options.data ? Handlebars.createFrame(options.data) : undefined;
+        for (let i = 0; i <= n; i++) {
+            if (data) data.index = i;
+            result += options.fn(this, {data});
+        }
+        return result;
+    });
+
+    // Chargement des partials Handlebars réutilisables
+    await loadTemplates([
+        "systems/scp_foundation/templates/partials/fill-track.html",
+        "systems/scp_foundation/templates/partials/ability-score.html",
+        "systems/scp_foundation/templates/partials/perk-row.html",
+    ]);
 
     Items.unregisterSheet("core", ItemSheet);
     Items.registerSheet("scp_foundation", scp_foundationItemSheet, {makeDefault: true});
@@ -11,8 +29,7 @@ Hooks.once("init", () => {
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("scp_foundation", scp_foundationActorSheet, {makeDefault: true});
 
-    Combat.prototype.rollInitiative = rollInitiative
-
+    Combat.prototype.rollInitiative = rollInitiative;
 })
 // Restaurer la position de défilement avec un délai
 Hooks.on('updateActor', (actor, updateData, options, userId) => {

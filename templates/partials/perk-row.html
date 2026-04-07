@@ -1,0 +1,9 @@
+<div{{#if thick}} class="underlined thick"{{/if}}>
+    <label class="attribute roll-label" title="%{{{i18nKey}}}">
+        <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span></div>
+        <button class="perksRoller" name="{{label}}" data-i18n="{{i18nKey}} system.perks.{{category}}.{{key}}.type" value="{{category}}.{{key}}">{{label}} ({{perk.type}})</button>
+    </label>
+    <input class="number underlined" placeholder="0" name="system.perks.{{category}}.{{key}}.perso" type="text" step="0.1" value="{{perk.perso}}">
+    <input class="number underlined self_mod" placeholder="0" name="system.perks.{{category}}.{{key}}.self_mod" type="text" step="0.1" value="{{perk.self_mod}}">
+    <input class="number underlined" placeholder="0" name="system.perks.{{category}}.{{key}}.total_mod" type="text" readonly="" step="0.1" value="{{perk.total_mod}}">
+</div>

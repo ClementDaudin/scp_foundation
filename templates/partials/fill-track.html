@@ -1,0 +1,6 @@
+<div class="fillTrack {{dieType}}">
+    <input name="attr_{{attrKey}}_{{dieType}}" type="hidden" value="0">
+    {{#times maxVal}}
+    <input class="fill-{{@index}} fill-label separated-label{{#if (eq @index 0)}} clearer{{/if}} diceTile" name="attr_{{attrKey}}_{{dieType}}" type="radio" value="{{@index}}"{{#if (eq @index 0)}} checked=""{{/if}}>
+    {{/times}}
+</div>

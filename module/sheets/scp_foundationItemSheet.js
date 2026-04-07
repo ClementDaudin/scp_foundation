@@ -1,7 +1,5 @@
 export default class scp_foundationItemSheet extends ItemSheet{
     get template(){
-        console.log(`scp_foundation | Récupération du fichier html ${this.item.type}-sheet.`);
-
         return `systems/scp_foundation/templates/sheets/${this.item.type}-sheet.html`;
     }
 
@@ -12,7 +10,6 @@ export default class scp_foundationItemSheet extends ItemSheet{
             secrets: this.document.isOwner,
             async: true
         });
-        console.log(data);
         return data;
     }
 

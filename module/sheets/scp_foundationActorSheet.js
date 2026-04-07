@@ -29,8 +29,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 html.find("#section-tabs")[0].style.display="none";
                 html.find(".charname_user")[0].style.display="block";
             }
-           // html.find("#meleeMult")[0].value = this.actor.system.melee_multiplier.bonus;
-           // html.find("#projMult")[0].value = this.actor.system.projection_multiplier.bonus;
             this.updateDicesTiles(html);
             this.updateExertionSpan(html);
             this.updateTiles(html, "exertion");
@@ -56,7 +54,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 let value = radio.value
                 radio.addEventListener('change', async () => {
                     await arme.update({"system.actual_position": value});
-                    localStorage.setItem("scroll", html[0].scrollTop)
+                    this.saveScroll(html)
                 });
                 radio.checked = value === arme.system.actual_position;
             });
@@ -183,28 +181,30 @@ export default class scp_foundationActorSheet extends ActorSheet {
             const ownedValue = Array.from(ownedValueTable)
             const weaponNameValue = Array.from(weaponValueTable)
             const magazineValue = Array.from(magazineTable)
-            // Filtrage lors de la saisie dans le champ de recherche
-            searchInput.addEventListener('input', function () {
-                const searchText = searchInput.value.toLowerCase();
-                checkboxes.forEach(function (checkbox) {
+            const filterCheckboxRows = (searchText, isCheckedFilter) => {
+                checkboxes.forEach(checkbox => {
                     const row = checkbox.closest('tr');
-                    if(row.classList.contains("inventory_item")){
+                    if (isCheckedFilter && !checkbox.checked) {
+                        row.style.display = 'none';
+                    } else if (row.classList.contains("inventory_item")) {
                         const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
-                        if (name.includes(searchText) && (!showChecked.checked || checkbox.checked)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
+                        row.style.display = name.includes(searchText) ? '' : 'none';
+                    } else {
+                        row.style.display = '';
                     }
-
                 });
+            };
+
+            // Filtrage lors de la saisie dans le champ de recherche
+            searchInput.addEventListener('input', () => {
+                filterCheckboxRows(searchInput.value.toLowerCase(), showChecked.checked);
             });
 
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener("click", async () => {
                     let item = this.actor.items.get(checkbox.name);
                     await item.update({"system.hold": checkbox.checked})
-                    localStorage.setItem("scroll", html[0].scrollTop)
+                    this.saveScroll(html)
                     if(item.type === "accessoire"){
                         this.updateAccessoire(item, checkbox.checked);
                     }
@@ -216,79 +216,37 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 ownedButton.addEventListener("change", async () => {
                     let item = this.actor.items.get(ownedButton.name);
                     await item.update({"system.owned": ownedButton.value})
-                    localStorage.setItem("scroll", html[0].scrollTop)
+                    this.saveScroll(html)
                 })
             });
             weaponNameValue.forEach(weaponName => {
                 weaponName.addEventListener("change", async () => {
                     let item = this.actor.items.get(weaponName.name);
                     await item.update({"name": weaponName.value})
-                    localStorage.setItem("scroll", html[0].scrollTop)
+                    this.saveScroll(html)
                 })
             });
             magazineValue.forEach(magazineButton => {
                 magazineButton.addEventListener("change", async () => {
                     let item = this.actor.items.get(magazineButton.name);
                     await item.update({"system.magazine.actual": magazineButton.value})
-                    localStorage.setItem("scroll", html[0].scrollTop)
+                    this.saveScroll(html)
                 })
             });
             showChecked.checked = localStorage.getItem('isChecked') === "true";
             showCheckedBis.checked = localStorage.getItem('isChecked') === "true";
 
-            // Filtrage pour afficher seulement les éléments cochés
-            showChecked.addEventListener('change', function () {
+            showChecked.addEventListener('change', () => {
                 localStorage.setItem('isChecked', showChecked.checked);
                 showCheckedBis.checked = showChecked.checked;
-                checkboxes.forEach(function (checkbox) {
-                    const row = checkbox.closest('tr');
-                    if (showChecked.checked && !checkbox.checked) {
-                        row.style.display = 'none';
-                    } else {
-                        const searchText = searchInput.value.toLowerCase();
-                        if(row.classList.contains("inventory_item")) {
-                            const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
-                            if (name.includes(searchText)) {
-                                row.style.display = '';
-                            }
-                        }else{
-                            row.style.display = '';
-                        }
-                    }
-                });
-            })// Filtrage pour afficher seulement les éléments cochés
-            showCheckedBis.addEventListener('change', function () {
+                filterCheckboxRows(searchInput.value.toLowerCase(), showChecked.checked);
+            });
+            showCheckedBis.addEventListener('change', () => {
                 localStorage.setItem('isChecked', showCheckedBis.checked);
                 showChecked.checked = showCheckedBis.checked;
-                checkboxes.forEach(function (checkbox) {
-                    const row = checkbox.closest('tr');
-                    if (showCheckedBis.checked && !checkbox.checked) {
-                        row.style.display = 'none';
-                    } else {
-                        const searchText = searchInput.value.toLowerCase();
-                        if(row.classList.contains("inventory_item")) {
-                            const name = row.querySelector('td:nth-child(2)').firstElementChild.value.toLowerCase();
-                            if (name.includes(searchText)) {
-                                row.style.display = '';
-                            }
-                        }else{
-                            row.style.display = '';
-                        }
-                    }
-                });
-            })
-            checkboxes.forEach(function (checkbox) {
-                const row = checkbox.closest('tr');
-                if (showChecked.checked && !checkbox.checked) {
-                    row.style.display = 'none';
-                } else {
-                    const searchText = searchInput.value.toLowerCase();
-                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                    if (name.includes(searchText)) {
-                        row.style.display = '';
-                    }
-                }
+                filterCheckboxRows(searchInput.value.toLowerCase(), showCheckedBis.checked);
             });
+            filterCheckboxRows(searchInput.value.toLowerCase(), showChecked.checked);
 
         }
         if (this.actor.type === "pnj" || this.actor.type === "scp") {
@@ -356,7 +314,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     async buyDice(dice, html, event) {
-        html.find('input[type="text"]').prop('disabled', true); //avoid experience reset
+        this.setInputsDisabled(html, true); //avoid experience reset
         let d8 = this.actor.system.attributes.stock.d8;
         let d10 = this.actor.system.attributes.stock.d10;
         let d12 = this.actor.system.attributes.stock.d12;
@@ -381,11 +339,11 @@ export default class scp_foundationActorSheet extends ActorSheet {
             "system.experience": experience
         });
         // Après avoir effectué les modifications via les boutons, réactivez les événements de saisie
-        html.find('input[type="text"]').prop('disabled', false);
+        this.setInputsDisabled(html, false);
     }
 
     async exchangeDice(diceClicked, html) {
-        html.find('input[type="text"]').prop('disabled', true);
+        this.setInputsDisabled(html, true);
         let diceElements = diceClicked.name.split("_");
         let diceNumber = diceElements[2];
         let diceType = diceElements[1];
@@ -428,7 +386,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         }
         this.updateDicesTiles(html);
-        html.find('input[type="text"]').prop('disabled', false);
+        this.setInputsDisabled(html, false);
 
     }
 
@@ -452,11 +410,19 @@ export default class scp_foundationActorSheet extends ActorSheet {
         })
     }
 
+    setInputsDisabled(html, disabled) {
+        html.find('input[type="text"]').prop('disabled', disabled);
+    }
+
+    saveScroll(html) {
+        this.saveScroll(html);
+    }
+
     async changeTile(tileClicked, html, systemPath, tileType, options = {}) {
-        html.find('input[type="text"]').prop('disabled', true);
+        this.setInputsDisabled(html, true);
         let value = parseInt(tileClicked.value);
         if (options.max !== undefined && value > options.max) {
-            html.find('input[type="text"]').prop('disabled', false);
+            this.setInputsDisabled(html, false);
             return;
         }
         if (options.toggle) {
@@ -467,7 +433,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
         }
         await this.actor.update({ [`system.${systemPath}`]: value });
         this.updateTiles(html, tileType);
-        html.find('input[type="text"]').prop('disabled', false);
+        this.setInputsDisabled(html, false);
     }
 
     updateTiles(html, type) {
@@ -500,66 +466,48 @@ export default class scp_foundationActorSheet extends ActorSheet {
         }
     }
 
+    _computeDefenses() {
+        const { perception, dexterity, intelligence, willpower } = this.actor.system.attributes;
+        const awareness = this.actor.system.perks.abilities.awareness_reaction.perso - (-this.actor.system.perks.abilities.awareness_reaction.total_mod);
+        const exertionMax = 1 - (-willpower.d10);
+        const self_controle = this.actor.system.perks.abilities.self_controle.perso - (-this.actor.system.perks.abilities.self_controle.total_mod);
+        return {
+            reactDef:        perception.d10 - (-dexterity.d12) - (-intelligence.d10) - (-awareness) - (-this.actor.system.reaction_defense.bonus),
+            exertionMax,
+            cognitive_value: exertionMax - (-this.actor.system.cognitive_resistance.bonus) - (-self_controle),
+        };
+    }
+
     async diceBonus(html) {
-        html.find('input[type="text"]').prop('disabled', true);
-        let strength = this.actor.system.attributes.strength;
-        let perception = this.actor.system.attributes.perception;
-        let dexterity = this.actor.system.attributes.dexterity;
-        let intelligence = this.actor.system.attributes.intelligence;
-        let willpower = this.actor.system.attributes.willpower;
-        let awareness = this.actor.system.perks.abilities.awareness_reaction.perso - (-this.actor.system.perks.abilities.awareness_reaction.total_mod);
-        let meleeValue = Math.floor(strength.d10 / 2) - (-strength.d10 % 2) - (-strength.d12) + 1;
-        let recoil = strength.d12;
-        let projectionValue = Math.floor(perception.d10 / 2) - (-perception.d10 % 2) - (-perception.d12) + 1;
-        let reactDef = perception.d10 - (-dexterity.d12) - (-intelligence.d10) - (-awareness) - (-this.actor.system.reaction_defense.bonus);
-        let moveValue = 2 - (-dexterity.d12);
-        let modAvailable = intelligence.d10 / 2
-        let exertionMax = 1 - (-willpower.d10);
-        let self_controle = this.actor.system.perks.abilities.self_controle.perso - (-this.actor.system.perks.abilities.self_controle.total_mod);
-        let cognitive_value = exertionMax - (-this.actor.system.cognitive_resistance.bonus) - (-self_controle);
-        let updateBonus = {};
-        updateBonus["system.melee_multiplier.bonus"] = meleeValue;
-        updateBonus["system.projection_multiplier.bonus"] = projectionValue;
-        updateBonus["system.recoil"] = recoil;
-        updateBonus["system.reaction_defense.value"] = reactDef;
-        updateBonus["system.move_speed"] = moveValue;
-        updateBonus["system.mod"] = modAvailable;
-        updateBonus["system.exertion.max"] = exertionMax;
-        updateBonus["system.cognitive_resistance.value"] = cognitive_value;
-
-        await this.actor.update(updateBonus);
+        this.setInputsDisabled(html, true);
+        const { strength, perception, dexterity, intelligence } = this.actor.system.attributes;
+        const { reactDef, exertionMax, cognitive_value } = this._computeDefenses();
+        await this.actor.update({
+            "system.melee_multiplier.bonus":      Math.floor(strength.d10 / 2) - (-strength.d10 % 2) - (-strength.d12) + 1,
+            "system.projection_multiplier.bonus": Math.floor(perception.d10 / 2) - (-perception.d10 % 2) - (-perception.d12) + 1,
+            "system.recoil":                      strength.d12,
+            "system.reaction_defense.value":      reactDef,
+            "system.move_speed":                  2 - (-dexterity.d12),
+            "system.mod":                         intelligence.d10 / 2,
+            "system.exertion.max":                exertionMax,
+            "system.cognitive_resistance.value":  cognitive_value,
+        });
         await scp_foundationActorSheet._updateRecoil(this.actor);
-
-        html.find('input[type="text"]').prop('disabled', false);
-
+        this.setInputsDisabled(html, false);
     }
 
     async abilitiesBonus(html) {
-        html.find('input[type="text"]').prop('disabled', true);
-        let perception = this.actor.system.attributes.perception;
-        let dexterity = this.actor.system.attributes.dexterity;
-        let intelligence = this.actor.system.attributes.intelligence;
-        let willpower = this.actor.system.attributes.willpower;
-        let awareness = this.actor.system.perks.abilities.awareness_reaction.perso - (-this.actor.system.perks.abilities.awareness_reaction.total_mod);
-
-        let reactDef = perception.d10 - (-dexterity.d12) - (-intelligence.d10) - (-awareness) - (-this.actor.system.reaction_defense.bonus);
-
-        let exertionMax = 1 - (-willpower.d10);
-        let self_controle = this.actor.system.perks.abilities.self_controle.perso - (-this.actor.system.perks.abilities.self_controle.total_mod);
-        let cognitive_value = exertionMax - (-this.actor.system.cognitive_resistance.bonus) - (-self_controle);
-        let updateBonus = {};
-
-        updateBonus["system.reaction_defense.value"] = reactDef;
-        updateBonus["system.cognitive_resistance.value"] = cognitive_value;
-
-        await this.actor.update(updateBonus);
-
-        html.find('input[type="text"]').prop('disabled', false);
-
+        this.setInputsDisabled(html, true);
+        const { reactDef, cognitive_value } = this._computeDefenses();
+        await this.actor.update({
+            "system.reaction_defense.value":     reactDef,
+            "system.cognitive_resistance.value": cognitive_value,
+        });
+        this.setInputsDisabled(html, false);
     }
 
     updateOther(html) {
-        html.find('input[type="text"]').prop('disabled', true);
+        this.setInputsDisabled(html, true);
         let appearance = html.find('#appearance')[0];
         let body_type = html.find('#body_type')[0];
         let reasoning = html.find('#reasoning')[0];
@@ -591,7 +539,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 optionsReasoning[i].selected = false;
             }
         }
-        html.find('input[type="text"]').prop('disabled', false);
+        this.setInputsDisabled(html, false);
     }
 
     prepareAttackRoll(html, rollName, weaponId) {
@@ -670,18 +618,17 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
     }
 
+    showPopup(html) {
+        const popup = html.find("#ma_popup")[0];
+        const content = html[0];
+        popup.style.top = `${content.scrollTop + content.clientHeight / 2}px`;
+        popup.style.display = "block";
+        return popup;
+    }
+
     prepareRoll(html, rollName, type, weapon = null, bonus = 0) {
         let Dices = this.actor.system.attributes[type];
-        let popup = html.find("#ma_popup")[0];
-        let content = html[0];
-        const contentHeight = content.clientHeight;
-        const scrollTop = content.scrollTop;
-
-        const newPosition = scrollTop + (contentHeight / 2);
-
-        popup.style.top = `${newPosition}px`
-
-        popup.style.display = "block";
+        let popup = this.showPopup(html);
         let selectExertion = html.find("#exertionUse")[0];
         let selectd12 = html.find("#d12Selected")[0];
         let selectd10 = html.find("#d10Selected")[0];
@@ -866,7 +813,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     async launchRoll(html, rollName, diceFormulae, reroll, weapon, bonus, previousPosition = 0, pnj = false) {
         if (weapon !== null && previousPosition !== 0 && pnj === false) {
             await weapon.update({'system.actual_position': previousPosition});
-            localStorage.setItem("scroll", html[0].scrollTop)
+            this.saveScroll(html)
         }
         let sound = new Audio('systems/scp_foundation/assets/dice.wav'); // Assurez-vous que le chemin est correct
         sound.play();
@@ -1110,10 +1057,10 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     previousPosition = weapon.system.actual_position;
                     if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
                         await weapon.update({'system.actual_position': "0"})
-                        localStorage.setItem("scroll", html[0].scrollTop)
+                        this.saveScroll(html)
                     } else {
                         await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
-                        localStorage.setItem("scroll", html[0].scrollTop)
+                        this.saveScroll(html)
                     }
                 }
             }
@@ -1466,7 +1413,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     async bonusBodyTypeUpdate(evt, html) {
-        html.find('input[type="text"]').prop('disabled', true);
+        this.setInputsDisabled(html, true);
 
         let updateBonus = {};
 
@@ -1514,7 +1461,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
         updateBonus["system.reaction_defense.value"] = updateRD;
         updateBonus["system.reaction_defense.bonus"] = bonusRD;
         await this.actor.update(updateBonus);
-        html.find('input[type="text"]').prop('disabled', false);
+        this.setInputsDisabled(html, false);
 
     }
 
@@ -1523,51 +1470,36 @@ export default class scp_foundationActorSheet extends ActorSheet {
         return this.actor.items.get(parent.data("itemId"));
     }
 
+    static _accessoireEffects(weapon, effect, apply) {
+        return {
+            "system.melee":        apply ? weapon.system.melee        - (-effect.melee)    : weapon.system.melee        - effect.melee,
+            "system.hip":          apply ? weapon.system.hip          - (-effect.hip)      : weapon.system.hip          - effect.hip,
+            "system.ready":        apply ? weapon.system.ready        - (-effect.ready)    : weapon.system.ready        - effect.ready,
+            "system.aim":          apply ? weapon.system.aim          - (-effect.aim)      : weapon.system.aim          - effect.aim,
+            "system.magazine.max": apply ? weapon.system.magazine.max - (-effect.magazine) : weapon.system.magazine.max - effect.magazine,
+        };
+    }
+
     async _onItemDelete(event) {
         const item = this.getItemFromEvent(event);
         if (item.type === "arme") {
             this.actor.deleteEmbeddedDocuments("Item", item.system.attachments);
         } else if (item.type === "accessoire") {
             let selectedWeapon = this.actor.items.get(item.system.idArme);
-            let updateArme = {};
-            let attachmentsList = selectedWeapon.system.attachments || [];
-            attachmentsList = attachmentsList.filter(attachment => attachment !== item._id);
+            let attachmentsList = (selectedWeapon.system.attachments || []).filter(a => a !== item._id);
             await selectedWeapon.update({"system.attachments": attachmentsList});
-            if(item.system.hold === true){
-                updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
-                updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
-                updateArme["system.ready"] = selectedWeapon.system.ready - item.system.effect.ready;
-                updateArme["system.aim"] = selectedWeapon.system.aim - item.system.effect.aim;
-                updateArme["system.magazine.max"] = selectedWeapon.system.magazine.max - item.system.effect.magazine;
+            if (item.system.hold === true) {
+                await selectedWeapon.update(scp_foundationActorSheet._accessoireEffects(selectedWeapon, item.system.effect, false));
             }
-
-            await selectedWeapon.update(updateArme);
             await scp_foundationActorSheet._updateRecoil(this.actor);
         }
         this.actor.deleteEmbeddedDocuments("Item", [item._id]);
     }
 
-    async updateAccessoire(item, hold){
+    async updateAccessoire(item, hold) {
         let selectedWeapon = this.actor.items.get(item.system.idArme);
-        let updateArme = {};
-        if(hold){
-            updateArme["system.melee"] = selectedWeapon.system.melee - (- item.system.effect.melee);
-            updateArme["system.hip"] = selectedWeapon.system.hip - (- item.system.effect.hip);
-            updateArme["system.ready"] = selectedWeapon.system.ready - (- item.system.effect.ready);
-            updateArme["system.aim"] = selectedWeapon.system.aim - (- item.system.effect.aim);
-            updateArme["system.magazine.max"] = selectedWeapon.system.magazine.max - (- item.system.effect.magazine);
-        }else{
-
-            updateArme["system.melee"] = selectedWeapon.system.melee - item.system.effect.melee;
-            updateArme["system.hip"] = selectedWeapon.system.hip - item.system.effect.hip;
-            updateArme["system.ready"] = selectedWeapon.system.ready - item.system.effect.ready;
-            updateArme["system.aim"] = selectedWeapon.system.aim - item.system.effect.aim;
-            updateArme["system.magazine.max"] = selectedWeapon.system.magazine.max - item.system.effect.magazine;
-
-        }
-        await selectedWeapon.update(updateArme);
+        await selectedWeapon.update(scp_foundationActorSheet._accessoireEffects(selectedWeapon, item.system.effect, hold));
         await scp_foundationActorSheet._updateRecoil(this.actor);
-
     }
 
     static async _updateRecoil(actorSelect) {
@@ -1647,17 +1579,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     preparePnjRoll(html, rollName, result) {
-        let popup = html.find("#ma_popup")[0];
-        let content = html[0];
-        const contentHeight = content.clientHeight;
-        const scrollTop = content.scrollTop;
-
-        const newPosition = scrollTop + (contentHeight / 2);
-
-        popup.style.top = `${newPosition}px`
-
-
-        popup.style.display = "block";
+        let popup = this.showPopup(html);
         let selectExertion = html.find("#exertionUse")[0];
 
 

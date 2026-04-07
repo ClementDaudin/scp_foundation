@@ -21,6 +21,10 @@ Hooks.once("init", async () => {
         "systems/scp_foundation/templates/partials/fill-track.html",
         "systems/scp_foundation/templates/partials/ability-score.html",
         "systems/scp_foundation/templates/partials/perk-row.html",
+        "systems/scp_foundation/templates/partials/item-header.html",
+        "systems/scp_foundation/templates/partials/pnj-popup.html",
+        "systems/scp_foundation/templates/partials/pnj-attributes.html",
+        "systems/scp_foundation/templates/partials/pnj-weapon-table.html",
     ]);
 
     Items.unregisterSheet("core", ItemSheet);
@@ -48,22 +52,14 @@ Hooks.on('renderActorSheet', (sheet, html, data) => {
 });
 
 Hooks.on("ready", async () => {
-    let actorArray = Array.from(game.actors);
     addAttributeToAllItems();
-/*
-    for (const actor of actorArray) {
-        await actor.update({
-            img: actor.prototypeToken.texture.src // Utilisation de l'image du token de l'acteur
-        });
-    }
-*/});
+});
 
 Hooks.on("createItem", async (item, itemData) => {
     if(item._stats.lastModifiedBy === game.users.current._id) {
         if (item.parent !== null) {
             const actor = game.actors.get(item.parent._id);
 
-            console.log(`Un item est sur le point d'être ajouté à l'acteur ${actor.name}:`, item);
             if (item.type === "accessoire") {
                 // Récupérer toutes les armes de l'acteur
 

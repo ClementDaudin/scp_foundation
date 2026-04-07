@@ -1,0 +1,27 @@
+<div class="weaponTable">
+    <table>
+        <tr>
+            <th> </th>
+            <th>Arme</th>
+            <th>Dés</th>
+            <th>Portée</th>
+            <th>Dégâts</th>
+            <th> </th>
+        </tr>
+        {{#each actor.system.weapons as |weapon key|}}
+        <tr class="weapon-{{key}}">
+            <td class="diceImage">
+                <button name="{{weapon.attack}}" value="{{weapon.to_hit_roll}}${{weapon.damage}}">
+                    <img src="systems/scp_foundation/assets/dices.png" alt="dices">
+                </button>
+            </td>
+            <td><input type="text" class="pnjWeapon" name="attack" value="{{weapon.attack}}"></td>
+            <td><input type="text" class="pnjWeapon" name="hit_roll" value="{{weapon.to_hit_roll}}"></td>
+            <td><input type="text" class="pnjWeapon" name="range" value="{{weapon.range}}"></td>
+            <td><input type="text" class="pnjWeapon" name="damage" value="{{weapon.damage}}"></td>
+            <td><a class="pnj-delete" title="Supprimer l'arme"><i class="fas fa-trash"></i></a></td>
+        </tr>
+        {{/each}}
+    </table>
+    <input type="button" value="+" id="addWeapon">
+</div>

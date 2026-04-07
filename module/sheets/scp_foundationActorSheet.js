@@ -7,8 +7,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     get template() {
-        console.log(`scp_foundation | Récupération du fichier html ${this.actor.type}-sheet.`);
-
         return `systems/scp_foundation/templates/sheets/${this.actor.type}-sheet.html`;
     }
 
@@ -19,7 +17,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
             secrets: this.document.isOwner,
             async: true
         });
-        console.log(this.data);
         return this.data;
     }
 
@@ -50,8 +47,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     }
                 }
             }, true);
-            console.log(`scp_foundation | Récupération des listeners.`);
-
+    
             const radiosTable = html.find(".radio-item-system");
             const radios = Array.from(radiosTable);
             radios.forEach(radio => {
@@ -92,56 +88,19 @@ export default class scp_foundationActorSheet extends ActorSheet {
             diceButton[2].addEventListener('click', async (event) => {
                 await this.buyDice(12, html, event);
             });
-            let diceTable = html.find('.diceTile');
-            let diceArray = Array.from(diceTable);
-
-            diceArray.forEach((diceTile) => {
-                diceTile.addEventListener('click', async () => {
-                    await this.exchangeDice(diceTile, html);
-                })
-            })
-
-            let exertionTable = html.find('.exertionTile');
-            let exertionArray = Array.from(exertionTable);
-            exertionArray.forEach((exertionTile) => {
-                exertionTile.addEventListener('click', async () => {
-                    await this.changeExertion(exertionTile, html);
-                })
-            })
-            let reverenceTable = html.find('.reverenceTile');
-            let reverenceArray = Array.from(reverenceTable);
-            reverenceArray.forEach((reverenceTile) => {
-                reverenceTile.addEventListener('click', async () => {
-                    await this.changeReverence(reverenceTile, html);
-                })
-            })
-            let meritTable = html.find('.merit_pointTile');
-            let meritArray = Array.from(meritTable);
-            meritArray.forEach((meritTile) => {
-                meritTile.addEventListener('click', async () => {
-                    await this.changeMerit(meritTile, html);
-                })
-            })
-            let rollButtonTable = html.find('.roller');
-            let rollButtonArray = Array.from(rollButtonTable);
-            rollButtonArray.forEach((rollButton) => {
-                rollButton.addEventListener('click', () => {
-                    this.prepareRoll(html, rollButton.name, rollButton.value);
-                })
-            })
-            let perksTable = html.find('.perksRoller');
-            let perksArray = Array.from(perksTable);
-            perksArray.forEach((perksButton) => {
-                perksButton.addEventListener('click', () => {
-                    this.preparePerksRoll(html, perksButton.name, perksButton.value, null, 0);
-                })
+            [
+                ['.diceTile',        async (el) => await this.exchangeDice(el, html)],
+                ['.exertionTile',    async (el) => await this.changeTile(el, html, 'exertion.actual', 'exertion', { max: this.actor.system.exertion.max })],
+                ['.reverenceTile',   async (el) => await this.changeTile(el, html, 'reverence', 'reverence')],
+                ['.merit_pointTile', async (el) => await this.changeTile(el, html, 'merit_point', 'merit_point')],
+                ['.roller',          (el) => this.prepareRoll(html, el.name, el.value)],
+                ['.perksRoller',     (el) => this.preparePerksRoll(html, el.name, el.value, null, 0)],
+                ['.weaponRoller',    (el) => this.prepareAttackRoll(html, el.name, el.value)],
+            ].forEach(([selector, handler]) => {
+                html.find(selector).each((_, el) => el.addEventListener('click', () => handler(el)));
             });
-            let weaponTable = html.find('.weaponRoller');
-            let weaponArray = Array.from(weaponTable);
-            weaponArray.forEach((weaponButton) => {
-                weaponButton.addEventListener('click', () => {
-                    this.prepareAttackRoll(html, weaponButton.name, weaponButton.value);
-                })
+            ['#d12Selected', '#d10Selected', '#d8Selected'].forEach(id => {
+                html.find(id)[0].addEventListener('change', () => this.updateDicesAvailable(html));
             });
 
             let popup = html.find('#ma_popup')[0];
@@ -150,127 +109,42 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 html.find('#diceUse')[0].value = "true";
                 html.find(".diceToUse")[0].style.display = "none";
                 let launchDiceInput = html.find('.input-label.launchDice')[0];
-
                 const newElement = launchDiceInput.firstElementChild.cloneNode(true);
                 launchDiceInput.replaceChild(newElement, launchDiceInput.firstElementChild);
-
             });
             this.dragElement(popup);
-            let buttonsTable = html.find('.popup-content select');
-            let buttonsArray = Array.from(buttonsTable);
+            html.find('.popup-content select').each((_, el) => {
+                el.addEventListener('mousedown', (event) => event.stopPropagation());
+            });
 
-            buttonsArray.forEach(function (button) {
-                button.addEventListener('mousedown', function (event) {
-                    event.stopPropagation();
-                });
+            html.find(".self_mod").each((_, el) => {
+                el.addEventListener("change", (evt) => this.totalModUpdate(evt, el));
             });
-            html.find("#d12Selected")[0].addEventListener('change', () => {
-                this.updateDicesAvailable(html);
-            })
-            html.find("#d10Selected")[0].addEventListener('change', () => {
-                this.updateDicesAvailable(html);
-            })
-            html.find("#d8Selected")[0].addEventListener('change', () => {
-                this.updateDicesAvailable(html);
-            })
+            html.find("#reasoning")[0].addEventListener('change', (evt) => this.bonusReasoningUpdate(evt));
+            html.find("#body_type")[0].addEventListener('change', (evt) => this.bonusBodyTypeUpdate(evt, html));
+            html.find("#appearance")[0].addEventListener('change', (evt) => this.bonusAppearanceUpdate(evt));
 
-            let personnalModuleTable = html.find(".self_mod");
-            let personnalModuleArray = Array.from(personnalModuleTable);
-            personnalModuleArray.forEach((personnalModule) => {
-                personnalModule.addEventListener("change", (evt) => {
-                    this.totalModUpdate(evt, personnalModule);
-                })
-            })
-            html.find("#reasoning")[0].addEventListener('change', (evt) => {
-                this.bonusReasoningUpdate(evt);
-            });
-            html.find("#body_type")[0].addEventListener('change', (evt) => {
-                this.bonusBodyTypeUpdate(evt, html);
-            });
-            html.find("#appearance")[0].addEventListener('change', (evt) => {
-                this.bonusAppearanceUpdate(evt);
-            });
-            html.find("#all-radio")[0].addEventListener('click', () => {
-                html.find("#main")[0].style.display = "block";
-                html.find("#charactere_data")[0].style.display = "block";
-                html.find("#weapons")[0].style.display = "none";
-                html.find("#inventory")[0].style.display = "none";
-                html.find("#presentation")[0].style.display = "none";
-                html.find("#attributes")[0].style.display = "block";
-                localStorage.setItem('page', 'all')
-            })
-            html.find("#attacks-radio")[0].addEventListener('click', () => {
-                html.find("#main")[0].style.display = "block";
-                html.find("#charactere_data")[0].style.display = "none";
-                html.find("#weapons")[0].style.display = "block";
-                html.find("#inventory")[0].style.display = "none";
-                html.find("#presentation")[0].style.display = "none";
-                html.find("#attributes")[0].style.display = "none";
-                localStorage.setItem('page', 'attack')
-            })
-            html.find("#equipment-radio")[0].addEventListener('click', () => {
-                html.find("#main")[0].style.display = "block";
-                html.find("#charactere_data")[0].style.display = "none";
-                html.find("#weapons")[0].style.display = "none";
-                html.find("#inventory")[0].style.display = "block";
-                html.find("#presentation")[0].style.display = "none";
-                html.find("#attributes")[0].style.display = "none";
-                localStorage.setItem('page', 'inventory')
-            })
-            html.find("#presentation-radio")[0].addEventListener('click', () => {
-                html.find("#charactere_data")[0].style.display = "none";
-                html.find("#weapons")[0].style.display = "none";
-                html.find("#inventory")[0].style.display = "none";
-                html.find("#presentation")[0].style.display = "flex";
-                html.find("#attributes")[0].style.display = "none";
-                html.find("#main")[0].style.display = "none";
-                localStorage.setItem('page', 'presentation')
-            })
-            if(!this.actor.isOwner){
-                localStorage.setItem('page', 'presentation');
-            }
-
-            switch (localStorage.getItem('page')) {
-                case "all":
-                    html.find("#main")[0].style.display = "block";
-                    html.find("#charactere_data")[0].style.display = "block";
-                    html.find("#weapons")[0].style.display = "none";
-                    html.find("#inventory")[0].style.display = "none";
-                    html.find("#attributes")[0].style.display = "block";
-                    html.find("#presentation")[0].style.display = "none";
-                    html.find("#all-radio")[0].checked = true;
-                    break;
-                case "attack":
-                    html.find("#main")[0].style.display = "block";
-                    html.find("#charactere_data")[0].style.display = "none";
-                    html.find("#weapons")[0].style.display = "block";
-                    html.find("#inventory")[0].style.display = "none";
-                    html.find("#attributes")[0].style.display = "none";
-                    html.find("#attacks-radio")[0].checked = true;
-                    html.find("#presentation")[0].style.display = "none";
-                    document.fonts.ready.then(()=>{
-                        this.synchronizeTableColumnWidths();
-                    });
-                    break;
-                case "inventory":
-                    html.find("#main")[0].style.display = "block";
-                    html.find("#charactere_data")[0].style.display = "none";
-                    html.find("#weapons")[0].style.display = "none";
-                    html.find("#inventory")[0].style.display = "block";
-                    html.find("#attributes")[0].style.display = "none";
-                    html.find("#equipment-radio")[0].checked = true;
-                    html.find("#presentation")[0].style.display = "none";
-                    break;
-                default:
-                    html.find("#charactere_data")[0].style.display = "none";
-                    html.find("#weapons")[0].style.display = "none";
-                    html.find("#inventory")[0].style.display = "none";
-                    html.find("#presentation")[0].style.display = "flex";
-                    html.find("#attributes")[0].style.display = "none";
-                    html.find("#main")[0].style.display = "none";
-                    html.find("#presentation")[0].checked = true;
-                    break;
-            }
+            const switchTab = (tabName) => {
+                const configs = {
+                    all:          { main: "block", charactere_data: "block", weapons: "none",  inventory: "none",  attributes: "block", presentation: "none" },
+                    attack:       { main: "block", charactere_data: "none",  weapons: "block", inventory: "none",  attributes: "none",  presentation: "none" },
+                    inventory:    { main: "block", charactere_data: "none",  weapons: "none",  inventory: "block", attributes: "none",  presentation: "none" },
+                    presentation: { main: "none",  charactere_data: "none",  weapons: "none",  inventory: "none",  attributes: "none",  presentation: "flex" },
+                };
+                const config = configs[tabName] ?? configs.presentation;
+                for (const [id, display] of Object.entries(config)) html.find(`#${id}`)[0].style.display = display;
+                localStorage.setItem('page', tabName);
+            };
+            html.find("#all-radio")[0].addEventListener('click', () => switchTab('all'));
+            html.find("#attacks-radio")[0].addEventListener('click', () => { switchTab('attack'); document.fonts.ready.then(() => this.synchronizeTableColumnWidths()); });
+            html.find("#equipment-radio")[0].addEventListener('click', () => switchTab('inventory'));
+            html.find("#presentation-radio")[0].addEventListener('click', () => switchTab('presentation'));
+            if (!this.actor.isOwner) localStorage.setItem('page', 'presentation');
+            const page = localStorage.getItem('page') ?? 'presentation';
+            switchTab(page);
+            const radioMap = { all: '#all-radio', attack: '#attacks-radio', inventory: '#equipment-radio' };
+            if (radioMap[page]) html.find(radioMap[page])[0].checked = true;
+            if (page === 'attack') document.fonts.ready.then(() => this.synchronizeTableColumnWidths());
 
             const armesTable = html.find('.arme');
             const armesArray = Array.from(armesTable);
@@ -464,13 +338,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 })
 
                 this.updateTiles(html, "devastation_point");
-                let devastationTable = html.find('.devastation_pointTile');
-                let devastationArray = Array.from(devastationTable);
-                devastationArray.forEach((devastationTile) => {
-                    devastationTile.addEventListener('click', async () => {
-                        await this.changeDevastation(devastationTile, html);
-                    })
-                })
+                html.find('.devastation_pointTile').each((_, el) => {
+                    el.addEventListener('click', async () => await this.changeTile(el, html, 'devastation_point', 'devastation_point', { toggle: true }));
+                });
                 let popup = html.find('#ma_popup')[0];
 
                 html.find(".closePopup")[0].addEventListener('click', function () {
@@ -493,52 +363,15 @@ export default class scp_foundationActorSheet extends ActorSheet {
         let experience = this.actor.system.experience
         if(event.altKey){
             switch (dice){
-                case 8:
-                    if (d8 >= 1) {
-                        console.log("Vente d8");
-                        experience -= -100;
-                        d8 -= 1;
-                    }
-                    break;
-                case 10:
-                    if (d10 >= 1) {
-                        console.log("Vente d10");
-                        experience -= -200;
-                        d10 -= 1;
-                    }
-                    break;
-                case 12:
-                    if (d12 >= 1) {
-                        console.log("Vente d12");
-                        experience -= -500;
-                        d12 -= 1;
-                    }
-                    break;
+                case 8:  if (d8 >= 1)           { experience -= -100; d8  -= 1; } break;
+                case 10: if (d10 >= 1)          { experience -= -200; d10 -= 1; } break;
+                case 12: if (d12 >= 1)          { experience -= -500; d12 -= 1; } break;
             }
-
-        }else{
+        } else {
             switch (dice) {
-                case 8:
-                    if (experience >= 100) {
-                        console.log("achat d8");
-                        experience -= 100;
-                        d8 += 1;
-                    }
-                    break;
-                case 10:
-                    if (experience >= 200) {
-                        console.log("achat d10");
-                        experience -= 200;
-                        d10 += 1;
-                    }
-                    break;
-                case 12:
-                    if (experience >= 500) {
-                        console.log("achat d12");
-                        experience -= 500;
-                        d12 += 1;
-                    }
-                    break;
+                case 8:  if (experience >= 100) { experience -= 100; d8  -= -1; } break;
+                case 10: if (experience >= 200) { experience -= 200; d10 -= -1; } break;
+                case 12: if (experience >= 500) { experience -= 500; d12 -= -1; } break;
             }
         }
         await this.actor.update({
@@ -619,55 +452,22 @@ export default class scp_foundationActorSheet extends ActorSheet {
         })
     }
 
-    async changeExertion(exertionClicked, html) {
+    async changeTile(tileClicked, html, systemPath, tileType, options = {}) {
         html.find('input[type="text"]').prop('disabled', true);
-        let nbMax = this.actor.system.exertion.max;
-        if (parseInt(exertionClicked.value) <= parseInt(nbMax)) {
-            await this.actor.update({
-                "system.exertion.actual": exertionClicked.value
-            });
-
+        let value = parseInt(tileClicked.value);
+        if (options.max !== undefined && value > options.max) {
+            html.find('input[type="text"]').prop('disabled', false);
+            return;
         }
-        this.updateTiles(html, "exertion");
-        html.find('input[type="text"]').prop('disabled', false);
-
-    }
-
-    async changeReverence(reverenceClicked, html) {
-        html.find('input[type="text"]').prop('disabled', true);
-        await this.actor.update({
-            "system.reverence": reverenceClicked.value
-        });
-        this.updateTiles(html, "reverence");
-        html.find('input[type="text"]').prop('disabled', false);
-
-    }
-
-    async changeDevastation(devastationClicked, html) {
-        html.find('input[type="text"]').prop('disabled', true);
-        if (parseInt(this.actor.system.devastation_point) === parseInt(devastationClicked.value)) {
-            await this.actor.update({
-                "system.devastation_point": devastationClicked.value - 1
-            });
-        } else {
-            await this.actor.update({
-                "system.devastation_point": devastationClicked.value
-            });
+        if (options.toggle) {
+            const parts = systemPath.split('.');
+            let current = this.actor.system;
+            for (const part of parts) current = current[part];
+            if (parseInt(current) === value) value--;
         }
-
-        this.updateTiles(html, "devastation_point");
+        await this.actor.update({ [`system.${systemPath}`]: value });
+        this.updateTiles(html, tileType);
         html.find('input[type="text"]').prop('disabled', false);
-
-    }
-
-    async changeMerit(meritClicked, html) {
-        html.find('input[type="text"]').prop('disabled', true);
-        await this.actor.update({
-            "system.merit_point": meritClicked.value
-        });
-        this.updateTiles(html, "merit_point");
-        html.find('input[type="text"]').prop('disabled', false);
-
     }
 
     updateTiles(html, type) {
@@ -796,7 +596,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
     prepareAttackRoll(html, rollName, weaponId) {
         let weapon = this.actor.items.get(weaponId);
-        console.log(weapon)
         let skill = weapon.system.skill
         let bonus = 0;
         switch (weapon.system.actual_position) {
@@ -949,7 +748,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     updateDicesAvailable(html) {
-        console.log("updateDicesAvailable");
         let selectd12 = html.find("#d12Selected")[0];
         let selectd10 = html.find("#d10Selected")[0];
         let selectd8 = html.find("#d8Selected")[0];
@@ -958,7 +756,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
         arrayDices.forEach(selectDice => {
 
             for (let option of selectDice.options) {
-                console.log(option.value);
                 if (option.value > selectDice.value) {
                     if (option.value - (-nbDicesSelected) - selectDice.value <= 4) {
                         option.style.display = "block";
@@ -1326,7 +1123,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
     async prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo = null){
         //popup indiquant le nombre de dés à retirer
         //roll damage sans ces dés
-        console.log(this.currentHtml[0].clientHeight);
         let popup = this.currentHtml.find("#rollDamage")[0];
         let content = this.currentHtml[0];
         const contentHeight = content.clientHeight;
@@ -1614,7 +1410,6 @@ export default class scp_foundationActorSheet extends ActorSheet {
         let updateCD = this.actor.system.reaction_defense.value;
 
         let initiative = 0, intuition = 0, occulte_scp_lore = 0, resist_distress = 0;
-        console.log(reasoning);
         switch (reasoning) {
             case "naif":
                 resist_distress += 3;
@@ -1653,10 +1448,8 @@ export default class scp_foundationActorSheet extends ActorSheet {
         }
 
         if (appearance === "beau") {
-            console.log(resist_distress);
             resist_distress -= 2;
         } else if (appearance === "effrayant") {
-            console.log(resist_distress);
             resist_distress += 1;
         }
         updateBonus["system.perks.abilities.resist_distress.bonus_mod"] = resist_distress;

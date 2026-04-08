@@ -61,6 +61,13 @@ Hooks.on("createItem", async (item, itemData) => {
             const actor = game.actors.get(item.parent._id);
 
             if (item.type === "accessoire") {
+
+                //TODO garder la liste ouverte quand coche / décoche
+
+                //TODO mettre à jour la valeur au coche / décoche
+
+                //TODO améliorer le visuel d'affichage des accessoires, c'est de la m là
+
                 // Récupérer toutes les armes de l'acteur
 
                 // Récupérer toutes les armes de l'acteur

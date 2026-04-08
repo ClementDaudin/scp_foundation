@@ -415,7 +415,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     saveScroll(html) {
-        this.saveScroll(html);
+        localStorage.setItem("scroll", html[0].scrollTop);
     }
 
     async changeTile(tileClicked, html, systemPath, tileType, options = {}) {

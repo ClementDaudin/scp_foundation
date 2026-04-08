@@ -5,10 +5,9 @@ export default class scp_foundationItemSheet extends ItemSheet{
 
     async getData(options){
         const data = await super.getData(options);
-        data.systemData = data.data.system;
-        data.descriptionHTML = await TextEditor.enrichHTML(data.systemData.description, {
+        data.systemData = this.item.system;
+        data.descriptionHTML = await TextEditor.enrichHTML(this.item.system.description, {
             secrets: this.document.isOwner,
-            async: true
         });
         return data;
     }

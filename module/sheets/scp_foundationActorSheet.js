@@ -12,10 +12,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
     async getData(options) {
         this.data = await super.getData(options);
-        this.data.systemData = this.data.data.system;
-        this.data.descriptionHTML = await TextEditor.enrichHTML(this.data.systemData.biography, {
+        this.data.systemData = this.actor.system;
+        this.data.descriptionHTML = await TextEditor.enrichHTML(this.actor.system.biography, {
             secrets: this.document.isOwner,
-            async: true
         });
         return this.data;
     }

@@ -19,6 +19,13 @@ export default class scp_foundationActorSheet extends ActorSheet {
         return this.data;
     }
 
+    _onChangeInput(event) {
+        // Prevent Foundry's default _onSubmit for selects we handle ourselves,
+        // otherwise it saves the form (with stale total_mod values) and races our update.
+        if (['reasoning', 'appearance', 'body_type'].includes(event.target.id)) return;
+        super._onChangeInput(event);
+    }
+
     activateListeners(html) {
         this.currentHtml = html;
         super.activateListeners(html);
@@ -1017,53 +1024,51 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 });
                 break;
         }
-        newMessage.then(async () => {
-            if (pnj !== true) {
-                let rerollArray = document.getElementsByClassName("reroll");
-                let rerollButton = rerollArray[rerollArray.length - 1];
-                rerollButton.addEventListener("click", async () => {
-                    let reverence = this.actor.system.reverence;
-                    if (reverence >= 2) {
-                        await this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition)
-                        await this.actor.update({
-                            "system.reverence": reverence - 2
+        newMessage.then(async (createdMsg) => {
+            const onRender = (msg, msgHtml) => {
+                if (msg.id !== createdMsg.id) return;
+                Hooks.off("renderChatMessage", onRender);
+                if (pnj !== true && !reroll) {
+                    const rerollButton = msgHtml[0].querySelector(".reroll");
+                    if (rerollButton) {
+                        rerollButton.addEventListener("click", async () => {
+                            let reverence = this.actor.system.reverence;
+                            if (reverence >= 2) {
+                                await this.launchRoll(html, rollName, diceFormulae, true, weapon, bonus, previousPosition);
+                                await this.actor.update({"system.reverence": reverence - 2});
+                            } else {
+                                ui.notifications.warn(`Vous n'avez pas assez de point de révérence`);
+                            }
                         });
-                    } else {
-                        ui.notifications.warn(`Vous n'avez pas assez de point de révérence`);
-
                     }
-                });
-            }
-            let rollDamageArray = document.getElementsByClassName("rollDamage");
-            let rollDamageButton = rollDamageArray[rollDamageArray.length - 1];
-            if (!pnj && weapon !== null) {
-                if (weapon.system.skill === "catch_throw" || weapon.system.skill === "demolition" || weapon.system.skill === "shotgun") {
-                    rollDamageButton.addEventListener("click", async () => {
-                        this.prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
-                    });
+                }
+                if (weapon !== null) {
+                    const rollDamageButton = msgHtml[0].querySelector(".rollDamage");
+                    if (rollDamageButton) {
+                        if (!pnj && weapon.system?.skill === "catch_throw" || weapon.system?.skill === "demolition" || weapon.system?.skill === "shotgun") {
+                            rollDamageButton.addEventListener("click", async () => {
+                                this.prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
+                            });
+                        } else {
+                            rollDamageButton.addEventListener("click", async () => {
+                                this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
+                            });
+                        }
+                    }
+                }
+            };
+            Hooks.on("renderChatMessage", onRender);
+            if (weapon !== null && !pnj) {
+                previousPosition = weapon.system.actual_position;
+                if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
+                    await weapon.update({'system.actual_position': "0"});
+                    this.saveScroll(html);
                 } else {
-                    rollDamageButton.addEventListener("click", async () => {
-                        this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
-                    });
-                }
-            } else {
-                rollDamageButton.addEventListener("click", async () => {
-                    this.rollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo);
-                });
-            }
-        }).then(async () => {
-                if (weapon !== null && !pnj) {
-                    previousPosition = weapon.system.actual_position;
-                    if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
-                        await weapon.update({'system.actual_position': "0"})
-                        this.saveScroll(html)
-                    } else {
-                        await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
-                        this.saveScroll(html)
-                    }
+                    await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))});
+                    this.saveScroll(html);
                 }
             }
-        );
+        });
     }
 
     async prepareRollDamage(html, weapon, previousPosition, rollName, pnj, whisperTo = null){
@@ -1282,133 +1287,98 @@ export default class scp_foundationActorSheet extends ActorSheet {
         await this.actor.update(updateBonus);
     }
 
-    async bonusAppearanceUpdate(evt) {
-        let updateBonus = {};
+    _computeAppearanceReasoningBonuses(appearance, reasoning) {
+        let negociate = 0, fashion = 0, leadership = 0, resist_distress = 0,
+            intimidate = 0, disguise = 0, showmanship = 0,
+            initiative = 0, intuition = 0, occulte_scp_lore = 0;
 
-        let appearance = evt.target.value;
-        let reasoning = this.actor.system.reasoning;
-
-        let negociate = 0, fashion = 0, leadership = 0, resist_distress = 0, intimidate = 0, disguise = 0,
-            showmanship = 0;
         switch (appearance) {
             case "beau":
-                negociate += 2;
-                fashion += 1;
-                leadership += 1;
-                resist_distress -= 2;
-                intimidate -= 1;
-                disguise -= 1;
+                negociate += 2; fashion += 1; leadership += 1;
+                resist_distress -= 2; intimidate -= 1; disguise -= 1;
                 break;
             case "attractif":
-                negociate += 1;
-                fashion += 1;
-                intimidate -= 1;
-                disguise -= 1;
+                negociate += 1; fashion += 1; intimidate -= 1; disguise -= 1;
                 break;
             case "moyenne":
                 disguise += 2;
                 break;
             case "étrange":
-                intimidate += 1;
-                showmanship += 1
-                disguise -= 2;
+                intimidate += 1; showmanship += 1; disguise -= 2;
                 break;
             case "effrayant":
-                intimidate += 2;
-                disguise += 1;
-                resist_distress += 1;
-                fashion -= 2;
-                negociate -= 2;
+                intimidate += 2; disguise += 1; resist_distress += 1;
+                fashion -= 2; negociate -= 2;
                 break;
         }
-        if (reasoning === "naif") {
-            resist_distress += 3;
-        } else if (reasoning === "sceptique") {
-            resist_distress += 2;
-        } else if (reasoning === "ouvert d'esprit") {
-            resist_distress -= 1;
-        } else if (reasoning === "fou") {
-            resist_distress -= 2;
+
+        switch (reasoning) {
+            case "naif":
+                resist_distress += 3; initiative -= 3; intuition -= 3; occulte_scp_lore -= 2;
+                break;
+            case "sceptique":
+                resist_distress += 2; initiative -= 2; intuition -= 2;
+                break;
+            case "open-minded":
+                resist_distress -= 1; initiative += 2; intuition += 2;
+                break;
+            case "fou":
+                resist_distress -= 2; initiative += 3; intuition += 3; occulte_scp_lore += 2;
+                break;
         }
 
-        updateBonus["system.perks.abilities.negociation_persuade.bonus_mod"] = negociate;
-        updateBonus["system.perks.abilities.negociation_persuade.total_mod"] = this.actor.system.perks.abilities.negociation_persuade.self_mod - (-negociate);
-        updateBonus["system.perks.knowledges.fashion_etiquette.bonus_mod"] = fashion;
-        updateBonus["system.perks.knowledges.fashion_etiquette.total_mod"] = this.actor.system.perks.knowledges.fashion_etiquette.self_mod - (-fashion);
-        updateBonus["system.perks.abilities.leadership.bonus_mod"] = leadership;
-        updateBonus["system.perks.abilities.leadership.total_mod"] = this.actor.system.perks.abilities.leadership.self_mod - (-leadership);
-        updateBonus["system.perks.abilities.resist_distress.bonus_mod"] = resist_distress;
-        updateBonus["system.perks.abilities.resist_distress.total_mod"] = this.actor.system.perks.abilities.resist_distress.self_mod - (-resist_distress);
-        updateBonus["system.perks.abilities.intimidate_taunt.bonus_mod"] = intimidate;
-        updateBonus["system.perks.abilities.intimidate_taunt.total_mod"] = this.actor.system.perks.abilities.intimidate_taunt.self_mod - (-intimidate);
-        updateBonus["system.perks.skills.disguise_blend_in.bonus_mod"] = disguise;
-        updateBonus["system.perks.skills.disguise_blend_in.total_mod"] = this.actor.system.perks.skills.disguise_blend_in.self_mod - (-disguise);
-        updateBonus["system.perks.skills.showmanship.bonus_mod"] = showmanship;
-        updateBonus["system.perks.skills.showmanship.total_mod"] = this.actor.system.perks.skills.showmanship.self_mod - (-showmanship);
-        await this.actor.update(updateBonus);
+        return { negociate, fashion, leadership, resist_distress, intimidate, disguise, showmanship, initiative, intuition, occulte_scp_lore };
+    }
+
+    _buildAppearanceReasoningUpdate(b) {
+        const s = this.actor.system.perks;
+        return {
+            "system.perks.abilities.negociation_persuade.bonus_mod": b.negociate,
+            "system.perks.abilities.negociation_persuade.total_mod": s.abilities.negociation_persuade.self_mod - (-b.negociate),
+            "system.perks.knowledges.fashion_etiquette.bonus_mod": b.fashion,
+            "system.perks.knowledges.fashion_etiquette.total_mod": s.knowledges.fashion_etiquette.self_mod - (-b.fashion),
+            "system.perks.abilities.leadership.bonus_mod": b.leadership,
+            "system.perks.abilities.leadership.total_mod": s.abilities.leadership.self_mod - (-b.leadership),
+            "system.perks.abilities.resist_distress.bonus_mod": b.resist_distress,
+            "system.perks.abilities.resist_distress.total_mod": s.abilities.resist_distress.self_mod - (-b.resist_distress),
+            "system.perks.abilities.intimidate_taunt.bonus_mod": b.intimidate,
+            "system.perks.abilities.intimidate_taunt.total_mod": s.abilities.intimidate_taunt.self_mod - (-b.intimidate),
+            "system.perks.skills.disguise_blend_in.bonus_mod": b.disguise,
+            "system.perks.skills.disguise_blend_in.total_mod": s.skills.disguise_blend_in.self_mod - (-b.disguise),
+            "system.perks.skills.showmanship.bonus_mod": b.showmanship,
+            "system.perks.skills.showmanship.total_mod": s.skills.showmanship.self_mod - (-b.showmanship),
+            "system.perks.abilities.initiative.bonus_mod": b.initiative,
+            "system.perks.abilities.initiative.total_mod": s.abilities.initiative.self_mod - (-b.initiative),
+            "system.perks.abilities.intuition.bonus_mod": b.intuition,
+            "system.perks.abilities.intuition.total_mod": s.abilities.intuition.self_mod - (-b.intuition),
+            "system.perks.knowledges.occulte_scp_lore.bonus_mod": b.occulte_scp_lore,
+            "system.perks.knowledges.occulte_scp_lore.total_mod": s.knowledges.occulte_scp_lore.self_mod - (-b.occulte_scp_lore),
+        };
+    }
+
+    async bonusAppearanceUpdate(evt) {
+        const appearance = evt.target.value;
+        const bonuses = this._computeAppearanceReasoningBonuses(appearance, this.actor.system.reasoning);
+        await this.actor.update({
+            "system.appearance": appearance,
+            ...this._buildAppearanceReasoningUpdate(bonuses),
+        });
     }
 
     async bonusReasoningUpdate(evt) {
-        let updateBonus = {};
-        let reasoning = evt.target.value;
-        let appearance = this.actor.system.appearance;
-        let bonusCD = this.actor.system.reaction_defense.bonus;
-        let updateCD = this.actor.system.reaction_defense.value;
-
-        let initiative = 0, intuition = 0, occulte_scp_lore = 0, resist_distress = 0;
-        switch (reasoning) {
-            case "naif":
-                resist_distress += 3;
-                initiative -= 3;
-                intuition -= 3;
-                occulte_scp_lore -= 2;
-                updateCD -= -(15 - bonusCD);
-                bonusCD = 15;
-                break;
-            case "sceptique":
-                resist_distress += 2;
-                initiative -= 2;
-                intuition -= 2;
-                updateCD -= -(12 - bonusCD);
-                bonusCD = 12;
-                break;
-            case "scientifique":
-                updateCD -= -(9 - bonusCD);
-                bonusCD = 9;
-                break;
-            case "open-minded":
-                resist_distress -= 1;
-                initiative += 2;
-                intuition += 2;
-                updateCD -= -(6 - bonusCD);
-                bonusCD = 6;
-                break;
-            case "fou":
-                resist_distress -= 2;
-                initiative += 3;
-                intuition += 3;
-                occulte_scp_lore += 2;
-                updateCD -= -(3 - bonusCD);
-                bonusCD = 3;
-                break;
-        }
-
-        if (appearance === "beau") {
-            resist_distress -= 2;
-        } else if (appearance === "effrayant") {
-            resist_distress += 1;
-        }
-        updateBonus["system.perks.abilities.resist_distress.bonus_mod"] = resist_distress;
-        updateBonus["system.perks.abilities.resist_distress.total_mod"] = this.actor.system.perks.abilities.resist_distress.self_mod - (-resist_distress);
-        updateBonus["system.perks.abilities.initiative.bonus_mod"] = initiative;
-        updateBonus["system.perks.abilities.initiative.total_mod"] = this.actor.system.perks.abilities.initiative.self_mod - (-initiative);
-        updateBonus["system.perks.abilities.intuition.bonus_mod"] = intuition;
-        updateBonus["system.perks.abilities.intuition.total_mod"] = this.actor.system.perks.abilities.intuition.self_mod - (-intuition);
-        updateBonus["system.perks.knowledges.occulte_scp_lore.bonus_mod"] = occulte_scp_lore;
-        updateBonus["system.perks.knowledges.occulte_scp_lore.total_mod"] = this.actor.system.perks.knowledges.occulte_scp_lore.self_mod - (-occulte_scp_lore);
-        updateBonus["system.cognitive_resistance.value"] = updateCD;
-        updateBonus["system.cognitive_resistance.bonus"] = bonusCD;
-        await this.actor.update(updateBonus);
+        const reasoning = evt.target.value;
+        const bonuses = this._computeAppearanceReasoningBonuses(this.actor.system.appearance, reasoning);
+        const bonusCDMap = { naif: 15, sceptique: 12, scientifique: 9, "open-minded": 6, fou: 3 };
+        const newBonusCD = bonusCDMap[reasoning] ?? this.actor.system.cognitive_resistance.bonus;
+        const crBonus = this.actor.system.cognitive_resistance.bonus;
+        const crValue = this.actor.system.cognitive_resistance.value;
+        const newValueCD = crValue - (-(newBonusCD - crBonus));
+        await this.actor.update({
+            "system.reasoning": reasoning,
+            ...this._buildAppearanceReasoningUpdate(bonuses),
+            "system.cognitive_resistance.value": newValueCD,
+            "system.cognitive_resistance.bonus": newBonusCD,
+        });
     }
 
     async bonusBodyTypeUpdate(evt, html) {
@@ -1455,6 +1425,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 break;
         }
 
+        updateBonus["system.body_type"] = bodyType;
         updateBonus["system.hp.max"] = updateHp;
         updateBonus["system.hp.bonus"] = bonusHp;
         updateBonus["system.reaction_defense.value"] = updateRD;

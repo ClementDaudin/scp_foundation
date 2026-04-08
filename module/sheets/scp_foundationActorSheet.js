@@ -1585,8 +1585,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         html.find(".exertionUse")[0].style.display = "block";
 
+        while (selectExertion.options.length > 1) selectExertion.remove(1);
         for (let exertionNumber = 1; exertionNumber <= this.actor.system.exertion; exertionNumber++) {
-            var option = document.createElement("option");
+            const option = document.createElement("option");
             option.value = exertionNumber;
             option.text = exertionNumber;
             selectExertion.appendChild(option);

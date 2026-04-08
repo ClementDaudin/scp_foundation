@@ -20,9 +20,10 @@ export default class scp_foundationActorSheet extends ActorSheet {
     }
 
     _onChangeInput(event) {
-        // Prevent Foundry's default _onSubmit for selects we handle ourselves,
-        // otherwise it saves the form (with stale total_mod values) and races our update.
+        // Prevent Foundry's _onSubmit for selects we handle ourselves (would race our update)
+        // and for all selects inside popups (would re-render the sheet and close the popup).
         if (['reasoning', 'appearance', 'body_type'].includes(event.target.id)) return;
+        if (event.target.closest('.popup')) return;
         super._onChangeInput(event);
     }
 

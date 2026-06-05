@@ -564,7 +564,7 @@ input[type="radio"]:checked + .personnel-label {
 }
 .transparent-logo{
     aspect-ratio: 1/1;
-    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237119631/qha_0dNwFDUbYjLIGp2SCg/original.png);
+    background-image: url(../assets/scp-foundation-logo.png);
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -584,7 +584,7 @@ input[type="radio"]:checked + .personnel-label {
 }
 #security_level > .qr-code {
     grid-area: qr-code;
-    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237721889/dzJg1nel3HT7J2OhxtWBJg/thumb.png);
+    background-image: url(../assets/fondationscp-qr.png);
     background-repeat: no-repeat;
     background-size: contain;
     place-self: center;
@@ -648,7 +648,7 @@ input[type="radio"]:checked + .personnel-label {
 
 .black-logo > .logo, #main .black-logo .sheet-logo, #main .sheet-black-logo > .logo, #main .sheet-black-logo .sheet-logo, .sheet-rolltemplate-scp .black-logo > .logo, .sheet-rolltemplate-scp .black-logo .sheet-logo, .sheet-rolltemplate-scp .sheet-black-logo > .logo, .sheet-rolltemplate-scp .sheet-black-logo .sheet-logo {
     grid-area: content;
-    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237119632/ALMH-rWYBVVqwtIQI970xw/original.png);
+    background-image: url(../assets/scp-foundation-logo-white.png);
     background-repeat: no-repeat;
     background-size: contain;
     z-index: 10;
@@ -814,7 +814,7 @@ input[type="radio"]:checked + .personnel-label {
 
 .message-content .sheet-black-logo .sheet-logo {
     grid-area: content;
-    background-image: url(https://s3.amazonaws.com/files.d20.io/images/237119632/ALMH-rWYBVVqwtIQI970xw/original.png);
+    background-image: url(../assets/scp-foundation-logo-white.png);
     background-repeat: no-repeat;
     background-size: contain;
     z-index: 10;

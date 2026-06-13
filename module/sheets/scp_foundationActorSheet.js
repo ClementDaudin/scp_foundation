@@ -133,14 +133,15 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 for (const [id, display] of Object.entries(config)) html.find(`#${id}`)[0].style.display = display;
                 localStorage.setItem('page', tabName);
             };
-            html.find("#all-radio")[0].addEventListener('click', () => switchTab('all'));
-            html.find("#attacks-radio")[0].addEventListener('click', () => { switchTab('attack'); document.fonts.ready.then(() => this.synchronizeTableColumnWidths()); });
-            html.find("#equipment-radio")[0].addEventListener('click', () => switchTab('inventory'));
-            html.find("#presentation-radio")[0].addEventListener('click', () => switchTab('presentation'));
+            const aid = this.actor.id;
+            html.find(`#all-radio-${aid}`)[0].addEventListener('click', () => switchTab('all'));
+            html.find(`#attacks-radio-${aid}`)[0].addEventListener('click', () => { switchTab('attack'); document.fonts.ready.then(() => this.synchronizeTableColumnWidths()); });
+            html.find(`#equipment-radio-${aid}`)[0].addEventListener('click', () => switchTab('inventory'));
+            html.find(`#presentation-radio-${aid}`)[0].addEventListener('click', () => switchTab('presentation'));
             if (!this.actor.isOwner) localStorage.setItem('page', 'presentation');
             const page = localStorage.getItem('page') ?? 'presentation';
             switchTab(page);
-            const radioMap = { all: '#all-radio', attack: '#attacks-radio', inventory: '#equipment-radio' };
+            const radioMap = { all: `#all-radio-${aid}`, attack: `#attacks-radio-${aid}`, inventory: `#equipment-radio-${aid}` };
             if (radioMap[page]) html.find(radioMap[page])[0].checked = true;
             if (page === 'attack') document.fonts.ready.then(() => this.synchronizeTableColumnWidths());
 
@@ -484,7 +485,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
         const { reactDef, exertionMax, cognitive_value } = this._computeDefenses();
         await this.actor.update({
             "system.melee_multiplier.bonus":      Math.floor(strength.d10 / 2) - (-strength.d10 % 2) - (-strength.d12) + 1,
+            "system.melee_multiplier.perso":      Math.floor(strength.d10 / 2) - (-strength.d10 % 2) - (-strength.d12) + 1,
             "system.projection_multiplier.bonus": Math.floor(perception.d10 / 2) - (-perception.d10 % 2) - (-perception.d12) + 1,
+            "system.projection_multiplier.perso": Math.floor(perception.d10 / 2) - (-perception.d10 % 2) - (-perception.d12) + 1,
             "system.recoil":                      strength.d12,
             "system.reaction_defense.value":      reactDef,
             "system.move_speed":                  2 - (-dexterity.d12),

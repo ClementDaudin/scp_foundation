@@ -24,11 +24,11 @@
         "actual": 1
       },
       "melee_multiplier": {
-        "personnal": 0,
+        "perso": 1,
         "bonus": 1
       },
       "projection_multiplier": {
-        "personnal": 0,
+        "perso": 1,
         "bonus": 1
       },
       "recoil": 0,

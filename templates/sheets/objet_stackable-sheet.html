@@ -1,22 +1,24 @@
-<form class="flexcol {{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-        <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="128" width="128"/>
-        <div class="header-fields">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="Name">
-            </h1>
-        </div>
-    </header>
+<form class="flexcol {{cssClass}} objet-sheet" autocomplete="off">
+    {{> "systems/scp_foundation/templates/partials/item-header.html"}}
 
     <section class="sheet-body">
-        <label>Description </label>
-        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
-        <div class="attributeValues">
-            <label>Price
-                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
-            </label>
+        <div class="item-section">
+            <p class="item-section-title">Équipement</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <input name="system.owned" type="number" value="{{systemData.owned}}" placeholder="1">
+                    <span>Quantité</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.price" type="text" value="{{systemData.price}}" placeholder="—">
+                    <span>Prix unitaire</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="item-section item-section--description">
+            <p class="item-section-title">Description</p>
+            {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
         </div>
     </section>
-
 </form>
-

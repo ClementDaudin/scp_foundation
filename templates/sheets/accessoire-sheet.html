@@ -1,30 +1,50 @@
-<form class="flexcol {{cssClass}} attachment-sheet" autocomplete="off">
+<form class="flexcol {{cssClass}} accessoire-sheet" autocomplete="off">
     {{> "systems/scp_foundation/templates/partials/item-header.html"}}
 
     <section class="sheet-body">
-        <label>Description </label>
-        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
-        <div class="attributeValues">
-            <label>Recul
-                <input name="system.effect.recoil" type="text" value="{{systemData.effect.recoil}}" placeholder=" Bonus en Recul">
-            </label>
-            <label>Melee
-                <input name="system.effect.melee" type="number" value="{{systemData.effect.melee}}" placeholder="Bonus en Melee">
-            </label><label>Hip
-            <input name="system.effect.hip" type="number" value="{{systemData.effect.hip}}" placeholder="Bonus en Hip">
-        </label><label>Ready
-            <input name="system.effect.ready" type="number" value="{{systemData.effect.ready}}" placeholder="Bonus en Ready">
-        </label><label>Aim
-            <input name="system.effect.aim" type="number" value="{{systemData.effect.aim}}" placeholder="Bonus en aim">
-        </label>
-            <label>Chargeur
-                <input name="system.effect.magazine" type="number" value="{{systemData.effect.magazine}}" placeholder="Bonus du Chargeur">
-            </label><label>Price
-            <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
-        </label>
+        <div class="item-section">
+            <p class="item-section-title">Effets sur les positions</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <input name="system.effect.recoil" type="text" value="{{systemData.effect.recoil}}" placeholder="0">
+                    <span>Recul</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.effect.melee" type="number" value="{{systemData.effect.melee}}" placeholder="0">
+                    <span>Mêlée</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.effect.hip" type="number" value="{{systemData.effect.hip}}" placeholder="0">
+                    <span>Hip</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.effect.ready" type="number" value="{{systemData.effect.ready}}" placeholder="0">
+                    <span>Ready</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.effect.aim" type="number" value="{{systemData.effect.aim}}" placeholder="0">
+                    <span>Aim</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.effect.magazine" type="number" value="{{systemData.effect.magazine}}" placeholder="0">
+                    <span>Chargeur</span>
+                </label>
+            </div>
         </div>
 
+        <div class="item-section">
+            <p class="item-section-title">Équipement</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <input name="system.price" type="text" value="{{systemData.price}}" placeholder="—">
+                    <span>Prix</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="item-section item-section--description">
+            <p class="item-section-title">Description</p>
+            {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
+        </div>
     </section>
-
 </form>
-

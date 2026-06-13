@@ -1,15 +1,20 @@
-<form class="flexcol {{cssClass}} other-sheet" autocomplete="off">
+<form class="flexcol {{cssClass}} objet-sheet" autocomplete="off">
     {{> "systems/scp_foundation/templates/partials/item-header.html"}}
 
     <section class="sheet-body">
-        <label>Description </label>
-        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
-        <div class="attributeValues">
-            <label>Price
-                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price">
-            </label>
+        <div class="item-section">
+            <p class="item-section-title">Équipement</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <input name="system.price" type="text" value="{{systemData.price}}" placeholder="—">
+                    <span>Prix</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="item-section item-section--description">
+            <p class="item-section-title">Description</p>
+            {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
         </div>
     </section>
-
 </form>
-

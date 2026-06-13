@@ -94,6 +94,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 ['.roller',          (el) => this.prepareRoll(html, el.name, el.value)],
                 ['.perksRoller',     (el) => this.preparePerksRoll(html, el.name, el.value, null, 0)],
                 ['.weaponRoller',    (el) => this.prepareAttackRoll(html, el.name, el.value)],
+                ['.item-open',       (el) => this.actor.items.get(el.dataset.itemId)?.sheet.render(true)],
             ].forEach(([selector, handler]) => {
                 html.find(selector).each((_, el) => el.addEventListener('click', () => handler(el)));
             });
@@ -148,15 +149,34 @@ export default class scp_foundationActorSheet extends ActorSheet {
             const armesTable = html.find('.arme');
             const armesArray = Array.from(armesTable);
 
+            if (!this._openAttachmentIds) this._openAttachmentIds = new Set();
+
             armesArray.forEach(arme => {
+                const weaponId = arme.dataset.itemId;
                 const toggleButton = arme.querySelector('.toggle-details');
                 const detailsRow = arme.nextElementSibling;
 
-                toggleButton.addEventListener('click', function () {
+                if (this._openAttachmentIds.has(weaponId)) {
+                    detailsRow.style.display = "table-row";
+                    toggleButton.classList.add('open');
+                }
+
+                const weapon = this.actor.items.get(weaponId);
+                if (weapon) {
+                    const pos = String(weapon.system.actual_position ?? 0);
+                    const radio = arme.querySelector(`.radio-item-system[value="${pos}"]`);
+                    if (radio) radio.checked = true;
+                }
+
+                toggleButton.addEventListener('click', () => {
                     if (detailsRow.style.display === "none") {
                         detailsRow.style.display = "table-row";
+                        this._openAttachmentIds.add(weaponId);
+                        toggleButton.classList.add('open');
                     } else {
                         detailsRow.style.display = "none";
+                        this._openAttachmentIds.delete(weaponId);
+                        toggleButton.classList.remove('open');
                     }
                 });
             });

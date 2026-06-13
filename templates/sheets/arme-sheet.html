@@ -1,52 +1,86 @@
 <form class="flexcol {{cssClass}} arme-sheet" autocomplete="off">
     {{> "systems/scp_foundation/templates/partials/item-header.html"}}
 
-    {{!-- Sheet Body --}}
     <section class="sheet-body">
+        <div class="item-section">
+            <p class="item-section-title">Compétence &amp; Recul</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <select name="system.skill" id="skill">
+                        <option value="handgun">Arme de poing</option>
+                        <option value="heavy_artillery">Artillerie lourde</option>
+                        <option value="hunting_sniper_rifle">Chasse / Sniper</option>
+                        <option value="shotgun">Fusil à pompe</option>
+                        <option value="assault_rifle">Fusil d'assaut</option>
+                        <option value="melee">Mêlée</option>
+                        <option value="submachine_gun">Mitraillette</option>
+                        <option value="catch_throw">Lancer / Rattraper</option>
+                        <option value="demolition">Démolition</option>
+                    </select>
+                    <span>Compétence</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.recoil.base" type="text" value="{{systemData.recoil.base}}" placeholder="0">
+                    <span>Recul de base</span>
+                </label>
+            </div>
+        </div>
 
-        <label>Description </label>
-        {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
-        <div class="attributeValues">
-            <label class="input-label body_type">
-                <span class="h5" data-i18n="body type">Compétence</span>
-                <select name="system.skill" title="@{skill}" id="skill">
-                    <option value="handgun" data-i18n="Arme de poing">Arme de poing</option>
-                    <option value="heavy_artillery" data-i18n="Artillerie lourde">Artillerie lourde</option>
-                    <option value="hunting_sniper_rifle" data-i18n="Chasse / Fusil de sniper">Chasse / Fusil de sniper</option>
-                    <option value="shotgun" data-i18n="Fusil à pompe">Fusil à pompe</option>
-                    <option value="assault_rifle" data-i18n="Fusil d'assault">Fusil d'assault</option>
-                    <option value="melee" data-i18n="Mêlée">Mêlée</option>
-                    <option value="submachine_gun" data-i18n="Mitraillette">Mitraillette</option>
-                    <option value="catch_throw" data-i18n="lancer_rattraper">Lancer/Rattraper</option>
-                    <option value="demolition" data-i18n="Demolition">Demolition</option>
-                </select>
-            </label>
-            <label>Recul
-            <input name="system.recoil.base" type="text" value="{{systemData.recoil.base}}" placeholder="Recoil">
-            </label>
-            <label>Melee
-                <input name="system.melee" type="number" value="{{systemData.melee}}" placeholder="Melee">
-            </label><label>Hip
-                <input name="system.hip" type="number" value="{{systemData.hip}}" placeholder="Hip">
-            </label><label>Ready
-                <input name="system.ready" type="number" value="{{systemData.ready}}" placeholder="Ready">
-            </label><label>Aim
-                <input name="system.aim" type="number" value="{{systemData.aim}}" placeholder="Aim">
-            </label>
-            <label>Chargeur
-                <input name="system.magazine.max" type="number" value="{{systemData.magazine.max}}" placeholder="Taille du chargeur">
-            </label><label>Base Damage
-            <input name="system.base_damage" type="text" value="{{systemData.base_damage}}" placeholder="Base Damage" style="width: 6em">
-            </label><label>X Damage
-                <input name="system.x_damage" type="text" value="{{systemData.x_damage}}" placeholder="X Damage" style="width: 6em">
-            </label><label>Element
-                <input name="system.element" type="text" value="{{systemData.element}}" placeholder="Element" style="width: 6em">
-            </label><label>Portée
-                <input name="system.range" type="text" value="{{systemData.range}}" placeholder="Range">
-            </label><label>Prix
-                <input name="system.price" type="text" value="{{systemData.price}}" placeholder="Price" style="width: 5em">
-            </label>
+        <div class="item-section">
+            <p class="item-section-title">Valeurs de position</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <input name="system.melee" type="number" value="{{systemData.melee}}" placeholder="0">
+                    <span>Mêlée</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.hip" type="number" value="{{systemData.hip}}" placeholder="0">
+                    <span>Hip</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.ready" type="number" value="{{systemData.ready}}" placeholder="0">
+                    <span>Ready</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.aim" type="number" value="{{systemData.aim}}" placeholder="0">
+                    <span>Aim</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="item-section">
+            <p class="item-section-title">Dégâts &amp; Chargeur</p>
+            <div class="item-fields">
+                <label class="input-label stacked">
+                    <input name="system.base_damage" type="text" value="{{systemData.base_damage}}" placeholder="ex: 2d6">
+                    <span>Base</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.x_damage" type="text" value="{{systemData.x_damage}}" placeholder="1">
+                    <span>× Dégâts</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.element" type="text" value="{{systemData.element}}" placeholder="—">
+                    <span>Élément</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.magazine.max" type="number" value="{{systemData.magazine.max}}" placeholder="0">
+                    <span>Chargeur</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.range" type="text" value="{{systemData.range}}" placeholder="—">
+                    <span>Portée</span>
+                </label>
+                <label class="input-label stacked">
+                    <input name="system.price" type="text" value="{{systemData.price}}" placeholder="—">
+                    <span>Prix</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="item-section item-section--description">
+            <p class="item-section-title">Description</p>
+            {{editor descriptionHTML target="system.description" button=true editable=editable engine="prosemirror"}}
         </div>
     </section>
 </form>
-

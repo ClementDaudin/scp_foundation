@@ -510,15 +510,12 @@
                 <div id="listeArmes">
                     <table id="tableArmes">
                         <thead>
-                            <th>Equipé</th>
                             <th style="width: 6%"></th>
+                            <th>Equipé</th>
                             <th>Arme</th>
                             <th>Type</th>
                             <th>Recul</th>
-                            <th>Mélée</th>
-                            <th>Hip</th>
-                            <th>Ready</th>
-                            <th>Aim</th>
+                            <th>Position</th>
                             <th>Chargeur</th>
                             <th>Base</th>
                             <th>X</th>
@@ -529,29 +526,37 @@
                         {{#each actor.items as |item key|}}
                         {{#if (eq item.type "arme")}}
                         <tr class="item arme" data-item-id="{{item._id}}">
+                            <td><button class="toggle-details" data-item-id="{{item._id}}" title="Voir les accessoires"><img src="{{item.img}}" height="32" width="32"/></button></td>
                             <td><input type="checkbox" class="isHoldCheckbox" name="{{item._id}}" value="{{item.system.hold}}"></td>
-                            <td><img src="{{item.img}}" class="toggle-details" title="{{item.name}}" height="32" width="32"/></td>
-                            <td><label class="roll-label" title="%{weapon}">
-                                <div class="dice-icon"><span class="d8-font"></span><span class="d10-font"></span><span class="d12-font"></span></div>
-                                <button class="weaponRoller" name="{{item.name}}" data-i18n="{{item.name}}" value="{{item._id}}">{{item.name}}</button>
-                            </label></td>
+                            <td><div class="weapon-cell">
+                                <a class="item-open" data-item-id="{{item._id}}" title="Ouvrir la fiche">{{item.name}}</a>
+                                <button class="weaponRoller" name="{{item.name}}" value="{{item._id}}" title="Lancer l'attaque"><i class="fas fa-dice"></i></button>
+                            </div></td>
                             <td>{{item.system.skill}}</td>
                             <td>{{item.system.recoil.actual}}</td>
-                            <td>
-                                <input type="radio" id="item{{item._id}}Melee" name="item{{item._id}}" value="1" class="radio-item-system">
-                                <label for="item{{item._id}}Melee">{{item.system.melee}}</label>
-                            </td>
-                            <td>
-                                <input type="radio" id="item{{item._id}}Hip" name="item{{item._id}}" value="2" class="radio-item-system">
-                                <label for="item{{item._id}}Hip">{{item.system.hip}}</label>
-                            </td>
-                            <td>
-                                <input type="radio" id="item{{item._id}}Ready" name="item{{item._id}}" value="3" class="radio-item-system">
-                                <label for="item{{item._id}}Ready">{{item.system.ready}}</label>
-                            </td>
-                            <td>
-                                <input type="radio" id="item{{item._id}}Aim" name="item{{item._id}}" value="4" class="radio-item-system">
-                                <label for="item{{item._id}}Aim">{{item.system.aim}}</label>
+                            <td class="weapon-position">
+                                <div class="position-track">
+                                    <div class="pos-seg pos-absent">
+                                        <input type="radio" id="item{{item._id}}Absent" name="item{{item._id}}" value="0" class="radio-item-system">
+                                        <label for="item{{item._id}}Absent" title="Non équipé">✕</label>
+                                    </div>
+                                    <div class="pos-seg">
+                                        <input type="radio" id="item{{item._id}}Melee" name="item{{item._id}}" value="1" class="radio-item-system">
+                                        <label for="item{{item._id}}Melee"><span class="seg-name">Mêl.</span><span class="seg-val">{{item.system.melee}}</span></label>
+                                    </div>
+                                    <div class="pos-seg">
+                                        <input type="radio" id="item{{item._id}}Hip" name="item{{item._id}}" value="2" class="radio-item-system">
+                                        <label for="item{{item._id}}Hip"><span class="seg-name">Hip</span><span class="seg-val">{{item.system.hip}}</span></label>
+                                    </div>
+                                    <div class="pos-seg">
+                                        <input type="radio" id="item{{item._id}}Ready" name="item{{item._id}}" value="3" class="radio-item-system">
+                                        <label for="item{{item._id}}Ready"><span class="seg-name">Rdy</span><span class="seg-val">{{item.system.ready}}</span></label>
+                                    </div>
+                                    <div class="pos-seg">
+                                        <input type="radio" id="item{{item._id}}Aim" name="item{{item._id}}" value="4" class="radio-item-system">
+                                        <label for="item{{item._id}}Aim"><span class="seg-name">Aim</span><span class="seg-val">{{item.system.aim}}</span></label>
+                                    </div>
+                                </div>
                             </td>
                             <td><input type="number" class="magazine" style="width: 1.6em;text-align: right" name="{{item._id}}" value="{{item.system.magazine.actual}}">/{{item.system.magazine.max}}</td>
                             <td>{{item.system.base_damage}}</td>
@@ -561,21 +566,25 @@
                             <td><a class="item-delete" title="Vendre l'item"><i class="fas fa-trash"></i></a></td>
                         </tr>
                         <tr class="attachments" style="display: none">
-                            <td colspan="15">
+                            <td colspan="12">
                                 <table class="item-details">
                         {{#each actor.items as |attachment key|}}
                             {{#each item.system.attachments as |attachmentId key|}}
                                 {{#if (eq attachment._id attachmentId)}}
                                     <tr class="item" data-item-id="{{attachmentId}}">
+                                        <td><img src="{{attachment.img}}" title="{{attachment.name}}" height="24" width="24"/></td>
                                         <td><input type="checkbox" class="isHoldCheckbox" name="{{attachment._id}}" value="{{attachment.system.hold}}"></td>
-                                        <td><img src="{{attachment.img}}" class="toggle-details" title="{{attachment.name}}" height="32" width="32"/></td>
-                                        <td>{{attachment.name}}</td>
+                                        <td><a class="item-open" data-item-id="{{attachmentId}}" title="Ouvrir la fiche">{{attachment.name}}</a></td>
                                         <td></td>
                                         <td>{{attachment.system.effect.recoil}}</td>
-                                        <td>{{attachment.system.effect.melee}}</td>
-                                        <td>{{attachment.system.effect.hip}}</td>
-                                        <td>{{attachment.system.effect.ready}}</td>
-                                        <td>{{attachment.system.effect.aim}}</td>
+                                        <td class="weapon-position">
+                                            <div class="position-track position-track--readonly">
+                                                <div class="pos-seg"><span class="seg-name">Mêl.</span><span class="seg-val">{{attachment.system.effect.melee}}</span></div>
+                                                <div class="pos-seg"><span class="seg-name">Hip</span><span class="seg-val">{{attachment.system.effect.hip}}</span></div>
+                                                <div class="pos-seg"><span class="seg-name">Rdy</span><span class="seg-val">{{attachment.system.effect.ready}}</span></div>
+                                                <div class="pos-seg"><span class="seg-name">Aim</span><span class="seg-val">{{attachment.system.effect.aim}}</span></div>
+                                            </div>
+                                        </td>
                                         <td>{{attachment.system.effect.magazine}}</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>

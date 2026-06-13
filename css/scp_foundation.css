@@ -1359,3 +1359,114 @@ input[type="radio"]:checked + .personnel-label {
 .presentation{
     display: flex;
 }
+
+/* =====================================================
+   PNJ / SCP — design cohérent avec la fiche character
+   ===================================================== */
+
+/* input-label grid (équivalent de .main .input-label pour ces fiches) */
+.pnj-sheet .input-label,
+.scp-sheet .input-label {
+    display: inline-grid;
+    grid-gap: var(--half-gap, 2px);
+    place-items: center stretch;
+}
+.pnj-sheet .input-label > *,
+.scp-sheet .input-label > * {
+    margin: 0;
+}
+.pnj-sheet input.number,
+.scp-sheet input.number {
+    -moz-appearance: textfield !important;
+    text-align: center;
+}
+.pnj-sheet .h5, .pnj-sheet input.h5,
+.scp-sheet .h5, .scp-sheet input.h5 {
+    font-weight: bold;
+    display: block;
+    white-space: nowrap;
+    width: 100%;
+}
+
+/* Header */
+.pnj-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.pnj-header-main {
+    flex: 1;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.pnj-portrait {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border: 2px solid black;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+/* Sections bordées */
+.pnj-section {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 8px;
+    margin: 4px 0;
+}
+.pnj-section > textarea,
+.pnj-section label > textarea {
+    width: 100%;
+    min-height: 4em;
+    resize: vertical;
+    box-sizing: border-box;
+}
+#strength_weakness textarea {
+    min-height: 6em;
+}
+
+/* Override .container pour le contexte PNJ (utilisé par le JS non-owner) */
+.pnj-sheet .container {
+    display: block;
+    border: none;
+    text-align: left;
+}
+
+/* scpStats : 3 colonnes avec divs au lieu de labels directs */
+.pnj-section.scpStats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+}
+.pnj-section.scpStats label {
+    border: none;
+    margin: 0;
+}
+
+/* Layout deux colonnes SCP */
+#scp-main-content {
+    display: flex;
+    gap: 8px;
+    margin: 4px 0;
+}
+#scp-biography {
+    flex: 3;
+    min-height: 12em;
+}
+#scp-sidebar {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+#scp-sidebar .pnj-section {
+    margin: 0;
+}
+
+/* Dévastation */
+#devastation h4 {
+    text-align: center;
+    margin: 0 0 4px 0;
+}

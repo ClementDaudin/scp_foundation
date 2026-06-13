@@ -1,13 +1,17 @@
-<form class="flexcol {{cssClass}} pnj-sheet " autocomplete="off">
+<form class="flexcol {{cssClass}} pnj-sheet" autocomplete="off">
     <header class="sheet-header">
-        <div class="header-fields inline-header">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{actor.name}}" placeholder="Name">
-            </h1>
-            <div id="power_lvl">
-                <label>Niveau de puissance
-                    <input name="system.power_lvl" type="number" value="{{systemData.power_lvl}}">
-                </label>
+        <div class="header-fields pnj-header">
+            <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" class="pnj-portrait"/>
+            <div class="pnj-header-main">
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{actor.name}}" placeholder="Name">
+                </h1>
+                <div id="power_lvl">
+                    <label class="input-label stacked">
+                        <input class="number h5 underlined" name="system.power_lvl" type="text" value="{{systemData.power_lvl}}">
+                        <span>Niveau de puissance</span>
+                    </label>
+                </div>
             </div>
             {{> "systems/scp_foundation/templates/partials/pnj-popup.html"}}
         </div>
@@ -15,48 +19,64 @@
 
     <section class="sheet-body">
         {{> "systems/scp_foundation/templates/partials/pnj-attributes.html"}}
-        <div id="pnj-info">
-            <div style="width: 20%">
-                <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128"/>
-            </div>
-            <div style="width: 40%">
-                <div>
-                    <textarea name="system.quote" style="min-height: 5em; min-width: 16em">{{systemData.quote}}</textarea>
-                </div>
-                <div class="container">
-                    <label>Physique
-                        <input type="number" name="system.stats.physical" value="{{systemData.stats.physical}}">
-                    </label>
-                    <label>Mental
-                        <input type="number" name="system.stats.mental" value="{{systemData.stats.mental}}">
-                    </label>
-                </div>
-            </div>
-            <div class="container pnj-stats">
-                <div id="pnj-hp">
-                    <label class="input-label hp stacked">
-                        <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}"><span data-i18n="hp">hp</span>
-                    </label>
-                    <label class="input-label hp_max stacked">
-                        <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}"><span data-i18n="max hp">hp max</span>
-                    </label>
-                </div>
 
-                <div class="stats_pnj">
-                    <label>Reaction de défense
-                        <input type="number" name="system.reaction_defense" value="{{systemData.reaction_defense}}">
-                    </label>
-                    <label>Vitesse de déplacement
-                        <input type="number" name="system.move_speed" value="{{systemData.move_speed}}">
-                    </label>
-                    <label>Exertion
-                        <input type="number" name="system.exertion" value="{{systemData.exertion}}">
-                    </label>
+        <div class="container pnj-stats">
+            <div class="pnj-section">
+                <div class="character_row_other">
+                    <div>
+                        <label class="input-label hp stacked">
+                            <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}">
+                            <span>HP</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="input-label hp_max stacked">
+                            <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}">
+                            <span>HP max</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="input-label stacked">
+                            <input class="number h5 underlined" name="system.exertion" type="text" value="{{systemData.exertion}}">
+                            <span>Exertion</span>
+                        </label>
+                    </div>
                 </div>
+                <div class="character_row_first">
+                    <div>
+                        <label class="input-label stacked">
+                            <input class="number h5 underlined" name="system.reaction_defense" type="text" value="{{systemData.reaction_defense}}">
+                            <span>Réaction de défense</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="input-label stacked">
+                            <input class="number h5 underlined" name="system.move_speed" type="text" value="{{systemData.move_speed}}">
+                            <span>Vitesse de déplacement</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="character_row_first">
+                    <div>
+                        <label class="input-label stacked">
+                            <input class="number h5 underlined" name="system.stats.physical" type="text" value="{{systemData.stats.physical}}">
+                            <span>Physique</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="input-label stacked">
+                            <input class="number h5 underlined" name="system.stats.mental" type="text" value="{{systemData.stats.mental}}">
+                            <span>Mental</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pnj-section">
+                <textarea name="system.quote" placeholder="Citation...">{{systemData.quote}}</textarea>
             </div>
         </div>
+
         {{> "systems/scp_foundation/templates/partials/pnj-weapon-table.html"}}
     </section>
-
 </form>
-

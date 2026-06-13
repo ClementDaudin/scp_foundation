@@ -1380,6 +1380,17 @@ input[type="radio"]:checked + .personnel-label {
     -moz-appearance: textfield !important;
     text-align: center;
 }
+
+/* Reset inputs : supprimer les bordures par défaut de FoundryVTT */
+.pnj-sheet input:not([type="checkbox"]):not([type="radio"]),
+.scp-sheet input:not([type="checkbox"]):not([type="radio"]) {
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    border-radius: 0;
+}
 .pnj-sheet .h5, .pnj-sheet input.h5,
 .scp-sheet .h5, .scp-sheet input.h5 {
     font-weight: bold;
@@ -1469,4 +1480,152 @@ input[type="radio"]:checked + .personnel-label {
 #devastation h4 {
     text-align: center;
     margin: 0 0 4px 0;
+}
+
+/* ============================================================
+   SCP Foundation Theme — PNJ & SCP sheets
+   ============================================================ */
+
+/* Base: fond blanc, police monospace */
+.pnj-sheet,
+.scp-sheet {
+    background: #ffffff;
+    font-family: "Courier New", Courier, monospace;
+    --backColor: #636363;
+}
+
+/* En-tête : bandeau noir style en-tête de rapport SCP */
+.pnj-sheet .sheet-header,
+.scp-sheet .sheet-header {
+    background-color: #111111;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-bottom: 3px solid var(--backColor, #636363);
+}
+
+/* Nom + inputs dans l'en-tête en blanc */
+.pnj-sheet .sheet-header input,
+.scp-sheet .sheet-header input {
+    color: #ffffff;
+    background: transparent;
+    border-bottom-color: rgba(255,255,255,0.4);
+}
+
+/* Logo SCP dans l'en-tête */
+.pnj-header-logo {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    flex-shrink: 0;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.3));
+}
+
+/* Label "Niveau de puissance" dans l'en-tête */
+.pnj-sheet .sheet-header .input-label > span,
+.scp-sheet .sheet-header .input-label > span {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.65em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* Sections avec bordure colorée selon le niveau */
+.pnj-sheet .pnj-section,
+.scp-sheet .pnj-section {
+    border-color: var(--backColor, #636363);
+}
+
+/* Labels de champs : petites capitales, espacement */
+.pnj-sheet .input-label > span,
+.scp-sheet .input-label > span {
+    font-size: 0.65em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #555;
+}
+
+/* Franges diagonales danger pour niveaux 4–6 (bandeau sous l'en-tête) */
+.pnj-sheet.level-4 .sheet-body::before,
+.scp-sheet.level-4 .sheet-body::before,
+.pnj-sheet.level-5 .sheet-body::before,
+.scp-sheet.level-5 .sheet-body::before,
+.pnj-sheet.level-6 .sheet-body::before,
+.scp-sheet.level-6 .sheet-body::before {
+    content: "";
+    display: block;
+    height: 6px;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--backColor, #636363) 0px,
+        var(--backColor, #636363) 6px,
+        #ffffff 6px,
+        #ffffff 12px
+    );
+    margin-bottom: 4px;
+}
+
+/* Boutons compacts dans la table d'armes */
+.pnj-sheet #addWeapon,
+.scp-sheet #addWeapon {
+    font-size: 0.75em;
+    padding: 2px 8px;
+    height: auto;
+    line-height: 1.4;
+}
+
+/* En-tête de table d'armes */
+.pnj-sheet table thead th,
+.scp-sheet table thead th {
+    background-color: #111111;
+    color: #ffffff;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 4px;
+}
+
+/* Images de dés dans les boutons d'armes : réduites */
+.pnj-sheet .weapon-roll img,
+.scp-sheet .weapon-roll img,
+.pnj-sheet .weapon-dice img,
+.scp-sheet .weapon-dice img {
+    width: 18px;
+    height: 18px;
+}
+
+/* Padding des stats pour aérer la lecture */
+.pnj-sheet .pnj-section,
+.scp-sheet .pnj-section {
+    padding: 10px 12px;
+}
+
+.pnj-sheet .character_row_other,
+.scp-sheet .character_row_other,
+.pnj-sheet .character_row_first,
+.scp-sheet .character_row_first {
+    padding: 4px 0;
+}
+
+.pnj-sheet .character_row_other + .character_row_other,
+.scp-sheet .character_row_other + .character_row_other,
+.pnj-sheet .character_row_first + .character_row_first,
+.scp-sheet .character_row_first + .character_row_first,
+.pnj-sheet .character_row_other + .character_row_first,
+.scp-sheet .character_row_other + .character_row_first {
+    margin-top: 6px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding-top: 10px;
+}
+
+/* Taille de police des valeurs de stats légèrement agrandie */
+.pnj-sheet .input-label.stacked input.h5,
+.scp-sheet .input-label.stacked input.h5 {
+    font-size: 1.15em;
+    padding-bottom: 2px;
+}
+
+/* scpStats : padding interne sur les cellules */
+.pnj-section.scpStats > div {
+    padding: 6px 4px;
 }

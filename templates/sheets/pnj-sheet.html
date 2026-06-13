@@ -1,6 +1,7 @@
-<form class="flexcol {{cssClass}} pnj-sheet" autocomplete="off">
+<form class="flexcol {{cssClass}} pnj-sheet level-{{systemData.power_lvl}}" autocomplete="off">
     <header class="sheet-header">
         <div class="header-fields pnj-header">
+            <img src="systems/scp_foundation/assets/scp-foundation-logo-white.png" class="pnj-header-logo" alt="SCP"/>
             <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" class="pnj-portrait"/>
             <div class="pnj-header-main">
                 <h1 class="charname">
@@ -8,7 +9,7 @@
                 </h1>
                 <div id="power_lvl">
                     <label class="input-label stacked">
-                        <input class="number h5 underlined" name="system.power_lvl" type="text" value="{{systemData.power_lvl}}">
+                        <input class="number h5" name="system.power_lvl" type="text" value="{{systemData.power_lvl}}">
                         <span>Niveau de puissance</span>
                     </label>
                 </div>

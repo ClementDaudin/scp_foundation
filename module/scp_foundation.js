@@ -53,6 +53,7 @@ Hooks.on('renderActorSheet', (sheet, html, data) => {
 
 Hooks.on("ready", async () => {
     addAttributeToAllItems();
+    migrateHpToObject();
 });
 
 Hooks.on("createItem", async (item, itemData) => {
@@ -299,6 +300,16 @@ export async function rollInitiative (
     await this.updateEmbeddedDocuments('Combatant', updates)
 
     return this
+}
+
+async function migrateHpToObject() {
+    for (const actor of game.actors.contents) {
+        if ((actor.type === "pnj" || actor.type === "scp") && typeof actor.system.hp === "number") {
+            const oldHp = actor.system.hp;
+            await actor.update({ "system.hp": { value: oldHp, max: oldHp } });
+            console.log(`scp_foundation | Migration HP ${actor.name} : ${oldHp} → {value: ${oldHp}, max: ${oldHp}}`);
+        }
+    }
 }
 
 async function addAttributeToAllItems() {

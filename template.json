@@ -571,7 +571,10 @@
         "intelligence": "",
         "willpower": ""
       },
-      "hp": 0,
+      "hp": {
+        "value": 0,
+        "max": 0
+      },
       "reaction_defense": 0,
       "move_speed": 0,
       "exertion": 0,
@@ -592,7 +595,10 @@
         "intelligence": "",
         "willpower": ""
       },
-      "hp": 0,
+      "hp": {
+        "value": 0,
+        "max": 0
+      },
       "reaction_defense": 0,
       "move_speed": 0,
       "exertion": 0,

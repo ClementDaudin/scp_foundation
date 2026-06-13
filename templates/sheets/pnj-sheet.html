@@ -34,8 +34,11 @@
             </div>
             <div class="container pnj-stats">
                 <div id="pnj-hp">
-                    <label>HP :
-                        <input type="number" name="system.hp" value="{{systemData.hp}}">
+                    <label class="input-label hp stacked">
+                        <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}"><span data-i18n="hp">hp</span>
+                    </label>
+                    <label class="input-label hp_max stacked">
+                        <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}"><span data-i18n="max hp">hp max</span>
                     </label>
                 </div>
 

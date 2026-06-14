@@ -1078,13 +1078,22 @@ export default class scp_foundationActorSheet extends ActorSheet {
         }).then(async () => {
                 if (weapon !== null && !pnj) {
                     previousPosition = weapon.system.actual_position;
-                    if (parseInt(weapon.system.actual_position) > 1 && parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual) <= 1) {
-                        await weapon.update({'system.actual_position': "0"})
-                        this.saveScroll(html)
+                    const currentPos = parseInt(weapon.system.actual_position);
+                    const recoil = parseInt(weapon.system.recoil.actual);
+                    const newPos = currentPos - recoil;
+                    const isMelee = weapon.system.skill === "melee";
+
+                    if (!isMelee && newPos < 2) {
+                        // Plancher à Hip (2) et signaler fin de tour
+                        await weapon.update({'system.actual_position': "2"});
+                        await ChatMessage.create({
+                            content: `<div class="scp-end-turn-alert">⚠ <strong>${this.actor.name}</strong> a terminé son tour !</div>`,
+                            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                        });
                     } else {
-                        await weapon.update({'system.actual_position': "" + Math.max(0, parseInt(weapon.system.actual_position) - parseInt(weapon.system.recoil.actual))})
-                        this.saveScroll(html)
+                        await weapon.update({'system.actual_position': String(Math.max(isMelee ? 0 : 2, newPos))});
                     }
+                    this.saveScroll(html);
                 }
             }
         );

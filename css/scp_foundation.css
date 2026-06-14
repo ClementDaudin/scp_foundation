@@ -1967,3 +1967,17 @@ input[type="radio"]:checked + .personnel-label {
 #tableArmes th { padding: 4px 6px; }
 #tableArmes td { padding: 2px 4px; }
 #listeArmes    { margin-left: 0; }
+
+/* Message de fin de tour (recul dépassant Hip) */
+.scp-end-turn-alert {
+    background: #c0392b;
+    color: #fff;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border-left: 4px solid #7b241c;
+    font-size: 0.95em;
+}

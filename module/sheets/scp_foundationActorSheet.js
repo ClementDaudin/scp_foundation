@@ -94,7 +94,34 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 ['.roller',          (el) => this.prepareRoll(html, el.name, el.value)],
                 ['.perksRoller',     (el) => this.preparePerksRoll(html, el.name, el.value, null, 0)],
                 ['.weaponRoller',    (el) => this.prepareAttackRoll(html, el.name, el.value)],
-                ['.item-open',       (el) => this.actor.items.get(el.dataset.itemId)?.sheet.render(true)],
+                ['.item-open',       async (el) => {
+                    const item = this.actor.items.get(el.dataset.itemId);
+                    if (!item) return;
+                    const sourceId = item.flags?.core?.sourceId ?? '';
+                    const packMatch = sourceId.match(/^Compendium\.(\w+\.\w+)/);
+                    if (packMatch) {
+                        const pack = game.packs.get(packMatch[1]);
+                        if (pack) {
+                            await pack.render(true);
+                            setTimeout(() => {
+                                // Cherche la fenêtre compendium dans les apps ouvertes
+                                const app = Object.values(ui.windows).find(w =>
+                                    w.collection === packMatch[1] ||
+                                    w.options?.collection === packMatch[1] ||
+                                    w.metadata?.id === packMatch[1]
+                                );
+                                const input = app?.element?.find('input[name="search"]')?.[0]
+                                           ?? document.querySelector(`.app.compendium input[name="search"]`);
+                                if (input) {
+                                    input.value = item.name;
+                                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                                    input.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
+                                }
+                            }, 500);
+                            return;
+                        }
+                    }
+                }],
             ].forEach(([selector, handler]) => {
                 html.find(selector).each((_, el) => el.addEventListener('click', () => handler(el)));
             });

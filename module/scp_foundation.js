@@ -6,6 +6,19 @@ Hooks.once("init", async () => {
     console.log("scp_foundation | Initialisation du système");
 
     // Helper pour boucler de 0 à n (utilisé par les partials fill-track)
+    const SKILL_LABELS = {
+        handgun:              "Arme de poing",
+        heavy_artillery:      "Artillerie lourde",
+        hunting_sniper_rifle: "Chasse / Sniper",
+        shotgun:              "Fusil à pompe",
+        assault_rifle:        "Fusil d'assaut",
+        melee:                "Mêlée",
+        submachine_gun:       "Mitraillette",
+        catch_throw:          "Lancer / Rattraper",
+        demolition:           "Démolition",
+    };
+    Handlebars.registerHelper('skillLabel', (key) => SKILL_LABELS[key] ?? key);
+
     Handlebars.registerHelper('times', function(n, options) {
         let result = '';
         const data = options.data ? Handlebars.createFrame(options.data) : undefined;

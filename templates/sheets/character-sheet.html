@@ -382,10 +382,6 @@
                             </div><span name="attr_operative_id" title="@{operative_id}">-N9lEsYpatOkyDUHqOUJ</span>
                         </div>
                     </div>
-                    <div style="display: grid; margin-left: 1em">
-                        <label>Description </label>
-                        <textarea name="system.biography" style="min-height: 11em; min-width: 18em">{{systemData.biography}}</textarea>
-                    </div>
                 </div>
                 <div class="action">
                     <div id="skills">
@@ -532,7 +528,7 @@
                                 <a class="item-open" data-item-id="{{item._id}}" title="Ouvrir la fiche">{{item.name}}</a>
                                 <button class="weaponRoller" name="{{item.name}}" value="{{item._id}}" title="Lancer l'attaque"><i class="fas fa-dice"></i></button>
                             </div></td>
-                            <td>{{item.system.skill}}</td>
+                            <td>{{skillLabel item.system.skill}}</td>
                             <td>{{item.system.recoil.actual}}</td>
                             <td class="weapon-position">
                                 <div class="position-track">
@@ -639,7 +635,9 @@
         </section>
         <div id="presentation" class="presentation">
             <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="128" width="128" alt=""/>
-            <textarea readonly>{{systemData.biography}}</textarea>
+            <div class="pnj-section char-presentation-bio">
+                {{editor descriptionHTML target="system.biography" button=true editable=editable engine="prosemirror"}}
+            </div>
         </div>
     </section>
 </form>

@@ -211,7 +211,7 @@ input[type="checkbox"] {
     z-index: 100;
 }
 #attributes:not(.active-section) > .available-dice, .sticky-sub {
-    top: -8px;
+    top: 0;
     position: sticky;
     z-index: 100;
 }
@@ -435,6 +435,7 @@ input.h5 {
 
 .stats{
     display: inline-block;
+    width: 80%;
 }
 
 
@@ -983,25 +984,40 @@ input[type="radio"]:checked + .personnel-label {
     margin: 0;
 }
 #section-tabs {
-    position: sticky;
-    top: -1px;
-    border-radius: 5px;
-    background-color: #adadad;
-    display: inline-flex;
-    flex-direction: column;
-    float: left;
+    display: flex;
+    flex-direction: row;
+    float: none;
+    width: 100%;
+    background: transparent;
+    border-bottom: 2px solid rgba(0,0,0,0.15);
+    padding: 0;
+    gap: 0;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 #section-tabs > .section-control {
-    color: black;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid transparent;
-    transform: rotate(-180deg);
-    writing-mode: vertical-rl;
+    flex: 1;
+    text-align: center;
+    color: #555;
+    padding: 7px 8px 5px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-weight: bold;
+    font-size: 0.8em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    background: transparent;
 }
 #section-tabs input:checked + label, #section-tabs label:hover {
-    background-color: var(--backColor);
-    color: var(--fontColor);
+    color: var(--backColor);
+    border-bottom-color: var(--backColor);
+    background: transparent;
 }
 
 #weapons{
@@ -1303,7 +1319,7 @@ input[type="radio"]:checked + .personnel-label {
 
 
 .filters {
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 #dataTable {
@@ -1491,8 +1507,27 @@ input[type="radio"]:checked + .personnel-label {
     border: 1px solid black;
 }
 
-.presentation{
+.presentation {
     display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.presentation img {
+    width: 128px;
+    height: 128px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* Description : même style que les sections PNJ/SCP */
+.char-presentation-bio {
+    flex: 1;
+    min-height: 12em;
+    margin: 0 !important;
+    border-color: var(--backColor, #636363) !important;
 }
 
 /* =====================================================
@@ -1904,3 +1939,31 @@ input[type="radio"]:checked + .personnel-label {
 .item-section--description .editor-content {
     min-height: 8em;
 }
+
+/* ============================================================
+   CHARACTER SHEET — Espacement (corrections ciblées)
+   ============================================================ */
+
+/* Boites joueur : padding interne */
+.main .boxed { padding: 4px 8px; box-sizing: border-box; }
+
+/* Inputs soulignés : texte ne touche plus la ligne du bas */
+.underlined { padding: 2px 4px 3px; box-sizing: border-box; }
+
+/* Lignes données character : champs s'étirent équitablement */
+.character_row_first div,
+.character_row_other > div { flex: 1; padding: 0 4px; box-sizing: border-box; }
+
+/* Sections compétences/connaissances/aptitudes : espace au-dessus */
+#knowledges, #skills, #abilities { margin-top: 12px; }
+
+/* Espace vertical entre lignes de compétences */
+:is(#knowledges, #skills, #abilities) > div { margin-bottom: 3px; }
+
+/* Inventaire : supprime l'espace parasite au-dessus du tableau */
+#inventory { padding-top: 0; margin-top: 0; }
+
+/* Table d'armes : cellules moins compressées */
+#tableArmes th { padding: 4px 6px; }
+#tableArmes td { padding: 2px 4px; }
+#listeArmes    { margin-left: 0; }

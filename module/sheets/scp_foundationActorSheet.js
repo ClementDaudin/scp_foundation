@@ -98,7 +98,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
                     const item = this.actor.items.get(el.dataset.itemId);
                     if (!item) return;
                     const sourceId = item.flags?.core?.sourceId ?? '';
-                    const packMatch = sourceId.match(/^Compendium\.(\w+\.\w+)/);
+                    const packMatch = sourceId.match(/^Compendium\.([^.]+\.[^.]+)/);
                     if (packMatch) {
                         const pack = game.packs.get(packMatch[1]);
                         if (pack) {

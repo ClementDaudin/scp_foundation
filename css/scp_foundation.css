@@ -1,5 +1,5 @@
 .sheet {
-    text-transform: capitalize;
+    text-transform: none;
     min-width: min-content;
 }
 .sheet header.sheet-header {
@@ -936,7 +936,7 @@ input[type="radio"]:checked + .personnel-label {
     color: red;
 }
 .message-content{
-    text-transform: capitalize;
+    text-transform: none;
 }
 
 .message-content h5{

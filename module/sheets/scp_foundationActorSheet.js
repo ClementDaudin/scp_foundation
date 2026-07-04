@@ -901,7 +901,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
             </div>
             <div class="sheet-roll-content dice-tooltip">
                 <div class="sheet-results dice-rolls">
-                    <h5 class="sheet-color-cond" data-i18n="initial roll">initial roll</h5>
+                    <h5 class="sheet-color-cond" data-i18n="initial roll">Initial roll</h5>
                     <div class="sheet-result-values">
         `;
         diceResults.forEach(diceActu => {
@@ -978,7 +978,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
 
         diceRollsHTML = diceRollsHTML + `
             <div class="sheet-total">
-          <h5 class="sheet-high-label sheet-color-cond" data-i18n="highest 2">highest 2</h5>
+          <h5 class="sheet-high-label sheet-color-cond" data-i18n="highest 2">Highest 2</h5>
           <span class="sheet-high-dice">
            <div class="sheet-roll-content dice-tooltip">
                     <div class="sheet-results dice-rolls">
@@ -1009,7 +1009,7 @@ export default class scp_foundationActorSheet extends ActorSheet {
            </span>
            <span class="sheet-ones">
             <span class="malus">` + malus + `</span></span>
-          <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5>
+          <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">Total</h5>
           <span class="sheet-total-value">
           <span class="totalLaunch" >` + (bestResultsValue - (-bonus) - (-malus)) + `</span></span>
         </div>
@@ -1302,9 +1302,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
                         <h5 class="sheet-element">` + weapon.system.element + `</h5>
                     </div>
                     <div class="sheet-damage">
-                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">base</h5><span title="${baseDicesDetails}" class="sheet-base-damage">` + baseDamage + `</span>
-                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">x</h5><span title="${xDicesDetails}" class="sheet-x-damage">` + xDamage + `</span>
-                        <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">total</h5><span class="sheet-total-damage">` + totalDamage + `</span>
+                        <h5 class="sheet-base-label sheet-color-cond" data-i18n="base">Base</h5><span title="${baseDicesDetails}" class="sheet-base-damage">` + baseDamage + `</span>
+                        <h5 class="sheet-x-label sheet-color-cond" data-i18n="x">X</h5><span title="${xDicesDetails}" class="sheet-x-damage">` + xDamage + `</span>
+                        <h5 class="sheet-total-label sheet-color-cond" data-i18n="total">Total</h5><span class="sheet-total-damage">` + totalDamage + `</span>
                     </div>
                 </div>
         `

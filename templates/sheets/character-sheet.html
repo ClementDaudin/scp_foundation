@@ -127,20 +127,20 @@
                 <input name="attr_total_d12" type="hidden" value="0" title="@{total_d12}">
                 <button class="die-purchase" name="act_purchase_d12" type="action"><span name="attr_available_d12">{{systemData.attributes.stock.d12}}</span><span class="die-size" data-i18n="d12">d12s</span></button>
             </div>
-            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="strength" label="force"}}
-            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="health" label="santé"}}
-            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="perception" label="perception"}}
-            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="dexterity" label="dexterité"}}
+            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="strength" label="Force"}}
+            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="health" label="Santé"}}
+            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="perception" label="Perception"}}
+            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="dexterity" label="Dexterité"}}
             {{> "systems/scp_foundation/templates/partials/ability-score.html" key="fate" label="Destin"}}
-            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="charisma" label="charisme"}}
-            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="intelligence" label="intelligence"}}
+            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="charisma" label="Charisme"}}
+            {{> "systems/scp_foundation/templates/partials/ability-score.html" key="intelligence" label="Intelligence"}}
             {{> "systems/scp_foundation/templates/partials/ability-score.html" key="willpower" label="Volonté"}}
         </section>
         <section class="main" id="main">
             <div class="player_data ">
                 <div class="Experience boxData">
                     <label class="input-label thick-right thick-bottom boxed" id="experience">
-                        <input class="number h5" name="system.experience" type="text" value="{{systemData.experience}}"><span class="h5" data-i18n="experience">experience</span>
+                        <input class="number h5" name="system.experience" type="text" value="{{systemData.experience}}"><span class="h5" data-i18n="experience">Experience</span>
                     </label>
                 </div>
                 <div class="market boxData">
@@ -159,7 +159,7 @@
             <div class="charactere_stats">
                 <div class="reverence">
                     <section class="active-section sticky-sub" id="reverence">
-                        <h4 data-i18n="reverence">reverence</h4>
+                        <h4 data-i18n="reverence">Reverence</h4>
                         <div class="fillTrack">
                             <input name="attr_reverence" type="hidden" value="4" title="@{reverence}">
                             <input class="fill-0 fill-label separated-label clearer reverenceTile" name="attr_reverence" type="radio" value="0" checked="" title="clear all reverence">
@@ -178,34 +178,34 @@
                         <div class="character_row_other">
                             <div>
                                 <label class="input-label hp stacked">
-                                    <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}" title="@{hp}"><span data-i18n="hp">hp</span>
+                                    <input class="number h5 underlined" name="system.hp.value" type="text" value="{{systemData.hp.value}}" title="@{hp}"><span data-i18n="hp">Hp</span>
                                 </label>
                             </div>
                             <div>
                                 <label class="input-label hp_max stacked">
-                                    <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}" title="@{hp|max}"><span data-i18n="max hp">hp max</span>
+                                    <input class="number h5 underlined" name="system.hp.max" type="text" value="{{systemData.hp.max}}" title="@{hp|max}"><span data-i18n="max hp">Hp max</span>
                                 </label>
                             </div>
                             <div>
                                 <label class="input-label damage_reduction stacked">
-                                    <input class="number h5 underlined" name="system.damage_reduction" type="text" value="{{systemData.damage_reduction}}" title="@{damage_reduction}"><span data-i18n="damage reduction">reduction de dégât</span>
+                                    <input class="number h5 underlined" name="system.damage_reduction" type="text" value="{{systemData.damage_reduction}}" title="@{damage_reduction}"><span data-i18n="damage reduction">Reduction de dégât</span>
                                 </label>
                             </div>
                         </div>
                         <div class="character_row_other">
                             <div>
                                 <label class="input-label reaction_defense stacked">
-                                    <input class="number h5 underlined" name="system.reaction_defense.value" type="text" readonly="" value="{{systemData.reaction_defense.value}}" title="@{reaction_defense}"><span data-i18n="reaction defense">réaction de défense</span>
+                                    <input class="number h5 underlined" name="system.reaction_defense.value" type="text" readonly="" value="{{systemData.reaction_defense.value}}" title="@{reaction_defense}"><span data-i18n="reaction defense">Réaction de défense</span>
                                 </label>
                             </div>
                             <div>
                                 <label class="input-label move_speed stacked">
-                                    <input class="number h5 underlined" name="system.move_speed" type="text" readonly="" value="{{systemData.move_speed}}" title="@{move_speed}"><span data-i18n="move speed">vitesse de déplacement</span>
+                                    <input class="number h5 underlined" name="system.move_speed" type="text" readonly="" value="{{systemData.move_speed}}" title="@{move_speed}"><span data-i18n="move speed">Vitesse de déplacement</span>
                                 </label>
                             </div>
                             <div>
                                 <label class="input-label cognitive_resistance stacked">
-                                    <input class="number h5 underlined" name="system.cognitive_resistance.value" type="text" readonly="" value="{{systemData.cognitive_resistance.value}}" title="@{cognitive_resistance}"><span data-i18n="cognitive resistance">résistance cognitive</span>
+                                    <input class="number h5 underlined" name="system.cognitive_resistance.value" type="text" readonly="" value="{{systemData.cognitive_resistance.value}}" title="@{cognitive_resistance}"><span data-i18n="cognitive resistance">Résistance cognitive</span>
                                 </label>
                             </div>
                         </div>
@@ -213,7 +213,7 @@
                 </div>
                 <div class="exertion">
                     <section class="active-section sticky-sub" id="exertion">
-                        <h4 class="header" data-i18n="exertion">exertion</h4>
+                        <h4 class="header" data-i18n="exertion">Exertion</h4>
                         <div class="fillTrack">
                             <input name="attr_exertion" type="hidden" value="0" title="@{exertion}">
                             <input class="fill-0 fill-label separated-label clearer exertionTile" name="attr_exertion" type="radio" value="0" checked="" title="clear all exertion">
@@ -248,7 +248,7 @@
                     </div>
                     <div class="alias">
                         <label class="input-label underline-label over stacked alias">
-                            <span class="h5" data-i18n="alias">alias</span>
+                            <span class="h5" data-i18n="alias">Alias</span>
                             <input class="underlined" name="system.alias" type="text" title="@{alias}" value="{{systemData.alias}}" placeholder="Alias">
                         </label>
                     </div>
@@ -319,13 +319,13 @@
                     <div class="reasoning">
                         <label class="input-label reasoning">
                             <select name="system.reasoning" title="@{reasoning}" id="reasoning">
-                                <option value="naif" data-i18n="naive">naif</option>
-                                <option value="sceptique" data-i18n="skeptical">sceptique</option>
-                                <option value="scientifique" data-i18n="scientific" selected="">scientifique</option>
-                                <option value="open-minded" data-i18n="open-minded">ouvert d'esprit</option>
+                                <option value="naif" data-i18n="naive">Naif</option>
+                                <option value="sceptique" data-i18n="skeptical">Sceptique</option>
+                                <option value="scientifique" data-i18n="scientific" selected="">Scientifique</option>
+                                <option value="open-minded" data-i18n="open-minded">Ouvert d'esprit</option>
                                 <option value="fou" data-i18n="fou">fou</option>
                             </select>
-                            <span class="h5" data-i18n="reasoning">raisonnement</span>
+                            <span class="h5" data-i18n="reasoning">Raisonnement</span>
                         </label>
                     </div>
                 </div>
@@ -342,7 +342,7 @@
                     </div>
                     <div class="credit">
                         <label class="input-label thick-left thick-bottom thick-right thick-top boxed" id="credits">
-                            <span class="h5" data-i18n="credits">credits</span>
+                            <span class="h5" data-i18n="credits">Credits</span>
                             <input class="number number" name="system.credits" type="text" title="@{credits}" value="{{systemData.credits}}">
                         </label>
                     </div>
@@ -351,15 +351,15 @@
                     <div id="security_level">
                         <div class="head">
                             <h1 class="header" data-i18n="scp">scp</h1>
-                            <h5 class="sub-header" data-i18n="secure contain protect">secure. contain. protect.</h5>
+                            <h5 class="sub-header" data-i18n="secure contain protect">Secure. Contain. Protect.</h5>
                             <div class="transparent-logo"></div>
                             <label class="input-label stacked over security_level">
-                                <input class="number ratio1-1 boxed thick-left thick-bottom thick-right thick-top" name="system.security_level" type="text" id="security-input" title="@{security_level}" value="{{systemData.security_level}}"><span class="h5" data-i18n="security level">security level</span>
+                                <input class="number ratio1-1 boxed thick-left thick-bottom thick-right thick-top" name="system.security_level" type="text" id="security-input" title="@{security_level}" value="{{systemData.security_level}}"><span class="h5" data-i18n="security level">Security level</span>
                             </label>
                         </div>
                         <div class="qr-code"></div>
                         <div class="merit">
-                            <h5 data-i18n="merit count">merit count</h5>
+                            <h5 data-i18n="merit count">Merit count</h5>
                             <div class="fillTrack">
                                 <input name="attr_merit" type="hidden" value="2" title="@{merit}">
                                 <input class="fill-0 fill-label separated-label merit_pointTile clearer" name="attr_merit" type="radio" value="0" checked="" title="clear all merit">
@@ -385,88 +385,88 @@
                 </div>
                 <div class="action">
                     <div id="skills">
-                        <h4 class="header" data-i18n="skills">skills</h4>
+                        <h4 class="header" data-i18n="skills">Skills</h4>
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="handgun" label="Arme de poing" i18nKey="handgun" category="skills" perk=systemData.perks.skills.handgun}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="heavy_artillery" label="Artillerie lourde" i18nKey="heavy artillery" category="skills" perk=systemData.perks.skills.heavy_artillery}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="hunting_sniper_rifle" label="Chasse / Fusil de Sniper" i18nKey="hunting / sniper rifle" category="skills" perk=systemData.perks.skills.hunting_sniper_rifle}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="shotgun" label="Fusil à pompe" i18nKey="shotgun" category="skills" perk=systemData.perks.skills.shotgun}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="assault_rifle" label="Fusil D'Assault" i18nKey="assault rifle" category="skills" perk=systemData.perks.skills.assault_rifle}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="assault_rifle" label="Fusil d'assault" i18nKey="assault rifle" category="skills" perk=systemData.perks.skills.assault_rifle}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="melee" label="Mêlée" i18nKey="melee" category="skills" perk=systemData.perks.skills.melee}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="submachine_gun" label="Mitraillette" i18nKey="submachine gun" category="skills" perk=systemData.perks.skills.submachine_gun thick=true}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="art_music" label="Art / Musique" i18nKey="art / music" category="skills" perk=systemData.perks.skills.art_music}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="catch_throw" label="Attraper / Jeter" i18nKey="catch / throw" category="skills" perk=systemData.perks.skills.catch_throw}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="drive" label="Conduite" i18nKey="drive" category="skills" perk=systemData.perks.skills.drive}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="lockpicking" label="Crochetage" i18nKey="lockpicking" category="skills" perk=systemData.perks.skills.lockpicking}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="writing" label="écriture" i18nKey="writing" category="skills" perk=systemData.perks.skills.writing}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="writing" label="Écriture" i18nKey="writing" category="skills" perk=systemData.perks.skills.writing}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="teaching" label="Enseignement" i18nKey="teaching" category="skills" perk=systemData.perks.skills.teaching}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="climb" label="Escalade" i18nKey="climb" category="skills" perk=systemData.perks.skills.climb}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="stealth_hide" label="furtivité / se cacher" i18nKey="stealth / hide" category="skills" perk=systemData.perks.skills.stealth_hide}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="stealth_hide" label="Furtivité / Se cacher" i18nKey="stealth / hide" category="skills" perk=systemData.perks.skills.stealth_hide}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="acting_lie" label="Jouer la comédie / Mentir" i18nKey="acting / lie" category="skills" perk=systemData.perks.skills.acting_lie}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="wrestle_disarm" label="lutte / désarmer" i18nKey="wrestle / disarm" category="skills" perk=systemData.perks.skills.wrestle_disarm}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="wrestle_disarm" label="Lutte / Désarmer" i18nKey="wrestle / disarm" category="skills" perk=systemData.perks.skills.wrestle_disarm}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="showmanship" label="Mise en scène" i18nKey="showmanship" category="skills" perk=systemData.perks.skills.showmanship}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="swim" label="Natation" i18nKey="swim" category="skills" perk=systemData.perks.skills.swim}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="pickpocket" label="pickpocket" i18nKey="pickpocket" category="skills" perk=systemData.perks.skills.pickpocket}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="pickpocket" label="Pickpocket" i18nKey="pickpocket" category="skills" perk=systemData.perks.skills.pickpocket}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="pilot" label="Pilotage" i18nKey="pilot" category="skills" perk=systemData.perks.skills.pilot}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="disguise_blend_in" label="se déguiser / se fondre dans la masse" i18nKey="disguise / blend in" category="skills" perk=systemData.perks.skills.disguise_blend_in}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="break_free_escape" label="se libérer / s'échapper" i18nKey="break free / escape" category="skills" perk=systemData.perks.skills.break_free_escape}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="disguise_blend_in" label="Se déguiser / Se fondre dans la masse" i18nKey="disguise / blend in" category="skills" perk=systemData.perks.skills.disguise_blend_in}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="break_free_escape" label="Se libérer / S'échapper" i18nKey="break free / escape" category="skills" perk=systemData.perks.skills.break_free_escape}}
                     </div>
                     <div id="knowledges">
                         <h4 class="header" data-i18n="knowledges">Connaissances</h4>
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="anatomy_first_aid" label="anatomie / premiers secours" i18nKey="anatomy / first aid" category="knowledges" perk=systemData.perks.knowledges.anatomy_first_aid}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="architecture" label="architecture" i18nKey="architecture" category="knowledges" perk=systemData.perks.knowledges.architecture}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="astronomy" label="astronomie" i18nKey="astronomy" category="knowledges" perk=systemData.perks.knowledges.astronomy}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="general_knowledge" label="connaissances générales" i18nKey="general knowledge" category="knowledges" perk=systemData.perks.knowledges.general_knowledge}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="anatomy_first_aid" label="Anatomie / Premiers secours" i18nKey="anatomy / first aid" category="knowledges" perk=systemData.perks.knowledges.anatomy_first_aid}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="architecture" label="Architecture" i18nKey="architecture" category="knowledges" perk=systemData.perks.knowledges.architecture}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="astronomy" label="Astronomie" i18nKey="astronomy" category="knowledges" perk=systemData.perks.knowledges.astronomy}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="general_knowledge" label="Connaissances générales" i18nKey="general knowledge" category="knowledges" perk=systemData.perks.knowledges.general_knowledge}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="cooking" label="Cuisine" i18nKey="cooking" category="knowledges" perk=systemData.perks.knowledges.cooking}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="demolition" label="démolition" i18nKey="demolition" category="knowledges" perk=systemData.perks.knowledges.demolition}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="history_lore" label="histoire / lore" i18nKey="history / lore" category="knowledges" perk=systemData.perks.knowledges.history_lore}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="identify_taste_smell" label="identifier le goût / l'odeur" i18nKey="identify taste / smell" category="knowledges" perk=systemData.perks.knowledges.identify_taste_smell}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="computer_hacking" label="informatique / piratage" i18nKey="computer / hacking" category="knowledges" perk=systemData.perks.knowledges.computer_hacking}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="investigate" label="investigation" i18nKey="investigate" category="knowledges" perk=systemData.perks.knowledges.investigate}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="gambling_gaming" label="jeux d'argent / jeux de hasard" i18nKey="gambling / gaming" category="knowledges" perk=systemData.perks.knowledges.gambling_gaming}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="ancient_languages" label="langues anciennes" i18nKey="ancient languages" category="knowledges" perk=systemData.perks.knowledges.ancient_languages}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="law_politics" label="loi / politique" i18nKey="law / politics" category="knowledges" perk=systemData.perks.knowledges.law_politics}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="mathematics" label="mathématiques" i18nKey="mathematics" category="knowledges" perk=systemData.perks.knowledges.mathematics}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="mechanics" label="méchanique" i18nKey="mechanics" category="knowledges" perk=systemData.perks.knowledges.mechanics}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="fashion_etiquette" label="mode / étiquette" i18nKey="fashion / etiquette" category="knowledges" perk=systemData.perks.knowledges.fashion_etiquette}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="navigate" label="navigation" i18nKey="navigate" category="knowledges" perk=systemData.perks.knowledges.navigate}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="occulte_scp_lore" label="occulte / SCP lore" i18nKey="occulte / scp lore" category="knowledges" perk=systemData.perks.knowledges.occulte_scp_lore}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="caretaking_nurture" label="prendre soin / nourrir" i18nKey="caretaking / nurture" category="knowledges" perk=systemData.perks.knowledges.caretaking_nurture}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="psychology" label="psychologie" i18nKey="psychology" category="knowledges" perk=systemData.perks.knowledges.psychology}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="demolition" label="Démolition" i18nKey="demolition" category="knowledges" perk=systemData.perks.knowledges.demolition}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="history_lore" label="Histoire / Lore" i18nKey="history / lore" category="knowledges" perk=systemData.perks.knowledges.history_lore}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="identify_taste_smell" label="Identifier le goût / L'odeur" i18nKey="identify taste / smell" category="knowledges" perk=systemData.perks.knowledges.identify_taste_smell}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="computer_hacking" label="Informatique / Piratage" i18nKey="computer / hacking" category="knowledges" perk=systemData.perks.knowledges.computer_hacking}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="investigate" label="Investigation" i18nKey="investigate" category="knowledges" perk=systemData.perks.knowledges.investigate}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="gambling_gaming" label="Jeux d'argent / Jeux de hasard" i18nKey="gambling / gaming" category="knowledges" perk=systemData.perks.knowledges.gambling_gaming}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="ancient_languages" label="Langues anciennes" i18nKey="ancient languages" category="knowledges" perk=systemData.perks.knowledges.ancient_languages}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="law_politics" label="Loi / Politique" i18nKey="law / politics" category="knowledges" perk=systemData.perks.knowledges.law_politics}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="mathematics" label="Mathématiques" i18nKey="mathematics" category="knowledges" perk=systemData.perks.knowledges.mathematics}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="mechanics" label="Méchanique" i18nKey="mechanics" category="knowledges" perk=systemData.perks.knowledges.mechanics}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="fashion_etiquette" label="Mode / Étiquette" i18nKey="fashion / etiquette" category="knowledges" perk=systemData.perks.knowledges.fashion_etiquette}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="navigate" label="Navigation" i18nKey="navigate" category="knowledges" perk=systemData.perks.knowledges.navigate}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="occulte_scp_lore" label="Occulte / SCP lore" i18nKey="occulte / scp lore" category="knowledges" perk=systemData.perks.knowledges.occulte_scp_lore}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="caretaking_nurture" label="Prendre soin / Nourrir" i18nKey="caretaking / nurture" category="knowledges" perk=systemData.perks.knowledges.caretaking_nurture}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="psychology" label="Psychologie" i18nKey="psychology" category="knowledges" perk=systemData.perks.knowledges.psychology}}
                         {{> "systems/scp_foundation/templates/partials/perk-row.html" key="research_internet" label="Recherche / Internet" i18nKey="research / internet" category="knowledges" perk=systemData.perks.knowledges.research_internet}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="religion" label="religion" i18nKey="religion" category="knowledges" perk=systemData.perks.knowledges.religion}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="science_physics" label="science / physique" i18nKey="science / physics" category="knowledges" perk=systemData.perks.knowledges.science_physics}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="visual_sign_sign_lang" label="signe visuel / langue des signes" i18nKey="visual sign / sign_lang" category="knowledges" perk=systemData.perks.knowledges.visual_sign_sign_lang}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="survival_tracking" label="survie / traque" i18nKey="survival / tracking" category="knowledges" perk=systemData.perks.knowledges.survival_tracking}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="technology" label="technologie" i18nKey="technology" category="knowledges" perk=systemData.perks.knowledges.technology}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="religion" label="Religion" i18nKey="religion" category="knowledges" perk=systemData.perks.knowledges.religion}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="science_physics" label="Science / Physique" i18nKey="science / physics" category="knowledges" perk=systemData.perks.knowledges.science_physics}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="visual_sign_sign_lang" label="Signe visuel / Langue des signes" i18nKey="visual sign / sign_lang" category="knowledges" perk=systemData.perks.knowledges.visual_sign_sign_lang}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="survival_tracking" label="Survie / Traque" i18nKey="survival / tracking" category="knowledges" perk=systemData.perks.knowledges.survival_tracking}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="technology" label="Technologie" i18nKey="technology" category="knowledges" perk=systemData.perks.knowledges.technology}}
                     </div>
                     <div id="abilities">
                         <h4 class="header" data-i18n="abilities">Abilités</h4>
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="awareness_reaction" label="conscience / réaction" i18nKey="awareness / reaction" category="abilities" perk=systemData.perks.abilities.awareness_reaction}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="dodge_block" label="esquive / bloquage" i18nKey="dodge / block" category="abilities" perk=systemData.perks.abilities.dodge_block thick=true}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="athletics" label="athlétisme" i18nKey="athletics" category="abilities" perk=systemData.perks.abilities.athletics}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="animal_ken_tame" label="Connaissance des animaux / apprivoisement" i18nKey="animal ken / tame" category="abilities" perk=systemData.perks.abilities.animal_ken_tame}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="empathy" label="empathie" i18nKey="empathy" category="abilities" perk=systemData.perks.abilities.empathy}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="endurance" label="endurance" i18nKey="endurance" category="abilities" perk=systemData.perks.abilities.endurance}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="initiative" label="initiative" i18nKey="initiative" category="abilities" perk=systemData.perks.abilities.initiative}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="intimidate_taunt" label="intimidation / taunt" i18nKey="intimidate / taunt" category="abilities" perk=systemData.perks.abilities.intimidate_taunt}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="intuition" label="intuition" i18nKey="intuition" category="abilities" perk=systemData.perks.abilities.intuition}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="leadership" label="leadership" i18nKey="leadership" category="abilities" perk=systemData.perks.abilities.leadership}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="negociation_persuade" label="négociation / persuasion" i18nKey="negociation / persuade" category="abilities" perk=systemData.perks.abilities.negociation_persuade}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="resist_distress" label="résistance à la détresse" i18nKey="resist_distress" category="abilities" perk=systemData.perks.abilities.resist_distress}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="resist_ko_death" label="résistance au ko / à la mort" i18nKey="resist ko / death" category="abilities" perk=systemData.perks.abilities.resist_ko_death}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="jump" label="saut" i18nKey="jump" category="abilities" perk=systemData.perks.abilities.jump}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="self_controle" label="self contrôle" i18nKey="self_controle" category="abilities" perk=systemData.perks.abilities.self_controle}}
-                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="lift_push" label="soulever / pousser" i18nKey="lift / push" category="abilities" perk=systemData.perks.abilities.lift_push}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="awareness_reaction" label="Conscience / Réaction" i18nKey="awareness / reaction" category="abilities" perk=systemData.perks.abilities.awareness_reaction}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="dodge_block" label="Esquive / Bloquage" i18nKey="dodge / block" category="abilities" perk=systemData.perks.abilities.dodge_block thick=true}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="athletics" label="Athlétisme" i18nKey="athletics" category="abilities" perk=systemData.perks.abilities.athletics}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="animal_ken_tame" label="Connaissance des animaux / Apprivoisement" i18nKey="animal ken / tame" category="abilities" perk=systemData.perks.abilities.animal_ken_tame}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="empathy" label="Empathie" i18nKey="empathy" category="abilities" perk=systemData.perks.abilities.empathy}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="endurance" label="Endurance" i18nKey="endurance" category="abilities" perk=systemData.perks.abilities.endurance}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="initiative" label="Initiative" i18nKey="initiative" category="abilities" perk=systemData.perks.abilities.initiative}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="intimidate_taunt" label="Intimidation / Taunt" i18nKey="intimidate / taunt" category="abilities" perk=systemData.perks.abilities.intimidate_taunt}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="intuition" label="Intuition" i18nKey="intuition" category="abilities" perk=systemData.perks.abilities.intuition}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="leadership" label="Leadership" i18nKey="leadership" category="abilities" perk=systemData.perks.abilities.leadership}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="negociation_persuade" label="Négociation / Persuasion" i18nKey="negociation / persuade" category="abilities" perk=systemData.perks.abilities.negociation_persuade}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="resist_distress" label="Résistance à la détresse" i18nKey="resist_distress" category="abilities" perk=systemData.perks.abilities.resist_distress}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="resist_ko_death" label="Résistance au ko / à la mort" i18nKey="resist ko / death" category="abilities" perk=systemData.perks.abilities.resist_ko_death}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="jump" label="Saut" i18nKey="jump" category="abilities" perk=systemData.perks.abilities.jump}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="self_controle" label="Self contrôle" i18nKey="self_controle" category="abilities" perk=systemData.perks.abilities.self_controle}}
+                        {{> "systems/scp_foundation/templates/partials/perk-row.html" key="lift_push" label="Soulever / Pousser" i18nKey="lift / push" category="abilities" perk=systemData.perks.abilities.lift_push}}
                     </div>
                 </div>
             </div>
             <div class="weapons" id="weapons">
                 <div id="multiplier">
                     <label class="input-label melee-mult">
-                        <input class="number h5 boxed" id="meleeMult" name="system.melee_multiplier.perso" type="number" title="@{melee_multiplier}" value="{{systemData.melee_multiplier.perso}}"><span class="h5" data-i18n="melee multiplier">melee multiplier</span>
+                        <input class="number h5 boxed" id="meleeMult" name="system.melee_multiplier.perso" type="number" title="@{melee_multiplier}" value="{{systemData.melee_multiplier.perso}}"><span class="h5" data-i18n="melee multiplier">Melee multiplier</span>
                     </label>
                     <label class="input-label ranged-mult">
-                        <input class="number h5 boxed" id="projMult" name="system.projection_multiplier.perso" type="number" title="@{ranged_multiplier}" value="{{systemData.projection_multiplier.perso}}"><span class="h5" data-i18n="ranged multiplier">ranged multiplier</span>
+                        <input class="number h5 boxed" id="projMult" name="system.projection_multiplier.perso" type="number" title="@{ranged_multiplier}" value="{{systemData.projection_multiplier.perso}}"><span class="h5" data-i18n="ranged multiplier">Ranged multiplier</span>
                     </label>
                 </div>
                 <div id="attributesValues">
@@ -476,19 +476,19 @@
                     </div>
                     <div class="rectangle">
                         <div class="left"><img src="systems/scp_foundation/assets/machine-gun.png" alt="Image"></div>
-                        <div class="right"><h5>Artillerie Lourde</h5><p class="statValue" id="skills.heavy_artillery"></p></div>
+                        <div class="right"><h5>Artillerie lourde</h5><p class="statValue" id="skills.heavy_artillery"></p></div>
                     </div>
                     <div class="rectangle">
                         <div class="left"><img src="systems/scp_foundation/assets/snipe.png" alt="Image"></div>
-                        <div class="right"><h5>Chasse / Fusil de Sniper</h5><p class="statValue" id="skills.hunting_sniper_rifle"></p></div>
+                        <div class="right"><h5>Chasse / Fusil de sniper</h5><p class="statValue" id="skills.hunting_sniper_rifle"></p></div>
                     </div>
                     <div class="rectangle">
                         <div class="left"><img src="systems/scp_foundation/assets/shotgun.png" alt="Image"></div>
-                        <div class="right"><h5>Fusil à Pompe</h5><p class="statValue" id="skills.shotgun"></p></div>
+                        <div class="right"><h5>Fusil à pompe</h5><p class="statValue" id="skills.shotgun"></p></div>
                     </div>
                     <div class="rectangle">
                         <div class="left"><img src="systems/scp_foundation/assets/rifle.png" alt="Image"></div>
-                        <div class="right"><h5>Fusil d'Assault</h5><p class="statValue" id="skills.assault_rifle"></p></div>
+                        <div class="right"><h5>Fusil d'assault</h5><p class="statValue" id="skills.assault_rifle"></p></div>
                     </div>
                     <div class="rectangle">
                         <div class="left"><img src="systems/scp_foundation/assets/knife.png" alt="Image"></div>

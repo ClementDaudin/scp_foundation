@@ -97,18 +97,20 @@ export default class scp_foundationActorSheet extends ActorSheet {
                 ['.item-open',       async (el) => {
                     const item = this.actor.items.get(el.dataset.itemId);
                     if (!item) return;
-                    const sourceId = item.flags?.core?.sourceId ?? '';
+                    const sourceId = item._stats?.compendiumSource ?? item.flags?.core?.sourceId ?? '';
+                    console.log(`[item-open] item="${item.name}" sourceId="${sourceId}"`);
                     const packMatch = sourceId.match(/^Compendium\.([^.]+\.[^.]+)/);
                     if (packMatch) {
-                        const pack = game.packs.get(packMatch[1]);
+                        const packKey = packMatch[1];
+                        const pack = game.packs.get(packKey);
+                        console.log(`[item-open] packKey="${packKey}" pack=`, pack);
                         if (pack) {
                             await pack.render(true);
                             setTimeout(() => {
-                                // Cherche la fenêtre compendium dans les apps ouvertes
                                 const app = Object.values(ui.windows).find(w =>
-                                    w.collection === packMatch[1] ||
-                                    w.options?.collection === packMatch[1] ||
-                                    w.metadata?.id === packMatch[1]
+                                    w.collection === packKey ||
+                                    w.options?.collection === packKey ||
+                                    w.metadata?.id === packKey
                                 );
                                 const input = app?.element?.find('input[name="search"]')?.[0]
                                            ?? document.querySelector(`.app.compendium input[name="search"]`);
@@ -120,6 +122,9 @@ export default class scp_foundationActorSheet extends ActorSheet {
                             }, 500);
                             return;
                         }
+                        console.warn(`[item-open] Pack introuvable : "${packKey}". Packs disponibles :`, [...game.packs.keys()]);
+                    } else {
+                        console.warn(`[item-open] Pas de sourceId compendium pour "${item.name}". sourceId="${sourceId}"`);
                     }
                 }],
             ].forEach(([selector, handler]) => {
